@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const teams = [
+  {
+    href: '/teams/worship/',
+    label: 'Worship',
+    tagline: 'Leading the church into God\'s presence',
+    icon: '🎸',
+    color: '#3A5490',
+    roles: ['Worship Leader', 'Vocalist', 'Guitarist', 'Bassist', 'Drummer', 'Keys'],
+  },
+  {
+    href: '/teams/kid-city/',
+    label: 'Kid City',
+    tagline: 'Reaching the next generation',
+    icon: '🌟',
+    color: '#8CC640',
+    roles: ['Lead Teacher', 'Small Group Leader', 'Nursery Volunteer', 'Check-In Volunteer'],
+    hasIncidentReport: true,
+  },
+  {
+    href: '/teams/hospitality/',
+    label: 'Hospitality',
+    tagline: 'Making everyone feel at home',
+    icon: '☕',
+    color: '#C9782A',
+    roles: ['Coffee Bar', 'Welcome Table', 'Guest Services', 'Event Hosting'],
+  },
+  {
+    href: '/teams/production/',
+    label: 'Production',
+    tagline: 'Serving behind the scenes',
+    icon: '🎛️',
+    color: '#1A2E5C',
+    roles: ['FOH Audio', 'Monitor Audio', 'Video/Broadcast', 'Lighting', 'Livestream'],
+  },
+  {
+    href: '/teams/connections/',
+    label: 'First Impressions',
+    tagline: 'The first face people see',
+    icon: '🤝',
+    color: '#7A3E9D',
+    roles: ['Parking Team', 'Greeters', 'Door Hosts', 'Connection Cards'],
+  },
+];
+---
+
+<BaseLayout title="Serve Teams">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-grid-teams" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-grid-teams)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="section-label">Get Involved</div>
+      <h1 class="display-lg text-white mt-2">Serve <span style="color: #8CC640;">Teams</span></h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Click any team to see their expectations, roles, and training resources.</p>
+    </div>
+  </section>
+
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {teams.map((team, i) => (
+          <a
+            href={team.href}
+            class={`card group block p-7 reveal delay-${(i + 1) * 100}`}
+          >
+            <div class="flex items-start justify-between mb-5">
+              <div class="flex h-14 w-14 items-center justify-center rounded-xl text-2xl transition-transform duration-200 group-hover:scale-110" style={`background: ${team.color}18;`}>
+                {team.icon}
+              </div>
+              {team.hasIncidentReport && (
+                <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest" style="background: rgba(196,28,53,0.10); color: #C41C35;">
+                  Incident Form
+                </span>
+              )}
+            </div>
+
+            <h2 class="font-display text-2xl font-black uppercase text-navy-800 mb-1" style="letter-spacing: 0.01em;">{team.label}</h2>
+            <p class="text-sm text-stone-500 mb-5">{team.tagline}</p>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              {team.roles.slice(0, 4).map(role => (
+                <span class="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600">
+                  {role}
+                </span>
+              ))}
+              {team.roles.length > 4 && (
+                <span class="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-400">
+                  +{team.roles.length - 4} more
+                </span>
+              )}
+            </div>
+
+            <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest transition-[gap] duration-200 group-hover:gap-2.5" style="color: #8CC640;">
+              View Team
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

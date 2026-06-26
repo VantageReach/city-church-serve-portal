@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    title: 'Lead Teacher',
+    desc: '[Describe the Lead Teacher role — responsible for delivering the lesson, managing the classroom environment, ensuring every child understands the teaching, communicating with parents, etc.]',
+  },
+  {
+    title: 'Small Group Leader',
+    desc: '[Describe the Small Group Leader role — leading a small group of kids in discussion and application of the lesson, building relationships with students week to week, etc.]',
+  },
+  {
+    title: 'Nursery Volunteer',
+    desc: '[Describe the Nursery Volunteer role — caring for infants and toddlers, check-in process, diaper changes, parent communication, room ratios, etc.]',
+  },
+  {
+    title: 'Check-In Volunteer',
+    desc: '[Describe the Check-In role — managing the kid check-in system (Planning Center), printing name tags, greeting families, communicating allergies or special needs to room leaders, etc.]',
+  },
+  {
+    title: 'Room Assistant',
+    desc: '[Describe the Room Assistant role — supporting the lead teacher, monitoring kids, helping with activities and crafts, overflow support when needed, etc.]',
+  },
+];
+
+const trainingVideos = [
+  { title: 'Kid City Volunteer Orientation' },
+  { title: 'Child Safety & Protection Policy' },
+  { title: 'Check-In System Training (Planning Center)' },
+  { title: 'Classroom Management' },
+  { title: 'Small Group Leader Training' },
+  { title: 'Nursery Best Practices' },
+];
+
+const expectations = [
+  'Arrive 20 minutes early for check-in and room prep.',
+  'You are background-checked and approved before serving with children.',
+  'Two-adult rule: two unrelated adults must always be present in any room with children.',
+  'Never be alone with a child — this protects both the child and you.',
+  'Know where to find the parent pager/phone numbers at all times.',
+  'Report any incident (injury, illness, behavioral) immediately using the incident report process.',
+  'Keep your phone away during service — your full attention belongs to the kids.',
+  'Be consistent. Kids and families are counting on you to show up.',
+];
+---
+
+<BaseLayout title="Kid City Team">
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #4A7A1E 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-kc" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.12" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-kc)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        All Teams
+      </a>
+      <div class="section-label">Serve Team</div>
+      <h1 class="display-lg text-white mt-2">🌟 Kid City</h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Reaching the next generation — creating a safe, fun, and transformative environment for every child at City Church Lufkin.</p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+    <!-- INCIDENT REPORT CALLOUT -->
+    <div class="reveal">
+      <div class="rounded-2xl overflow-hidden" style="background: #101B2E;">
+        <div class="px-7 py-6 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style="background: rgba(196,28,53,0.20);">
+            <svg class="w-6 h-6" fill="none" stroke="#C41C35" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-display text-xl font-black uppercase text-white mb-0.5" style="letter-spacing: 0.01em;">Incident Report</h3>
+            <p class="text-sm" style="color: rgba(255,255,255,0.55);">If a child is injured, sick, or involved in a behavioral incident, file a report immediately.</p>
+          </div>
+          <a href="/teams/kid-city/incident-report/" class="shrink-0 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-widest text-white transition-[background] duration-200" style="background: #C41C35;">
+            File Report
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">About This Team</div>
+      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
+      <p class="text-stone-600 leading-relaxed">
+        [Replace with a short paragraph about Kid City — the vision for children's ministry at City Church Lufkin, the age ranges served, what makes your approach different, and the impact you believe happens in these rooms every Sunday.]
+      </p>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Volunteer Standards</div>
+      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <ul class="space-y-3">
+        {expectations.map((item, i) => (
+          <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <p class="text-stone-700 leading-snug">{item}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Positions</div>
+      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="space-y-4">
+        {roles.map((role, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed">{role.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Training</div>
+      <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {trainingVideos.map((video, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+              <div class="text-center">
+                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+              </div>
+            </div>
+            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>

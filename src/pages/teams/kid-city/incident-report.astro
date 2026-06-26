@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Kid City Incident Report" noindex={true}>
+
+  <!-- HEADER -->
+  <section class="py-14" style="background: #101B2E;">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <a href="/teams/kid-city/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Kid City
+      </a>
+
+      <div class="flex items-start gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl mt-1" style="background: rgba(196,28,53,0.25);">
+          <svg class="w-6 h-6" fill="none" stroke="#C41C35" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: rgba(255,255,255,0.4);">Kid City</p>
+          <h1 class="display-md text-white mb-2">Incident Report</h1>
+          <p class="text-white/60 text-sm leading-relaxed">
+            Complete this form immediately after any child is injured, becomes ill, or is involved in a behavioral incident during service. A copy will be sent to Kid City leadership.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+
+      <!-- Replace YOUR_FORM_ID with your Formspree form ID -->
+      <form
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        id="incident-form"
+        class="space-y-8"
+      >
+
+        <!-- Section: Date & Time -->
+        <div class="card p-6 sm:p-8">
+          <h2 class="font-display text-xl font-black uppercase text-navy-800 mb-6" style="letter-spacing: 0.01em;">When Did This Happen?</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="form-group">
+              <label class="form-label" for="incident-date">Date of Incident <span class="text-red-500">*</span></label>
+              <input
+                type="date"
+                id="incident-date"
+                name="Date of Incident"
+                required
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="incident-time">Time of Incident <span class="text-red-500">*</span></label>
+              <input
+                type="time"
+                id="incident-time"
+                name="Time of Incident"
+                required
+                class="form-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Child Info -->
+        <div class="card p-6 sm:p-8">
+          <h2 class="font-display text-xl font-black uppercase text-navy-800 mb-6" style="letter-spacing: 0.01em;">Child Information</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="form-group sm:col-span-2">
+              <label class="form-label" for="child-name">Child's Full Name <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="child-name"
+                name="Child's Full Name"
+                required
+                placeholder="First and last name"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="child-age">Child's Age <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="child-age"
+                name="Child's Age"
+                required
+                placeholder="e.g. 6"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="child-grade">Grade / Room</label>
+              <input
+                type="text"
+                id="child-grade"
+                name="Child's Grade or Room"
+                placeholder="e.g. 1st Grade, Nursery"
+                class="form-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Incident Details -->
+        <div class="card p-6 sm:p-8">
+          <h2 class="font-display text-xl font-black uppercase text-navy-800 mb-6" style="letter-spacing: 0.01em;">Incident Details</h2>
+          <div class="space-y-5">
+            <div class="form-group">
+              <label class="form-label">Type of Incident <span class="text-red-500">*</span></label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-1">
+                {['Injury', 'Illness', 'Behavioral', 'Other'].map(type => (
+                  <label class="relative flex cursor-pointer items-center justify-center rounded-lg border border-stone-200 bg-white p-3 text-center text-sm font-semibold text-stone-700 transition-[border-color,background] duration-150 has-[:checked]:border-brand-green has-[:checked]:bg-brand-green-light has-[:checked]:text-brand-green-dark">
+                    <input type="radio" name="Type of Incident" value={type} required class="sr-only peer" />
+                    {type}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="location">Location Where Incident Occurred <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="location"
+                name="Location"
+                required
+                placeholder="e.g. Nursery, 2nd Grade Room, Hallway"
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">What Happened? <span class="text-red-500">*</span></label>
+              <textarea
+                id="description"
+                name="Description of Incident"
+                required
+                rows="5"
+                placeholder="Describe what happened in as much detail as possible — what you observed, what led up to the incident, and who was involved."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Response -->
+        <div class="card p-6 sm:p-8">
+          <h2 class="font-display text-xl font-black uppercase text-navy-800 mb-6" style="letter-spacing: 0.01em;">Response & Follow-Up</h2>
+          <div class="space-y-5">
+            <div class="form-group">
+              <label class="form-label">Was first aid or medical attention administered? <span class="text-red-500">*</span></label>
+              <div class="flex gap-4 mt-1">
+                {['Yes', 'No'].map(opt => (
+                  <label class="relative flex cursor-pointer items-center gap-2 rounded-lg border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-700 transition-[border-color,background] duration-150 has-[:checked]:border-brand-green has-[:checked]:bg-brand-green-light has-[:checked]:text-brand-green-dark">
+                    <input type="radio" name="First Aid Administered" value={opt} required class="sr-only" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="first-aid-desc">If yes, describe what was done</label>
+              <textarea
+                id="first-aid-desc"
+                name="First Aid Description"
+                rows="3"
+                placeholder="e.g. Cleaned and bandaged a scraped knee with supplies from the first aid kit."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Were parents/guardians notified? <span class="text-red-500">*</span></label>
+              <div class="flex gap-4 mt-1">
+                {['Yes', 'No', 'Not Yet'].map(opt => (
+                  <label class="relative flex cursor-pointer items-center gap-2 rounded-lg border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-700 transition-[border-color,background] duration-150 has-[:checked]:border-brand-green has-[:checked]:bg-brand-green-light has-[:checked]:text-brand-green-dark">
+                    <input type="radio" name="Parents Notified" value={opt} required class="sr-only" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="parent-notification">How were parents notified / what was communicated?</label>
+              <textarea
+                id="parent-notification"
+                name="Parent Notification Details"
+                rows="3"
+                placeholder="e.g. Mom was paged during service and met us in the hallway. She was briefed on what happened."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="followup">Any follow-up actions needed?</label>
+              <textarea
+                id="followup"
+                name="Follow-Up Actions"
+                rows="3"
+                placeholder="e.g. Equipment should be inspected, family should be followed up with by pastoral staff, etc."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="notes">Additional Notes</label>
+              <textarea
+                id="notes"
+                name="Additional Notes"
+                rows="3"
+                placeholder="Anything else leadership should know about this incident."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Volunteer Info -->
+        <div class="card p-6 sm:p-8">
+          <h2 class="font-display text-xl font-black uppercase text-navy-800 mb-6" style="letter-spacing: 0.01em;">Submitted By</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="form-group">
+              <label class="form-label" for="volunteer-name">Your Name <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="volunteer-name"
+                name="Volunteer Name"
+                required
+                placeholder="Your full name"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="volunteer-role">Your Role / Position</label>
+              <input
+                type="text"
+                id="volunteer-role"
+                name="Volunteer Role"
+                placeholder="e.g. Small Group Leader, Nursery Volunteer"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group sm:col-span-2">
+              <label class="form-label" for="volunteer-email">Your Email (for confirmation)</label>
+              <input
+                type="email"
+                id="volunteer-email"
+                name="_replyto"
+                placeholder="your@email.com"
+                class="form-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
+          <p class="text-xs text-stone-400">
+            This report will be sent directly to Kid City leadership. Required fields marked <span class="text-red-500">*</span>
+          </p>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-lg px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-[background,transform] duration-200 hover:-translate-y-px active:translate-y-0 shrink-0"
+            style="background: #C41C35; box-shadow: 0 4px 14px -2px rgba(196,28,53,0.40);"
+          >
+            Submit Incident Report
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Formspree hidden fields -->
+        <input type="hidden" name="_subject" value="Kid City Incident Report — City Church Lufkin" />
+        <input type="text" name="_gotcha" style="display:none" />
+
+      </form>
+
+      <!-- Success message (shown after redirect or JS) -->
+      <div id="success-msg" class="hidden mt-8 rounded-2xl p-8 text-center" style="background: #F0F9E0; border: 1px solid #C8E49A;">
+        <div class="mb-3 flex h-14 w-14 mx-auto items-center justify-center rounded-full" style="background: #8CC640;">
+          <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3 class="font-display text-2xl font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">Report Submitted</h3>
+        <p class="text-stone-600 text-sm">Your incident report has been sent to Kid City leadership. Thank you for taking care of our kids.</p>
+        <a href="/teams/kid-city/" class="inline-block mt-5 text-sm font-semibold" style="color: #6FA32E;">← Back to Kid City</a>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('incident-form') as HTMLFormElement | null;
+    const successMsg = document.getElementById('success-msg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting…';
+      }
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+
+        if (res.ok) {
+          form.classList.add('hidden');
+          successMsg?.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          alert('Something went wrong. Please try again or contact your team lead directly.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Incident Report';
+          }
+        }
+      } catch {
+        alert('Network error. Please check your connection and try again.');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Incident Report';
+        }
+      }
+    });
+  </script>
+
+</BaseLayout>

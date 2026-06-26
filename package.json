@@ -1,0 +1,19 @@
+{
+  "name": "city-church-lufkin-serve-portal",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/tailwind": "^5.0.0",
+    "@astrojs/vercel": "^8.2.11",
+    "astro": "^5.18.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

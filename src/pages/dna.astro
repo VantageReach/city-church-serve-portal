@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const values = [
+  {
+    title: 'Faith',
+    desc: '[Replace with your value description — what does this value mean at City Church Lufkin and how does it shape the way you serve?]',
+  },
+  {
+    title: 'Family',
+    desc: '[Replace with your value description — how does City Church live this out in community and in every ministry?]',
+  },
+  {
+    title: 'Freedom',
+    desc: '[Replace with your value description — describe what freedom means in the context of your church culture and mission.]',
+  },
+  {
+    title: 'Fruit',
+    desc: '[Replace with your value description — what does it look like to produce lasting fruit in your city and your people?]',
+  },
+];
+---
+
+<BaseLayout title="Our DNA" description="The vision, values, and mission behind everything City Church Lufkin does.">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-grid-dna" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-grid-dna)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="section-label">Who We Are</div>
+      <h1 class="display-lg text-white mt-2">Our <span style="color: #8CC640;">DNA</span></h1>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+
+    <!-- MISSION -->
+    <div class="reveal">
+      <div class="section-label">Mission</div>
+      <h2 class="display-sm text-navy-800 mb-6">What We Do</h2>
+      <div class="rounded-2xl p-8 sm:p-10" style="background: #101B2E;">
+        <p class="font-display text-2xl sm:text-3xl font-bold uppercase leading-snug text-white" style="letter-spacing: 0.01em;">
+          [Replace with your church mission statement — this is the one sentence that defines what City Church Lufkin exists to do.]
+        </p>
+      </div>
+    </div>
+
+    <!-- VISION -->
+    <div class="reveal">
+      <div class="section-label">Vision</div>
+      <h2 class="display-sm text-navy-800 mb-6">Where We're Going</h2>
+      <div class="rounded-2xl border-l-4 border-brand-green bg-white p-8 sm:p-10" style="box-shadow: 0 2px 8px -1px rgba(16,27,46,0.08);">
+        <p class="text-lg leading-relaxed text-stone-700">
+          [Replace with your vision statement — describe the preferred future you're building toward. What does Lufkin look like when City Church is fully living out its calling?]
+        </p>
+      </div>
+    </div>
+
+    <!-- VALUES -->
+    <div class="reveal">
+      <div class="section-label">Values</div>
+      <h2 class="display-sm text-navy-800 mb-8">What We Believe</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {values.map((v, i) => (
+          <div class={`card p-7 reveal delay-${(i + 1) * 100}`}>
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg font-display text-sm font-black text-white" style="background: #8CC640;">
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <div>
+                <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{v.title}</h3>
+                <p class="text-sm leading-relaxed text-stone-600">{v.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- SERVE CULTURE -->
+    <div class="reveal">
+      <div class="section-label">Why We Serve</div>
+      <h2 class="display-sm text-navy-800 mb-6">The Heart Behind It</h2>
+      <div class="prose prose-stone max-w-none text-stone-700 leading-relaxed space-y-4">
+        <p>
+          [Replace with a short statement about why serving matters at City Church Lufkin — the theology and heart behind mobilizing the congregation. This is a great place to cast vision for your serve team culture.]
+        </p>
+        <p>
+          [Add a second paragraph if needed — this could be a personal word from the Lead Pastor about why the serve team is central to the church's mission.]
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</BaseLayout>

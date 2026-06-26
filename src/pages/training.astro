@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const teamTraining = [
+  {
+    team: 'Worship',
+    icon: '🎸',
+    color: '#3A5490',
+    videos: [
+      { title: 'Worship Leader Orientation', youtubeId: null },
+      { title: 'Vocalist Training', youtubeId: null },
+      { title: 'Band Culture & Expectations', youtubeId: null },
+      { title: 'Rehearsal Process Walkthrough', youtubeId: null },
+    ],
+  },
+  {
+    team: 'Kid City',
+    icon: '🌟',
+    color: '#8CC640',
+    videos: [
+      { title: 'Kid City Volunteer Orientation', youtubeId: null },
+      { title: 'Child Safety & Protection Policy', youtubeId: null },
+      { title: 'Check-In System Training', youtubeId: null },
+      { title: 'Classroom Management', youtubeId: null },
+      { title: 'Nursery Best Practices', youtubeId: null },
+    ],
+  },
+  {
+    team: 'Hospitality',
+    icon: '☕',
+    color: '#C9782A',
+    videos: [
+      { title: 'Hospitality Team Orientation', youtubeId: null },
+      { title: 'Coffee Bar Setup & Teardown', youtubeId: null },
+      { title: 'Guest Experience Standards', youtubeId: null },
+    ],
+  },
+  {
+    team: 'Production',
+    icon: '🎛️',
+    color: '#1A2E5C',
+    videos: [
+      { title: 'Production Team Orientation', youtubeId: null },
+      { title: 'FOH Audio Basics', youtubeId: null },
+      { title: 'ProPresenter Operator Training', youtubeId: null },
+      { title: 'Lighting Board Overview', youtubeId: null },
+      { title: 'Livestream Setup & Monitoring', youtubeId: null },
+    ],
+  },
+  {
+    team: 'First Impressions',
+    icon: '🤝',
+    color: '#7A3E9D',
+    videos: [
+      { title: 'First Impressions Team Orientation', youtubeId: null },
+      { title: 'The Art of Making Someone Feel Welcome', youtubeId: null },
+      { title: 'How to Spot and Engage a First-Time Guest', youtubeId: null },
+      { title: 'Parking Team Safety Protocols', youtubeId: null },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Training" description="Training videos for every serve team and position at City Church Lufkin.">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-training" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-training)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="section-label">Get Equipped</div>
+      <h1 class="display-lg text-white mt-2">Training <span style="color: #8CC640;">Videos</span></h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Step-by-step training for every team and position. Videos will be added here as they're recorded.</p>
+    </div>
+  </section>
+
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl space-y-14">
+      {teamTraining.map((section, si) => (
+        <div class="reveal">
+          <!-- Team Header -->
+          <div class="flex items-center gap-3 mb-6">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl text-lg" style={`background: ${section.color}18;`}>
+              {section.icon}
+            </div>
+            <h2 class="font-display text-2xl font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">{section.team}</h2>
+            <a href={`/teams/${section.team.toLowerCase().replace(/\s+/g, '-')}/`} class="ml-2 text-xs font-semibold uppercase tracking-widest transition-colors duration-200 hover:opacity-80" style="color: #8CC640;">
+              Team Page →
+            </a>
+          </div>
+
+          <!-- Videos grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {section.videos.map((video, vi) => (
+              video.youtubeId ? (
+                <div class={`card overflow-hidden reveal delay-${(vi + 1) * 100}`}>
+                  <div class="aspect-video w-full">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                      title={video.title}
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      class="w-full h-full"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-semibold text-navy-800 text-sm">{video.title}</h3>
+                  </div>
+                </div>
+              ) : (
+                <div class={`card p-5 reveal delay-${(vi + 1) * 100}`}>
+                  <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f4f4f4;">
+                    <div class="text-center px-4">
+                      <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.12);">
+                        <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                      </div>
+                      <p class="text-xs text-stone-400 font-medium">Coming soon</p>
+                    </div>
+                  </div>
+                  <h3 class="font-semibold text-navy-800 text-sm">{video.title}</h3>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <!-- How to add videos note -->
+      <div class="rounded-xl border border-stone-200 bg-stone-50 p-6 text-sm text-stone-500">
+        <strong class="text-stone-700">Adding videos:</strong> To add a YouTube video to any section, update the <code class="rounded bg-stone-200 px-1.5 py-0.5 text-xs">youtubeId</code> field in <code class="rounded bg-stone-200 px-1.5 py-0.5 text-xs">src/pages/training.astro</code> with the 11-character ID from the YouTube URL (e.g. <code class="rounded bg-stone-200 px-1.5 py-0.5 text-xs">dQw4w9WgXcQ</code>).
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

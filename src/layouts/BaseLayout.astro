@@ -1,0 +1,153 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description = 'City Church Lufkin Serve Team Portal — everything your team needs to serve well.', noindex = false } = Astro.props;
+
+const navLinks = [
+  { href: '/',          label: 'Home'      },
+  { href: '/dna/',      label: 'Our DNA'   },
+  { href: '/teams/',    label: 'Teams'     },
+  { href: '/training/', label: 'Training'  },
+  { href: '/resources/',label: 'Resources' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — CC Lufkin Serve</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content={noindex ? 'noindex, nofollow' : 'noindex, nofollow'} />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="theme-color" content="#0A1220" />
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP NAV -->
+  <header class="sticky top-0 z-50 border-b border-white/10" style="background: #0A1220;">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 group">
+          <div class="flex h-8 w-8 items-center justify-center rounded-md font-display text-lg font-black text-white transition-colors duration-200" style="background: #8CC640;">S</div>
+          <div class="leading-none">
+            <div class="font-display text-xs font-bold uppercase tracking-widest text-white/50">City Church</div>
+            <div class="font-display text-base font-black uppercase tracking-widest text-white">Serve Portal</div>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-1">
+          {navLinks.map(link => {
+            const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href.replace(/\/$/, '')));
+            return (
+              <a
+                href={link.href}
+                class={`px-4 py-2 rounded-md text-sm font-semibold uppercase tracking-widest transition-[background,color] duration-200 ${
+                  isActive
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/8'
+                }`}
+                style={isActive ? 'background: rgba(140,198,64,0.18); color: #8CC640;' : ''}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        <!-- Mobile menu button -->
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors duration-200"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <svg id="icon-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <nav id="mobile-menu" class="hidden md:hidden border-t border-white/10" style="background: #0A1220;">
+      <div class="px-4 py-3 flex flex-col gap-1">
+        {navLinks.map(link => {
+          const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href.replace(/\/$/, '')));
+          return (
+            <a
+              href={link.href}
+              class={`px-4 py-3 rounded-lg text-sm font-semibold uppercase tracking-widest transition-[background,color] duration-200 ${
+                isActive ? '' : 'text-white/60 hover:text-white hover:bg-white/8'
+              }`}
+              style={isActive ? 'background: rgba(140,198,64,0.18); color: #8CC640;' : ''}
+            >
+              {link.label}
+            </a>
+          );
+        })}
+      </div>
+    </nav>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <main class="flex-1">
+    <slot />
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-stone-200 bg-white py-8 mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="flex h-7 w-7 items-center justify-center rounded font-display text-sm font-black text-white" style="background: #8CC640;">S</div>
+        <span class="font-display text-sm font-bold uppercase tracking-widest text-navy-800">City Church Lufkin — Serve Portal</span>
+      </div>
+      <a href="https://citychurchlufkin.com" target="_blank" rel="noopener" class="text-sm text-stone-500 hover:text-brand-green transition-colors duration-200">
+        citychurchlufkin.com ↗
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = !menu?.classList.contains('hidden');
+      menu?.classList.toggle('hidden', isOpen);
+      iconOpen?.classList.toggle('hidden', !isOpen);
+      iconClose?.classList.toggle('hidden', isOpen);
+      btn?.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
