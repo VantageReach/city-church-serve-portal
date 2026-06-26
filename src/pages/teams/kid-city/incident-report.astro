@@ -2,6 +2,20 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 ---
 
+<style>
+  .form-group { display: block; }
+  .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #101B2E; margin-bottom: 0.5rem; }
+  .form-input {
+    display: block; width: 100%; border-radius: 0.5rem;
+    border: 1px solid #d6d3d1; background: #fff;
+    padding: 0.75rem 1rem; font-size: 0.875rem; color: #292524;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+  }
+  .form-input::placeholder { color: #a8a29e; }
+  .form-input:focus { outline: none; border-color: #8CC640; box-shadow: 0 0 0 3px rgba(140,198,64,0.15); }
+</style>
+
 <BaseLayout title="Kid City Incident Report" noindex={true}>
 
   <!-- HEADER -->

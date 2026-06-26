@@ -55,22 +55,6 @@
     @apply inline-block rounded-sm bg-brand-green-light px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-green-dark mb-4;
   }
 
-  .form-input {
-    @apply block w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 transition-[border-color,box-shadow] duration-200;
-  }
-
-  .form-input:focus {
-    @apply border-brand-green outline-none;
-    box-shadow: 0 0 0 3px rgba(140,198,64,0.15);
-  }
-
-  .form-label {
-    @apply block text-sm font-semibold text-navy-800 mb-2;
-  }
-
-  .form-group {
-    @apply block;
-  }
 }
 
 @layer utilities {
