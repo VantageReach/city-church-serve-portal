@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    title: 'Next Steps Event Coordinator',
+    desc: 'Plans and executes the Next Steps member event — the primary pathway for new people to connect deeply with City Church. Plans and coordinates all logistics for the event — venue, materials, flow, and volunteers. Ensures every guest is personally welcomed and leaves with a clear path to deeper connection. Works with the Connections Director to follow up with all attendees after the event.',
+    win: 'The Next Steps event consistently happens, is executed well, and results in people getting connected — finding a Life Group and joining a serve team.',
+  },
+  {
+    title: 'Next Steps Greeter / Helper',
+    desc: 'Ensures every guest feels welcomed, served, and seen from the moment they arrive at the Next Steps event. Welcomes and checks in guests with warmth and attentiveness. Sets up and cleans up the event space before and after the event. Assists the Coordinator with any needs that arise throughout the event.',
+    win: 'Every person who attends feels personally cared for and leaves with a genuine next step.',
+  },
+];
+
+const trainingVideos = [
+  { title: 'Next Steps Event Overview' },
+  { title: 'Hosting the Next Steps Event' },
+  { title: 'Following Up After the Event' },
+  { title: 'Connecting People to Life Groups & Teams' },
+];
+
+const expectations = [
+  'Arrive early to have the space set up before the first guest arrives.',
+  'Know the City Church Next Steps pathway well enough to walk anyone through it.',
+  'Welcome every guest personally — this event is often the turning point for new people.',
+  'Follow up after the event: no attendee should fall through the cracks.',
+  'Keep the environment warm, intentional, and unhurried.',
+  'Communicate logistics needs to the Coordinator before the event, not during.',
+];
+---
+
+<BaseLayout title="Next Steps Team" description="Connecting new people deeply to City Church Lufkin through the Next Steps member event.">
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #4A3A1A 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-nextsteps" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-nextsteps)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        All Teams
+      </a>
+      <div class="section-label">Serve Team</div>
+      <h1 class="display-lg text-white mt-2">👣 Next Steps</h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Helping new people connect deeply to City Church through a personal, intentional pathway.</p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+    <div class="reveal">
+      <div class="section-label">About This Team</div>
+      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
+      <p class="text-stone-600 leading-relaxed">
+        The Next Steps event is City Church's primary pathway for helping new people go from first-time guest to fully connected member. The Next Steps team makes that moment happen — planning the event, welcoming every guest personally, and following up afterward to make sure no one falls through the cracks. If you love people and want to see them take root in the church family, this team is for you.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Volunteer Standards</div>
+      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <ul class="space-y-3">
+        {expectations.map((item, i) => (
+          <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <p class="text-stone-700 leading-snug">{item}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Positions</div>
+      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="space-y-4">
+        {roles.map((role, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Training</div>
+      <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {trainingVideos.map((video, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+              <div class="text-center">
+                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+              </div>
+            </div>
+            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
+    </div>
+
+  </div>
+</BaseLayout>

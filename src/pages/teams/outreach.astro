@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    title: 'Global Outreach Lead',
+    desc: 'Champions City Church\'s commitment to missions and global impact, connecting the congregation to what God is doing around the world. Builds and manages City Church\'s relationships with missionaries and global ministry partners. Organizes Serve Weekends and outreach initiatives that mobilize the congregation to serve locally and globally. Keeps the church family informed and engaged in global mission through regular communication and storytelling.',
+    win: 'City Church is known as a giving, going church. The congregation knows our missionaries by name, and people are regularly stepping into outreach.',
+  },
+  {
+    title: 'Serve Weekend Volunteer',
+    desc: 'Participates in and helps facilitate City Church\'s local and global Serve Weekends — mobilizing the congregation to serve the Lufkin community and support global ministry partners. Shows up ready to work, serve, and represent City Church with excellence in the community.',
+    win: 'City Church is known in Lufkin as a church that doesn\'t just talk about serving — they actually show up. People see us in the community and feel the love of God through our hands.',
+  },
+];
+
+const trainingVideos = [
+  { title: 'Outreach Team Orientation' },
+  { title: 'Our Global Ministry Partners' },
+  { title: 'Serve Weekend Overview' },
+  { title: 'How to Tell a Mission Story' },
+];
+
+const expectations = [
+  'Be a consistent champion for the mission — outreach starts with you caring first.',
+  'Know the City Church missionaries and global partners by name.',
+  'Communicate outreach opportunities to the congregation with clarity and passion.',
+  'Show up ready to work on Serve Weekends — no spectators, just servants.',
+  'Steward the church\'s outreach relationships with care, consistency, and follow-through.',
+  'Tell the stories — helping people feel connected to the mission matters.',
+];
+---
+
+<BaseLayout title="Outreach Team" description="Mobilizing City Church Lufkin to serve locally and globally — a giving, going church.">
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A4A2E 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-outreach" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-outreach)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        All Teams
+      </a>
+      <div class="section-label">Serve Team</div>
+      <h1 class="display-lg text-white mt-2">🌍 Outreach</h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Mobilizing City Church to serve locally and globally — a giving, going church.</p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+    <div class="reveal">
+      <div class="section-label">About This Team</div>
+      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
+      <p class="text-stone-600 leading-relaxed">
+        City Church is called to be more than a gathering — we are called to go. The Outreach team is the engine behind our local and global mission, connecting the congregation to what God is doing around the world and mobilizing people to serve right here in Lufkin. From Serve Weekends to global missionary partnerships, this team ensures that City Church is a giving, going church that makes an impact beyond our walls.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Volunteer Standards</div>
+      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <ul class="space-y-3">
+        {expectations.map((item, i) => (
+          <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <p class="text-stone-700 leading-snug">{item}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Positions</div>
+      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="space-y-4">
+        {roles.map((role, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-label">Training</div>
+      <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {trainingVideos.map((video, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+              <div class="text-center">
+                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+              </div>
+            </div>
+            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
+    </div>
+
+  </div>
+</BaseLayout>
