@@ -1,26 +1,86 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TeamHero from '../../../components/TeamHero.astro';
+
+const values = [
+  {
+    title: 'Love God',
+    desc: 'We love God first — and we model that love openly for kids. When we worship with energy, pray over children, and teach the Word with passion, we show kids what a life devoted to God looks like. Every Sunday is an act of worship.',
+    icon: '✝️',
+  },
+  {
+    title: 'Love Others',
+    desc: 'We love people on purpose. We know names. We remember details. We greet families like they\'re family. From the first hello at Check-In to the goodbye at pick-up, every interaction is an opportunity to make someone feel loved and valued.',
+    icon: '❤️',
+  },
+  {
+    title: 'Be You',
+    desc: 'We celebrate kids for exactly who they are — wiggly, creative, loud, quiet, curious, and wonderful. We create safety where kids don\'t have to perform to belong. And as a volunteer, you bring your unique gifts to this team.',
+    icon: '⭐',
+  },
+  {
+    title: 'Have Fun',
+    desc: 'Fun is not a distraction from ministry — it IS ministry. Kids come back to places where they have fun. Laughter, games, energy, and joy are tools of the Kingdom. If the kids are having a great time, we\'re doing it right.',
+    icon: '🎉',
+  },
+];
+
+const rooms = [
+  { room: 'Kid City', ages: 'Ages 5–11 (up to 5th grade)', desc: 'Elementary service: worship, Bible teaching & media' },
+  { room: 'Baby Blvd', ages: '3 months – 18 months', desc: 'Nursery care for our youngest babies' },
+  { room: 'Toddler Trail', ages: '18 months – 3 years', desc: 'Active toddler room with play & Bible teaching' },
+  { room: 'Preschool Place', ages: 'Ages 3–4', desc: 'Pre-K room: teaching, worship, crafts & activities' },
+  { room: 'Check-In', ages: 'All families', desc: 'First touchpoint for every family' },
+];
+
+const requirements = [
+  { step: 'Read the Guidebook', detail: 'Specifically the sections that pertain to your area of service.' },
+  { step: 'Three Month Rule', detail: 'You must have been involved with City Church for at least three (3) months before serving with children.' },
+  { step: 'Fill Out an Application', detail: 'Supplied by us. All info is kept confidential on file at the City Church offices.' },
+  { step: 'Background Check', detail: 'Required to work with minors at any level. Results are maintained in confidence at the City Church Lufkin offices.' },
+  { step: 'Personal Interview', detail: 'A face-to-face interview with the team leader to discuss serving desires, capacity, and giftings.' },
+  { step: 'Reference Checks', detail: 'We will verify references listed on the application prior to approval.' },
+  { step: 'Complete Training', detail: 'Complete any necessary training for your position.' },
+  { step: 'Obtain Volunteer Badge', detail: 'Report to Volunteer Check-In before serving.' },
+];
+
+const expectations = [
+  'Arrive 30 minutes before service — your room needs you before the first family walks in.',
+  'Manage your schedule through Planning Center and communicate promptly with your team lead.',
+  'Pray for the families and children you will serve before every Sunday.',
+  'Attend the pre-service Serve Team Huddle every week.',
+  'Wash your hands upon arrival and throughout service as needed.',
+  'Wear your volunteer badge at all times during service.',
+  'If you cannot serve on a scheduled day, communicate as early as possible through Planning Center or GroupMe.',
+  'Alert your team lead immediately of any safety concerns, allergies, or security issues.',
+  'Carry the Kid City Values into everything you do: Love God · Love Others · Be You · Have Fun.',
+];
 
 const roles = [
   {
     title: 'Kids Check-In',
-    desc: 'The first point of contact for families in Kid City — welcoming parents and children with warmth and checking every child in safely and efficiently. Arrives early and has the check-in system ready before families arrive. Checks in every child accurately, prints labels, and ensures parents receive security tags. Welcomes families warmly and helps new families navigate Kid City with ease and confidence.',
+    desc: 'The first point of contact for families in Kid City — welcoming parents and children with warmth and checking every child in safely and efficiently. Arrives early and has the check-in system ready before families arrive. Checks in every child accurately, prints labels, and ensures parents receive security tags. Greets every parent and child by name — be intentional about learning and remembering them. Notes and communicates any allergies, care instructions, or security concerns to room leaders.',
     win: 'Every family gets checked in quickly and correctly. Parents feel safe leaving their kids, and children leave the check-in table excited to go to class.',
   },
   {
     title: 'Kid City Teacher — Elementary (Ages 5–11)',
-    desc: 'Leads elementary-aged children through age-appropriate lessons, helping them discover who Jesus is and how to live for Him. Prepares and teaches the weekly lesson with energy, creativity, and clarity. Creates a safe, fun, and engaging classroom environment where every child feels seen. Prays for and invests in the children in their class beyond Sunday morning.',
+    desc: 'Leads elementary-aged children through age-appropriate lessons, helping them discover who Jesus is and how to live for Him. Prepares and teaches the weekly lesson with energy, creativity, and clarity. Creates a safe, fun, and engaging classroom environment where every child feels seen. Leads worship with energy and authenticity — models what genuine worship looks like. Knows kids by name and builds relationships week to week. Prays for and invests in the children beyond Sunday morning.',
     win: 'Kids leave class knowing what they learned, having had fun, and feeling genuinely known by their teacher. Over time, the Word is taking root.',
   },
   {
     title: 'Kid City Media Helper — Elementary',
-    desc: 'Supports the elementary classroom by running ProPresenter slides, videos, and media elements that support the lesson. Runs slides, videos, and media in sync with the teacher and lesson flow. Keeps the tech running smoothly so the teacher can focus entirely on the kids. Reviews the lesson content before class so they can anticipate what\'s coming.',
+    desc: 'Supports the elementary classroom by running ProPresenter slides, videos, and media elements that support the lesson. Runs slides, videos, and media in sync with the teacher and lesson flow throughout class. Keeps the tech running smoothly so the teacher can focus entirely on the kids. Reviews the lesson content before class to anticipate what\'s coming. Arrives early and tests all A/V equipment before service.',
     win: 'The teacher never has to worry about tech. Every video plays, every slide is on cue, and class flows without interruption.',
   },
   {
     title: 'Kid City Helper — Elementary',
-    desc: 'Assists the teacher in managing the classroom, engaging kids, and ensuring a safe, fun, and welcoming environment. Assists with classroom management, activities, and small group moments. Builds relationships with the kids — learns their names and their stories. Helps maintain a safe, orderly environment where every child feels welcome.',
+    desc: 'Assists the teacher in managing the classroom, engaging kids, and ensuring a safe, fun, and welcoming environment. Assists with classroom management, activities, and small group moments. Builds relationships with the kids — learns their names and their stories. Helps maintain a safe, orderly environment where every child feels welcome. Assists with parent pick-up at dismissal — verifies Parent Pick-Up tags.',
     win: 'The teacher feels fully supported, kids are engaged and safe, and helpers are building real relationships with the next generation.',
+  },
+  {
+    title: 'Mini City Coordinator — Birth to 4 Years',
+    desc: 'Oversees all rooms serving children from birth through 4 years — Nursery, Toddlers, and Pre-School — ensuring every environment is safe, nurturing, and age-appropriate. Coordinates volunteers across all three rooms each Sunday. Ensures all rooms are clean, stocked, and ready before families begin arriving. Communicates with parents about their child\'s experience and addresses any needs during the service.',
+    win: 'Parents trust City Church with their youngest children. Every baby and toddler is well-cared-for, content, and safe.',
   },
   {
     title: 'Room Leader — Nursery, Toddlers & Pre-School',
@@ -35,47 +95,25 @@ const roles = [
 ];
 
 const trainingVideos = [
-  { title: 'Kid City Volunteer Orientation' },
-  { title: 'Child Safety & Protection Policy' },
-  { title: 'Check-In System Training (Planning Center)' },
-  { title: 'Classroom Management' },
-  { title: 'Nursery & Mini City Best Practices' },
-  { title: 'Elementary Room Leader Training' },
-];
-
-const expectations = [
-  'Arrive 20 minutes early for check-in setup and room prep.',
-  'You are background-checked and approved before serving with children — no exceptions.',
-  'Two-adult rule: two unrelated adults must always be present in any room with children.',
-  'Never be alone with a child — this protects both the child and you.',
-  'Follow all check-in and check-out procedures every service, every time.',
-  'Know your room\'s allergy and medical information before service begins.',
-  'Report any incident (injury, illness, behavioral) immediately — use the incident report process.',
-  'Keep your phone away during service — your full attention belongs to the kids.',
-  'Be consistent. Kids and families are counting on you to show up.',
+  { title: 'Kid City Volunteer Orientation', youtubeId: null },
+  { title: 'Child Safety & Protection Policy', youtubeId: null },
+  { title: 'Kids Check-In Training — Part 1', youtubeId: 'f6RfOK9zV_M' },
+  { title: 'Kids Check-In Training — Part 2', youtubeId: 'I6ZSyM0bo-4' },
+  { title: 'Kids Check-In Training — Part 3', youtubeId: 'l7rOG41zfw8' },
+  { title: 'Kids Check-In Training — Part 4', youtubeId: 'Ip81s0Dsjr8' },
+  { title: 'Classroom Management', youtubeId: null },
+  { title: 'Nursery & Mini City Best Practices', youtubeId: null },
 ];
 ---
 
 <BaseLayout title="Kid City Team" description="Reaching the next generation — creating safe, fun, and transformative environments for every child at City Church Lufkin.">
-  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #4A7A1E 100%);">
-    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="dot-kc" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.12" transform="rotate(45 16 16)"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#dot-kc)"/>
-    </svg>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        All Teams
-      </a>
-      <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">🌟 Kid City</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Reaching the next generation — creating a safe, fun, and transformative environment for every child at City Church Lufkin.</p>
-    </div>
-  </section>
+  <TeamHero
+    title="Kid City"
+    emoji="🌟"
+    subtitle="Reaching the next generation — creating a safe, fun, and transformative environment for every child at City Church Lufkin."
+    gradientEnd="#4A7A1E"
+    patternId="dot-kc"
+  />
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
@@ -100,31 +138,74 @@ const expectations = [
       </div>
     </div>
 
-    <!-- ABOUT -->
+    <!-- MISSION -->
     <div class="reveal">
-      <div class="section-label">About This Team</div>
-      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
-      <p class="text-stone-600 leading-relaxed">
-        Kid City is City Church's children's ministry for birth through 5th grade. Our goal is simple: kids show up excited, parents drop off their children with full confidence, and Kid City is a front door for families in Lufkin. We build safe, fun, and spiritually transformative environments where kids encounter Jesus, grow in their faith, and make church their favorite place to be. Every volunteer in these rooms plays a direct role in the spiritual formation of the next generation.
-      </p>
+      <div class="section-label">Our Mission</div>
+      <h2 class="display-sm text-navy-800 mb-6">Why Kid City Exists</h2>
+      <div class="rounded-xl p-8 border-l-4" style="background: linear-gradient(135deg, #F0F9E0, #fff); border-color: #8CC640;">
+        <p class="text-lg text-navy-800 font-semibold leading-relaxed mb-3">
+          Kid City exists to partner with parents in leading their children to become fully engaged followers of Jesus.
+        </p>
+        <p class="text-base text-stone-600 leading-relaxed mb-5">
+          Through fun worship, engaging environments, and consistent leaders, children are exposed to God's Word and challenged to apply it as they develop an authentic faith.
+        </p>
+        <p class="font-display font-black uppercase text-lg" style="color: #6FA32E; letter-spacing: 0.02em;">Grow and develop kids so that in God's timing, they will be raised up into the full life found only in Jesus Christ!</p>
+      </div>
     </div>
 
-    <!-- AGE ROOMS -->
+    <!-- VALUES -->
+    <div class="reveal">
+      <div class="section-label">Kid City Values</div>
+      <h2 class="display-sm text-navy-800 mb-6">Our Four Values</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {values.map((v, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <div class="flex items-start gap-4">
+              <span class="text-2xl mt-0.5">{v.icon}</span>
+              <div>
+                <h3 class="font-display text-base font-black uppercase text-navy-800 mb-1.5" style="letter-spacing: 0.01em; color: #6FA32E;">{v.title}</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">{v.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ROOMS -->
     <div class="reveal">
       <div class="section-label">Our Rooms</div>
       <h2 class="display-sm text-navy-800 mb-6">Who We Serve</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {[
-          { room: 'Baby Blvd', ages: 'Newborn – 12 mo' },
-          { room: 'Toddler Trail', ages: '1–2 Years' },
-          { room: 'Preschool Place', ages: '3–4 Years' },
-          { room: 'Pre-K City', ages: 'Pre-K' },
-          { room: 'Kid City', ages: 'K–5th Grade' },
-          { room: 'Check-In', ages: 'All Ages' },
-        ].map((room) => (
-          <div class="card p-4 text-center">
-            <p class="font-display text-base font-black uppercase text-navy-800 mb-1" style="letter-spacing: 0.01em;">{room.room}</p>
-            <p class="text-xs text-stone-500">{room.ages}</p>
+      <div class="space-y-3">
+        {rooms.map((room, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+              <div class="shrink-0 sm:w-44">
+                <p class="font-display text-base font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">{room.room}</p>
+                <p class="text-xs font-semibold" style="color: #8CC640;">{room.ages}</p>
+              </div>
+              <p class="text-sm text-stone-500">{room.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- VOLUNTEER REQUIREMENTS -->
+    <div class="reveal">
+      <div class="section-label">Getting Started</div>
+      <h2 class="display-sm text-navy-800 mb-2">Volunteer Requirements</h2>
+      <p class="text-stone-500 mb-8 text-sm">To serve with children at City Church, every volunteer must complete the following steps.</p>
+      <div class="space-y-3">
+        {requirements.map((req, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="flex items-start gap-4">
+              <span class="font-display font-black shrink-0 leading-none" style={`font-size: 1.25rem; color: rgba(140,198,64,0.5); min-width: 2rem;`}>0{i + 1}</span>
+              <div>
+                <h3 class="font-display text-sm font-black uppercase text-navy-800 mb-0.5" style="letter-spacing: 0.01em;">{req.step}</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">{req.detail}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -133,7 +214,8 @@ const expectations = [
     <!-- EXPECTATIONS -->
     <div class="reveal">
       <div class="section-label">Volunteer Standards</div>
-      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <h2 class="display-sm text-navy-800 mb-6">General Expectations</h2>
+      <p class="text-stone-500 mb-6 text-sm">These expectations apply to every Kid City team member, every role, every week.</p>
       <ul class="space-y-3">
         {expectations.map((item, i) => (
           <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
@@ -144,6 +226,25 @@ const expectations = [
           </li>
         ))}
       </ul>
+    </div>
+
+    <!-- SAFETY -->
+    <div class="reveal">
+      <div class="section-label">Child Safety</div>
+      <h2 class="display-sm text-navy-800 mb-6">How We Keep Kid City Safe</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        {[
+          { title: 'Two-Adult Rule', desc: 'Adults are never alone with a child. At least two unrelated adults are present in every room at all times.' },
+          { title: 'Background Checks', desc: 'Every volunteer is background-checked before serving in any Kid City environment. No exceptions.' },
+          { title: 'Secure Check-In', desc: 'Every child is checked in and out by a registered guardian with a matching security tag.' },
+          { title: 'Age-Appropriate Content', desc: 'Every lesson, activity, and environment is designed with developmental stages in mind.' },
+        ].map((item, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-sm font-black uppercase text-navy-800 mb-1.5" style="letter-spacing: 0.01em;">{item.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
     </div>
 
     <!-- ROLES -->
@@ -168,17 +269,30 @@ const expectations = [
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {trainingVideos.map((video, i) => (
           <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
-            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
-              <div class="text-center">
-                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
-                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+            {video.youtubeId ? (
+              <div class="mb-3 rounded-lg overflow-hidden aspect-video w-full">
+                <iframe
+                  class="w-full h-full"
+                  src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                  title={video.title}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
               </div>
-            </div>
+            ) : (
+              <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+                <div class="text-center">
+                  <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                    <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+                </div>
+              </div>
+            )}
             <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
           </div>
         ))}

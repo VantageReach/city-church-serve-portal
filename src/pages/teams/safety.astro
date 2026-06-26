@@ -1,12 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamHero from '../../components/TeamHero.astro';
 
 const roles = [
-  {
-    title: 'Safety Team Lead',
-    desc: 'Leads and coordinates both the Medical and Security teams before and during every service. Develops and maintains emergency response protocols; ensures every team member knows their role. Builds a culture of calm, professional safety — protective without being intimidating.',
-    win: 'City Church is one of the safest places in Lufkin. Every volunteer knows the plan, and every guest feels completely secure.',
-  },
   {
     title: 'Medical Team',
     desc: 'Positioned and available during every service, ready to respond to any medical need. Responds quickly and calmly using their training when a medical situation arises. Coordinates with emergency services when needed and reports to the Safety Team Lead.',
@@ -18,6 +14,7 @@ const roles = [
     win: 'City Church is a safe, secure environment where families and guests feel completely comfortable.',
   },
 ];
+
 
 const trainingVideos = [
   { title: 'Safety Team Orientation' },
@@ -31,32 +28,20 @@ const expectations = [
   'Know the emergency response protocols; be ready to act without hesitation.',
   'Respond to situations calmly and professionally — your composure sets the tone.',
   'Use the least escalation necessary in any situation.',
-  'Communicate clearly with the Safety Team Lead throughout every service.',
+  'Communicate clearly with your team throughout every service.',
   'Never draw attention unless a situation requires it — safety should be felt, not seen.',
   'Background check required. All medical team members must have relevant certifications.',
 ];
 ---
 
 <BaseLayout title="Safety Team" description="Ensuring City Church Lufkin is one of the safest places in Lufkin — for every family, guest, and team member.">
-  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #5C1A1A 100%);">
-    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="dot-safety" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#dot-safety)"/>
-    </svg>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        All Teams
-      </a>
-      <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">🛡️ Safety Team</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Ensuring City Church is one of the safest places in Lufkin — for every family, guest, and team member.</p>
-    </div>
-  </section>
+  <TeamHero
+    title="Safety Team"
+    emoji="🛡️"
+    subtitle="Ensuring City Church is one of the safest places in Lufkin — for every family, guest, and team member."
+    gradientEnd="#5C1A1A"
+    patternId="dot-safety"
+  />
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 

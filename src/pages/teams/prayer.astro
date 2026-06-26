@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamHero from '../../components/TeamHero.astro';
 
 const roles = [
   {
@@ -36,33 +37,16 @@ const expectations = [
   'Pray for the team, the service, and the people before every service.',
 ];
 
-const contact = {
-  name: 'Tom Nevier',
-  email: 'prayer@citychurchlufkin.com',
-  role: 'Prayer Team Lead',
-};
 ---
 
 <BaseLayout title="Prayer Team" description="Covering City Church Lufkin in prayer — before every service, at the altar, and through every request submitted.">
-  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #2E1A5C 100%);">
-    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="dot-prayer" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#dot-prayer)"/>
-    </svg>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        All Teams
-      </a>
-      <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">🙏 Prayer Team</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Covering City Church in prayer — before every service, at the altar, and through every request submitted by the congregation.</p>
-    </div>
-  </section>
+  <TeamHero
+    title="Prayer Team"
+    emoji="🙏"
+    subtitle="Covering City Church in prayer — before every service, at the altar, and through every request submitted by the congregation."
+    gradientEnd="#2E1A5C"
+    patternId="dot-prayer"
+  />
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
@@ -73,24 +57,6 @@ const contact = {
       <p class="text-stone-600 leading-relaxed">
         The Prayer Team is the spiritual engine behind everything City Church does. Before the doors open, this team is in the building — covering the service, the team, and the people who will walk in. When ministry moments happen during the service, this team is positioned and ready to pray with anyone who responds. And after Sunday, this team faithfully intercedes over every prayer request submitted — because we believe no prayer goes unheard, and no request should go unprayed for. If you feel called to intercession, this team is for you.
       </p>
-    </div>
-
-    <!-- CONTACT -->
-    <div class="reveal">
-      <div class="rounded-2xl p-7 border border-stone-200" style="background: #f8fbf2;">
-        <div class="flex items-center gap-4">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style="background: #8CC640;">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
-            </svg>
-          </div>
-          <div>
-            <p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5">Prayer Team Lead</p>
-            <p class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">{contact.name}</p>
-            <a href={`mailto:${contact.email}`} class="text-sm font-medium hover:underline" style="color: #6FA32E;">{contact.email}</a>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- EXPECTATIONS -->

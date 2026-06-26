@@ -1,68 +1,137 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamHero from '../../components/TeamHero.astro';
 
-const roles = [
+const groupTypes = [
   {
-    title: 'Life Group Leader',
-    desc: 'Hosts and facilitates small group community — creating a space where people grow in their faith and build real relationships. This role covers Recovery Groups, Discipleship Groups, Interest Groups, and Freedom Groups. Leads the group consistently — meeting regularly and following up with members between gatherings. Facilitates discussion, prayer, and community that helps people take their next step spiritually. Communicates with the Connections Director about the group\'s health, needs, and wins.',
-    win: 'Your group is a place where people truly belong. Relationships are real, people are growing, and nobody feels alone in their walk with God.',
+    name: 'Discipleship Groups',
+    desc: 'Deep-dive Bible study and spiritual formation for committed followers of Christ.',
+    icon: '📖',
+  },
+  {
+    name: 'Recovery Groups',
+    desc: 'Safe, grace-filled community for people overcoming addiction, loss, or life challenges.',
+    icon: '🕊️',
+  },
+  {
+    name: 'Interest Groups',
+    desc: 'Connection around shared hobbies, seasons of life, or interests — where friendships form naturally.',
+    icon: '🎯',
+  },
+  {
+    name: 'Freedom Groups',
+    desc: 'Focused groups for people pursuing emotional healing and spiritual freedom.',
+    icon: '✨',
   },
 ];
 
-const groupTypes = [
-  { name: 'Discipleship Groups', desc: 'Deep-dive Bible study and spiritual formation for committed followers.' },
-  { name: 'Recovery Groups', desc: 'Safe, grace-filled community for people overcoming addiction, loss, or life challenges.' },
-  { name: 'Interest Groups', desc: 'Connection around shared hobbies, seasons of life, or interests — where friendships form.' },
-  { name: 'Freedom Groups', desc: 'Focused groups for people pursuing emotional healing and spiritual freedom.' },
+const schedule = [
+  { season: 'Fall', detail: 'September · 10 Weeks' },
+  { season: 'Spring', detail: 'February · 10 Weeks' },
+  { season: 'Summer', detail: 'June · 6 Weeks' },
 ];
 
-const trainingVideos = [
-  { title: 'Life Group Leader Orientation' },
-  { title: 'How to Facilitate a Great Discussion' },
-  { title: 'Pastoral Care in Small Groups' },
-  { title: 'Growing and Multiplying Your Group' },
+const requirements = [
+  'Complete Discovery Classes',
+  'Complete Life Group Application',
+  'Sign the Commitment Form',
+  'Thoroughly review the Leaders and Hosts Guidebook',
+  'Attend the Life Group Leader and Host Training Meeting',
 ];
 
-const expectations = [
-  'Meet consistently — your group depends on your reliability and follow-through.',
-  'Follow up with group members between gatherings; relationships grow outside of meetings.',
-  'Create an environment where everyone feels safe, known, and valued.',
-  'Facilitate discussion — you are a guide, not a lecturer.',
-  'Communicate group health, needs, and wins to the Connections Director regularly.',
-  'Know when a need exceeds what a small group can handle — refer people to pastoral staff.',
-  'Lead from a place of growth yourself — the best leaders are always growing.',
+const topTen = [
+  {
+    num: '01',
+    title: 'Relationship Is Most Important',
+    body: 'Building relationships, sharing hearts and lives is the #1 goal. Welcome each member through a call, text, or email as they sign up. Know about and pray for the highs and lows going on in each other\'s lives. Being vulnerable and transparent as a leader will help others share.',
+  },
+  {
+    num: '02',
+    title: 'Spiritual Component',
+    body: 'Every group needs a spiritual element. This doesn\'t mean in-depth Bible study every week — but always find a way to incorporate the Word of God, regardless of the format.',
+  },
+  {
+    num: '03',
+    title: 'Social Activity or Discussion',
+    body: 'No matter the type of group, take time to create a unifying moment — reflect on a question or discussion point from the Sunday sermon. It\'s a great way to start your time together.',
+  },
+  {
+    num: '04',
+    title: 'Pray Together',
+    body: 'People need others who aren\'t afraid to help them deal with their past, present, and future. Make sure each meeting includes time to share prayer requests and pray for each other.',
+  },
+  {
+    num: '05',
+    title: 'Serve Together',
+    body: 'Find some way to serve the community beyond your group. The options are endless — and you can make a real difference together.',
+  },
+  {
+    num: '06',
+    title: 'Invite Others',
+    body: 'Nothing replaces a personal invite. Make it a habit and encourage your members to do the same. QR code cards are available on the tables in the Sanctuary.',
+  },
+  {
+    num: '07',
+    title: 'Take Pictures & Testimonies',
+    body: 'Record your time together by taking pictures. Share them with the Life Group Directors and on Facebook.',
+  },
+  {
+    num: '08',
+    title: 'Track Attendance',
+    body: 'You\'ll receive an email for each meeting date through the Group Planning Center. Click the names of those who attended and submit. Check on those who missed.',
+  },
+  {
+    num: '09',
+    title: 'Your Own Spiritual Growth',
+    body: 'Make sure you\'re caring for your personal and spiritual growth too. Great leaders are growing leaders.',
+  },
+  {
+    num: '10',
+    title: 'Be Ready to Lead',
+    body: 'Each meeting, come prepared and ready to welcome, love, and lead your members.',
+  },
 ];
 ---
 
 <BaseLayout title="Life Groups" description="Small group community at City Church Lufkin — where people grow, belong, and do life together.">
-  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A3A5C 100%);">
-    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="dot-groups" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#dot-groups)"/>
-    </svg>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        All Teams
-      </a>
-      <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">🏠 Life Groups</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Where people grow, belong, and do life together — in every season.</p>
-    </div>
-  </section>
+
+  <TeamHero
+    title="Life Groups"
+    emoji="🏠"
+    subtitle="Where people grow, belong, and do life together — in every season."
+    gradientEnd="#1A3A5C"
+    patternId="dot-groups"
+  />
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
+    <!-- PURPOSE -->
     <div class="reveal">
-      <div class="section-label">About This Team</div>
-      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
-      <p class="text-stone-600 leading-relaxed">
-        Life Groups are where the church gets personal. Sunday morning brings us together — Life Groups are where we actually know each other. Life Group Leaders open their homes, their lives, and their time to create spaces where people can ask real questions, share real struggles, and experience real community. Whether you're leading a discipleship group, a recovery group, or a connection group around a shared interest, the goal is the same: nobody walking through life alone.
-      </p>
+      <div class="section-label">The Why</div>
+      <h2 class="display-sm text-navy-800 mb-6">Life Groups Purpose</h2>
+      <div class="rounded-xl p-8 border-l-4" style="background: linear-gradient(135deg, #F0F9E0, #fff); border-color: #8CC640;">
+        <p class="text-lg text-navy-800 font-semibold leading-relaxed mb-4">
+          To gather together to build deep godly friendships through interests or discussions that inspire all to lead full lives in Christ…
+        </p>
+        <p class="text-base text-stone-600 leading-relaxed mb-5">
+          …so that, together, our living fuller lives in Christ impacts our church, community, and world for the glory and Kingdom of God.
+        </p>
+        <p class="font-display font-black uppercase text-lg" style="color: #6FA32E; letter-spacing: 0.02em;">We Are Better Together!</p>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="reveal">
+      <div class="section-label">When We Meet</div>
+      <h2 class="display-sm text-navy-800 mb-6">Life Groups Schedule</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {schedule.map((s, i) => (
+          <div class={`card p-6 text-center reveal delay-${(i + 1) * 100}`}>
+            <p class="font-display font-black uppercase text-2xl text-navy-800 mb-1" style="letter-spacing: 0.01em;">{s.season}</p>
+            <p class="text-sm text-stone-500">{s.detail}</p>
+          </div>
+        ))}
+      </div>
     </div>
 
     <!-- GROUP TYPES -->
@@ -72,18 +141,24 @@ const expectations = [
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {groupTypes.map((g, i) => (
           <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
-            <h3 class="font-display text-base font-black uppercase text-navy-800 mb-1.5" style="letter-spacing: 0.01em;">{g.name}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed">{g.desc}</p>
+            <div class="flex items-start gap-4">
+              <span class="text-2xl mt-0.5">{g.icon}</span>
+              <div>
+                <h3 class="font-display text-base font-black uppercase text-navy-800 mb-1.5" style="letter-spacing: 0.01em;">{g.name}</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">{g.desc}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
     </div>
 
+    <!-- LEADER REQUIREMENTS -->
     <div class="reveal">
-      <div class="section-label">Volunteer Standards</div>
-      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <div class="section-label">Getting Started</div>
+      <h2 class="display-sm text-navy-800 mb-6">Leader & Host Requirements</h2>
       <ul class="space-y-3">
-        {expectations.map((item, i) => (
+        {requirements.map((item, i) => (
           <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
             <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
               <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
@@ -94,25 +169,50 @@ const expectations = [
       </ul>
     </div>
 
+    <!-- TOP 10 -->
     <div class="reveal">
-      <div class="section-label">Positions</div>
-      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="section-label">Leader Standards</div>
+      <h2 class="display-sm text-navy-800 mb-2">Top 10 for Life Group Leaders</h2>
+      <p class="text-stone-500 mb-8 text-sm">The ten things every Life Group leader commits to — from the official guidebook.</p>
       <div class="space-y-4">
-        {roles.map((role, i) => (
-          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
-            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
-            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
+        {topTen.map((item, i) => (
+          <div class={`card p-5 reveal delay-${Math.min((i + 1) * 50, 500)}`}>
+            <div class="flex items-start gap-4">
+              <span class="font-display font-black shrink-0 leading-none" style="font-size: 1.5rem; letter-spacing: 0.01em; color: rgba(140,198,64,0.5);">{item.num}</span>
+              <div>
+                <h3 class="font-display text-base font-black uppercase text-navy-800 mb-1" style="letter-spacing: 0.01em;">{item.title}</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">{item.body}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
     </div>
 
+    <!-- ROLE -->
+    <div class="reveal">
+      <div class="section-label">The Role</div>
+      <h2 class="display-sm text-navy-800 mb-6">Life Group Leader</h2>
+      <div class="card p-6">
+        <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">Life Group Leader</h3>
+        <p class="text-sm text-stone-500 leading-relaxed mb-3">
+          Hosts and facilitates small group community — creating a space where people grow in their faith and build real relationships. Leads the group consistently with regular meetings and personal follow-up between gatherings. Facilitates discussion, prayer, and community that helps people take their next step spiritually. Communicates with the Connections Director about the group's health, needs, and wins. Groups can be any format: Discipleship, Recovery, Interest, or Freedom.
+        </p>
+        <p class="text-xs font-semibold italic" style="color: #6FA32E;">The Win: Your group is a place where people truly belong. Relationships are real, people are growing, and nobody feels alone in their walk with God.</p>
+      </div>
+    </div>
+
+    <!-- TRAINING -->
     <div class="reveal">
       <div class="section-label">Training</div>
       <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {trainingVideos.map((video, i) => (
+        {[
+          'Life Group Leader Orientation',
+          'How to Facilitate a Great Discussion',
+          'Pastoral Care in Small Groups',
+          'Growing and Multiplying Your Group',
+        ].map((title, i) => (
           <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
             <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
               <div class="text-center">
@@ -125,7 +225,7 @@ const expectations = [
                 <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
               </div>
             </div>
-            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+            <h4 class="font-semibold text-navy-800 text-sm">{title}</h4>
           </div>
         ))}
       </div>

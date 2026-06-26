@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamHero from '../../components/TeamHero.astro';
 
 const roles = [
   {
@@ -32,25 +33,13 @@ const expectations = [
 ---
 
 <BaseLayout title="Milestones Team" description="Facilitating the significant spiritual moments of Water Baptism and Communion at City Church Lufkin.">
-  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A4A4A 100%);">
-    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="dot-milestones" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#dot-milestones)"/>
-    </svg>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        All Teams
-      </a>
-      <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">✝️ Milestones</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Facilitating the sacred moments of Water Baptism and Communion with care and intentionality.</p>
-    </div>
-  </section>
+  <TeamHero
+    title="Milestones"
+    emoji="✝️"
+    subtitle="Facilitating the sacred moments of Water Baptism and Communion with care and intentionality."
+    gradientEnd="#1A4A4A"
+    patternId="dot-milestones"
+  />
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 

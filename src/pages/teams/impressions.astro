@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamHero from '../../components/TeamHero.astro';
+
+const pillars = [
+  {
+    title: 'Hope',
+    desc: 'You may be the first person someone encounters after driving 45 minutes just to try church one more time. Your welcome is their first taste of hope.',
+    icon: '✨',
+  },
+  {
+    title: 'Community',
+    desc: 'A warm smile and a genuine conversation are the beginning of community. Nobody joins a church they feel invisible in.',
+    icon: '🤝',
+  },
+  {
+    title: 'Purpose',
+    desc: 'When people feel welcomed and valued, they begin to believe they might belong here — and that belonging opens the door to discovering purpose.',
+    icon: '🧭',
+  },
+  {
+    title: 'Impact',
+    desc: 'You are the impact. You are the difference between someone coming back and never returning.',
+    icon: '⚡',
+  },
+];
+
+const roles = [
+  {
+    title: 'Greeter — Front Door, Lobby & Outside',
+    desc: 'The first face of City Church — serving at entrances, doors, and key decision points throughout the building. Be in position before service begins. Greet every person with warmth, eye contact, and authentic friendliness — not a scripted performance. Give guests a handout at the sanctuary door and say, "Welcome to City Church." Proactively direct parents with children to the Kid City environments — introduce them to a Kid City worker, then return to your post. Stay in position for at least 15 minutes after the service starts. As people leave, thank them and say, "Have a great week."',
+    win: 'Every person who walks through the door feels genuinely welcomed — not just handed a program, but actually seen and treated like family.',
+    callout: { label: 'Directing Families to Kid City — Three Steps', text: '1. AWARENESS — Introduce yourself to parents AND kids. Ask: "Are you aware we have environments specifically designed for kids?" 2. TOUR — "I\'d love to show you the Kid City area — it\'ll only take a couple of minutes. Right this way." 3. CONNECT — Introduce the family to a Kid City worker, then return to your post.' },
+  },
+  {
+    title: 'Usher',
+    desc: 'Serves inside the service room — helping seat people, facilitating the offering, and managing the auditorium experience so everyone can fully engage in worship. Be in position and ready 25 minutes before service begins. Help guests find their seats proactively — take steps toward people who look lost, not just waiting to be asked. Guide people toward the front and middle, filling center seats first. Be kind and firm. Stay in position until the sermon begins, then take a seat on the aisle. Facilitate the offering, communion, and any in-service needs with excellence. Manage distractions with care but clarity. Return to position at the end of service — but not during the response time or prayer.',
+    win: 'The auditorium runs smoothly. People are comfortable, the offering flows naturally, and anyone who needs help can always find it.',
+    callout: null,
+  },
+  {
+    title: 'Coffee Bar',
+    desc: 'Creates a warm, relaxed atmosphere where people can breathe, connect, and prepare their hearts before the service. Serving free coffee is one of the most disarming, welcoming things we do. Arrive 30 minutes before service and begin setup immediately — the bar opens 20 minutes prior to every service. Make coffee, keep air pots filled, and maintain a clean, organized serving area throughout. Serve with a smile and genuine friendliness — you\'re not just pouring coffee, you\'re creating a moment. Keep inventory and inform the Team Lead of items that need restocking. Return to the bar at the end of service to serve people again during connection time.',
+    win: 'Guests walk in and immediately feel the difference. The Coffee Bar sets a tone of generosity and warmth that stays with people all service long.',
+    callout: null,
+  },
+  {
+    title: 'Parking Team',
+    desc: 'The guest experience begins before they ever get out of the car. The Parking Team sets the tone for the entire morning. Wear your City Church shirt and pick up a vest at the pre-service Huddle — visibility is critical. Be in position 25 minutes before service begins. Wave first, then direct — as cars approach, wave to say hello, then clearly point them where to go. Always smile. Communicate with your team: let them know if spaces are filling up, someone looks confused, or if traffic flow needs adjusting. Stay in position until at least 10 minutes after the service starts — many people arrive late. When attending the service, take a seat on the aisle and return to position when service ends.',
+    win: 'Guests pull in and immediately feel expected and welcomed. Traffic flows. Nobody is confused. And the whole morning starts on the right foot — before anyone walks through the door.',
+    callout: null,
+  },
+  {
+    title: 'Connections Table',
+    desc: 'Where a good experience becomes a next step — where a first-time guest goes from curious visitor to someone with a real connection to City Church. Staff the connections table before and after services — be ready before guests arrive, not scrambling to set up. Know City Church\'s Next Steps pathway and be able to explain it clearly to a brand-new guest. Connect interested guests with the right person or resource: Life Groups, serve teams, counseling, follow-up. Be warm, curious, and unhurried — take as long as people need. This conversation matters more than staying on schedule. Collect and pass along guest contact information and follow-up requests to the appropriate leader.',
+    win: 'Every first-time guest who visits the connections table leaves with a clear next step and a personal connection to someone at City Church.',
+    callout: null,
+  },
+];
+
+const beforeService = [
+  'Arrive 30 minutes before service. Your position needs you before the first guest arrives.',
+  'Check in with your Team Lead and participate in the pre-service Huddle — vision, information, prayer.',
+  'Be in position 25 minutes before service begins — fully ready, not still getting coffee.',
+  'Know what\'s happening this weekend: special events, new series, campus updates. Be prepared to answer questions.',
+];
+
+const duringService = [
+  'Refrain from eating, drinking, or using your phone while serving.',
+  'Stay focused on your assignment — don\'t get pulled into extended conversations with friends while guests go ungreeted.',
+  'Stay in position for at least 15 minutes after the service starts; late arrivals still need your welcome.',
+  'When the sermon begins, take a seat on the aisle — be a participant, not a spectator in the back.',
+  'Do not move during the response time or prayer. Be present for the most important moment of the service.',
+  'At the end of service, get back in position in time to thank people as they leave.',
+];
+
+const communication = [
+  'Manage your schedule through Planning Center. Respond to scheduling requests promptly.',
+  'If you cannot serve on a scheduled day, communicate with your Team Lead as early as possible and try to find a replacement.',
+  'Never just no-show. If you can\'t make it, the team needs to know — your position needs to be covered.',
+  'If you are sick, do not serve. Notify your Team Lead, try to find a replacement, and take care of yourself.',
+];
+
+const trainingVideos = [
+  { title: 'Impressions Team Orientation', youtubeId: null },
+  { title: 'The Art of Making Someone Feel Welcome', youtubeId: null },
+  { title: 'How to Spot and Engage a First-Time Guest', youtubeId: null },
+  { title: 'Connections Table Training', youtubeId: null },
+  { title: 'Coffee Bar Setup & Service', youtubeId: null },
+  { title: 'Parking Team Guide', youtubeId: null },
+  { title: 'How to Use Planning Center Services', youtubeId: 'pHCyLDuMWO0' },
+];
+---
+
+<BaseLayout title="Impressions Team" description="Setting the tone for every person's experience at City Church Lufkin — from the parking lot to the pew.">
+
+  <TeamHero
+    title="Impressions"
+    emoji="🤝"
+    subtitle="Setting the tone for every person's experience — from the parking lot to the pew."
+    gradientEnd="#4A1E7A"
+    patternId="dot-impressions"
+  />
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+    <!-- MISSION -->
+    <div class="reveal">
+      <div class="section-label">Our Mission</div>
+      <h2 class="display-sm text-navy-800 mb-6">Why This Team Exists</h2>
+      <div class="rounded-xl p-8 border-l-4" style="background: linear-gradient(135deg, #F0F9E0, #fff); border-color: #8CC640;">
+        <p class="text-lg text-navy-800 font-semibold leading-relaxed mb-4">
+          As a member of the Impressions Team, you are the first expression of our mission. Before anyone hears teaching or enters worship, they experience you.
+        </p>
+        <p class="text-base text-stone-600 leading-relaxed mb-5">
+          What you do directly determines whether someone's heart is open or closed to everything that follows. Research tells us that most people decide whether they'll return to a church within the first ten minutes of their first visit — before they ever sit down. That window belongs to you.
+        </p>
+        <p class="font-display font-black uppercase text-lg" style="color: #6FA32E; letter-spacing: 0.02em;">You are not just a volunteer — you are a minister.</p>
+      </div>
+    </div>
+
+    <!-- TEAM OBJECTIVE -->
+    <div class="reveal">
+      <div class="section-label">The 10-Minute Window</div>
+      <h2 class="display-sm text-navy-800 mb-6">A God Experience Begins with a Good Experience</h2>
+      <p class="text-stone-600 leading-relaxed mb-8">
+        When people enter a place feeling welcomed and genuinely cared for, their hearts are more open to hearing from God. When they feel confused, invisible, or unwelcome — even if it's subtle — they become guarded. And guarded hearts are harder to reach. This isn't manipulation. It's hospitality. Your kindness isn't just good customer service — it's creating the conditions for someone to encounter Jesus.
+      </p>
+      <div class="rounded-xl p-7" style="background: #101B2E;">
+        <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #8CC640;">Our Team Objective</p>
+        <p class="text-xl font-semibold text-white leading-relaxed">Create an environment where people can hear from God and move from where they are to where God wants them to be.</p>
+      </div>
+    </div>
+
+    <!-- MISSION PILLARS -->
+    <div class="reveal">
+      <div class="section-label">Mission Connection</div>
+      <h2 class="display-sm text-navy-800 mb-3">Your Role Touches Every Pillar</h2>
+      <p class="text-stone-500 mb-8 text-sm">City Church defines "full life in Christ" through four pillars — and the Impressions Team touches every single one.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {pillars.map((p, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <div class="flex items-start gap-4">
+              <span class="text-2xl mt-0.5">{p.icon}</span>
+              <div>
+                <h3 class="font-display text-base font-black uppercase mb-1.5" style="letter-spacing: 0.01em; color: #6FA32E;">{p.title}</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">{p.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- STANDARDS -->
+    <div class="reveal">
+      <div class="section-label">Volunteer Standards</div>
+      <h2 class="display-sm text-navy-800 mb-8">How We Show Up</h2>
+
+      <div class="space-y-8">
+        <div>
+          <h3 class="font-display text-sm font-black uppercase text-navy-800 mb-4 flex items-center gap-2" style="letter-spacing: 0.05em;">
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full text-white text-xs" style="background: #8CC640;">→</span>
+            Before the Service
+          </h3>
+          <ul class="space-y-3">
+            {beforeService.map((item, i) => (
+              <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+                <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+                  <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                </div>
+                <p class="text-stone-700 leading-snug">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-display text-sm font-black uppercase text-navy-800 mb-4 flex items-center gap-2" style="letter-spacing: 0.05em;">
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full text-white text-xs" style="background: #8CC640;">→</span>
+            During the Service
+          </h3>
+          <ul class="space-y-3">
+            {duringService.map((item, i) => (
+              <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+                <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+                  <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                </div>
+                <p class="text-stone-700 leading-snug">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-display text-sm font-black uppercase text-navy-800 mb-4 flex items-center gap-2" style="letter-spacing: 0.05em;">
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full text-white text-xs" style="background: #8CC640;">→</span>
+            Communication
+          </h3>
+          <ul class="space-y-3">
+            {communication.map((item, i) => (
+              <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+                <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+                  <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                </div>
+                <p class="text-stone-700 leading-snug">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLES -->
+    <div class="reveal">
+      <div class="section-label">Positions</div>
+      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="space-y-4">
+        {roles.map((role, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            {role.callout && (
+              <div class="rounded-lg p-4 mb-3" style="background: #F0F9E0; border-left: 3px solid #8CC640;">
+                <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color: #6FA32E;">{role.callout.label}</p>
+                <p class="text-xs text-stone-600 leading-relaxed">{role.callout.text}</p>
+              </div>
+            )}
+            <p class="text-xs font-semibold italic" style="color: #6FA32E;">The Win: {role.win}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- TRAINING -->
+    <div class="reveal">
+      <div class="section-label">Training</div>
+      <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {trainingVideos.map((video, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            {video.youtubeId ? (
+              <div class="mb-3 rounded-lg overflow-hidden aspect-video w-full">
+                <iframe
+                  class="w-full h-full"
+                  src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                  title={video.title}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+            ) : (
+              <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+                <div class="text-center">
+                  <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                    <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+                </div>
+              </div>
+            )}
+            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
+
+      <!-- Planning Center -->
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="card p-5">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style="background: #3B82F6;">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-navy-800 text-sm">Planning Center Services</p>
+              <p class="text-xs text-stone-400 mt-0.5">Schedule & sign up for serve slots</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a href="https://itunes.apple.com/us/app/planning-center-services/id327370808?mt=8" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white transition-opacity duration-200 hover:opacity-80" style="background: #101B2E;">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App Store
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.ministrycentered.PlanningCenter&hl=en" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white transition-opacity duration-200 hover:opacity-80" style="background: #3d7a35;">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0985L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>
+              Google Play
+            </a>
+            <a href="https://services.planningcenteronline.com" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-opacity duration-200 hover:opacity-80" style="background: #F0F9E0; color: #6FA32E;">Web →</a>
+          </div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style="background: #8CC640;">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-navy-800 text-sm">Planning Center App</p>
+              <p class="text-xs text-stone-400 mt-0.5">People, groups, giving & more</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a href="https://apps.apple.com/us/app/planning-center-tasks/id6751657545" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white transition-opacity duration-200 hover:opacity-80" style="background: #101B2E;">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App Store
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.planningcenter.app&hl=en_US" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white transition-opacity duration-200 hover:opacity-80" style="background: #3d7a35;">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0985L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>
+              Google Play
+            </a>
+            <a href="https://app.planningcenteronline.com" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-opacity duration-200 hover:opacity-80" style="background: #F0F9E0; color: #6FA32E;">Web →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
