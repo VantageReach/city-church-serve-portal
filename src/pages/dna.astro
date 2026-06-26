@@ -1,16 +1,99 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const pillars = ['Hope', 'Community', 'Purpose', 'Impact'];
+const pillars = [
+  {
+    title: 'Hope',
+    desc: 'Bring people to Jesus.',
+    verse: 'Ephesians 1:18',
+  },
+  {
+    title: 'Community',
+    desc: 'Gather people together.',
+    verse: '1 Corinthians 12:27',
+  },
+  {
+    title: 'Purpose',
+    desc: 'Help people discover who they are in Christ.',
+    verse: 'Jeremiah 29:11',
+  },
+  {
+    title: 'Impact',
+    desc: 'Serve God through serving people.',
+    verse: 'Mark 10:45',
+  },
+];
 
-const values = [
-  'Love Is Our Motive',
-  'God\'s Presence Is Our Passion',
-  'Joy Is Our Expression',
-  'Community Is Our Commitment',
-  'Serving Is Our Privilege',
-  'Excellence Is Our Worship',
-  'Generosity Is Our Way',
+const churchValues = [
+  {
+    title: 'Love Is Our Motive',
+    desc: 'Everything we do flows from love — love for God and love for people. It is the reason behind every action.',
+    verse: 'Do everything in love.',
+    ref: '1 Corinthians 16:14',
+  },
+  {
+    title: "God's Presence Is Our Passion",
+    desc: 'We do not just attend church — we passionately pursue the presence of God. He is not an add-on; He is our everything.',
+    verse: 'In your presence there is fullness of joy.',
+    ref: 'Psalm 16:11',
+  },
+  {
+    title: 'Joy Is Our Expression',
+    desc: 'We carry the joy of the Lord into everything we do. Our joy is not surface-level — it is our response to His goodness.',
+    verse: 'The joy of the Lord is your strength.',
+    ref: 'Nehemiah 8:10',
+  },
+  {
+    title: 'Community Is Our Commitment',
+    desc: 'We do not walk alone. We grow, serve, and thrive through real relationships with one another.',
+    verse: 'All of you together are Christ\'s body, and each of you is a part of it.',
+    ref: '1 Corinthians 12:27',
+  },
+  {
+    title: 'Serving Is Our Privilege',
+    desc: 'We follow Jesus\' example by serving others with humility, love, and intentionality. We do not have to — we get to.',
+    verse: 'For even the Son of Man came not to be served but to serve.',
+    ref: 'Mark 10:45',
+  },
+  {
+    title: 'Excellence Is Our Worship',
+    desc: 'We give our best in every detail — not for perfection\'s sake, but as an act of honor and worship to God.',
+    verse: 'Whatever you do, work at it with all your heart, as working for the Lord.',
+    ref: 'Colossians 3:23',
+  },
+  {
+    title: 'Generosity Is Our Way',
+    desc: 'We live open-handed with our time, resources, and hearts. We are generous because God has been so generous to us.',
+    verse: 'You will be enriched in every way so that you can be generous on every occasion.',
+    ref: '2 Corinthians 9:11',
+  },
+];
+
+const teamValues = [
+  {
+    title: 'I Am a Servant Leader',
+    desc: 'Serving others is a privilege, and I look forward to choosing the sacrifice of serving. It is an honor to serve others at City Church.',
+  },
+  {
+    title: 'I Choose to See the Best',
+    desc: 'As we live and serve with others, it is easy to get offended or hurt, or even just see the negative first. I will choose to see the best in people and expect the best of people.',
+  },
+  {
+    title: 'I Am Committed to Growth',
+    desc: 'Spiritual growth has to be a personal commitment. Our culture is at its best when we are committed to becoming more and more like Jesus.',
+  },
+  {
+    title: 'I Take Ownership',
+    desc: 'City Church is not just a church you attend, but a family in which you belong. If you see a need, do not wait for someone else to do it. You are no longer a consumer but an owner in this vision.',
+  },
+  {
+    title: 'I Will Communicate',
+    desc: 'Community health relies on good communication. Always communicate to the right people. If you are hurt, talk to the person. If you fall short, repent and move forward. Always communicate with an open and humble heart.',
+  },
+  {
+    title: 'I Help Others Take Steps',
+    desc: 'It is not just a pastor\'s job to help people take steps toward Christ. We all take responsibility to look at others and ask, "How can I help them connect, grow, serve, or lead?"',
+  },
 ];
 ---
 
@@ -34,52 +117,115 @@ const values = [
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-20">
 
-    <!-- VISION -->
+    <!-- MISSION -->
     <div class="reveal">
-      <div class="section-label">City Church Vision</div>
+      <div class="section-label">Our Mission</div>
       <div class="rounded-2xl p-8 sm:p-12" style="background: #101B2E;">
-        <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color: rgba(255,255,255,0.35);">We Exist To</p>
-        <p class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase leading-tight text-white" style="letter-spacing: 0.01em;">
+        <p class="text-xs font-bold uppercase tracking-widest mb-5" style="color: rgba(255,255,255,0.35);">We Exist To</p>
+        <p class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase leading-tight text-white mb-6" style="letter-spacing: 0.01em;">
           Lead People to Full Lives in Christ.
         </p>
+        <p class="text-sm italic" style="color: rgba(255,255,255,0.4);">"I have come that they may have life, and have it to the full." — John 10:10</p>
       </div>
     </div>
 
-    <!-- MISSIONAL PILLARS -->
+    <!-- VISION / PILLARS -->
     <div class="reveal">
-      <div class="section-label">Missional Pillars</div>
-      <h2 class="display-sm text-navy-800 mb-8">How We Pursue the Vision</h2>
+      <div class="section-label">Our Vision</div>
+      <h2 class="display-sm text-navy-800 mb-3">Mission in Action</h2>
+      <p class="text-stone-500 mb-8 leading-relaxed">Our vision is how we plan to accomplish our God dream. We view everyone through the lens of helping people take their next steps — where are they, and how can we help get them to where God has for them to go?</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {pillars.map((pillar, i) => (
           <div class={`rounded-2xl p-6 text-center reveal delay-${(i + 1) * 100}`} style="background: #101B2E;">
-            <div class="font-display text-4xl font-black uppercase text-white mb-1" style="letter-spacing: 0.01em;">{pillar}</div>
-            <div class="w-8 h-0.5 mx-auto mt-3 rounded-full" style="background: #8CC640;"></div>
+            <div class="font-display text-3xl font-black uppercase text-white mb-3" style="letter-spacing: 0.01em;">{pillar.title}</div>
+            <div class="w-8 h-0.5 mx-auto mb-3 rounded-full" style="background: #8CC640;"></div>
+            <p class="text-xs leading-relaxed" style="color: rgba(255,255,255,0.55);">{pillar.desc}</p>
           </div>
         ))}
       </div>
     </div>
 
-    <!-- VALUES -->
+    <!-- CULTURE INTRO -->
     <div class="reveal">
-      <div class="section-label">City Church Values</div>
-      <h2 class="display-sm text-navy-800 mb-8">What We Believe About How We Do This</h2>
-      <div class="space-y-3">
-        {values.map((value, i) => {
-          const [firstWord, ...rest] = value.split(' ');
-          return (
-            <div
-              class={`flex items-center gap-5 rounded-xl border border-stone-200 bg-white px-6 py-5 reveal delay-${Math.min((i + 1) * 100, 500)}`}
-              style="box-shadow: 0 1px 4px rgba(16,27,46,0.05);"
-            >
-              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-display text-xs font-black text-white" style="background: #8CC640;">
+      <div class="section-label">Our Culture</div>
+      <h2 class="display-sm text-navy-800 mb-6">The Heartbeat We Carry</h2>
+      <div class="rounded-2xl border-l-4 border-brand-green bg-white p-8" style="box-shadow: 0 2px 8px -1px rgba(16,27,46,0.08);">
+        <p class="text-stone-600 leading-relaxed mb-4">Our culture is less about what we do and more about who we are. It is the heartbeat and drive behind everything we do. We have the culture of a growing family — a people coming together as family, passionate about making the family bigger.</p>
+        <p class="text-stone-600 leading-relaxed">Now that you are on the team, you help carry the culture — the heartbeat and experience — of City Church into every environment you are a part of.</p>
+      </div>
+    </div>
+
+    <!-- CHURCH VALUES -->
+    <div class="reveal">
+      <div class="section-label">Church Values</div>
+      <h2 class="display-sm text-navy-800 mb-3">Non-Negotiable to Who We Are</h2>
+      <p class="text-stone-500 mb-8 leading-relaxed">These values guide how we do everything at City Church. They are not department-specific — they belong to everyone on the team.</p>
+      <div class="space-y-4">
+        {churchValues.map((v, i) => (
+          <div class={`card p-6 sm:p-7 reveal delay-${Math.min((i + 1) * 100, 500)}`}>
+            <div class="flex items-start gap-4">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-display text-xs font-black text-white mt-0.5" style="background: #8CC640;">
                 {String(i + 1).padStart(2, '0')}
               </div>
-              <p class="font-display text-xl font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">
-                <span style="color: #8CC640;">{firstWord}</span>{' '}{rest.join(' ')}
-              </p>
+              <div class="flex-1">
+                <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1.5" style="letter-spacing: 0.01em;">{v.title}</h3>
+                <p class="text-sm text-stone-600 leading-relaxed mb-3">{v.desc}</p>
+                <p class="text-xs italic text-stone-400">"{v.verse}" — {v.ref}</p>
+              </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- TEAM VALUES -->
+    <div class="reveal">
+      <div class="section-label">Team Values</div>
+      <h2 class="display-sm text-navy-800 mb-3">How We Lead and Serve Together</h2>
+      <p class="text-stone-500 mb-8 leading-relaxed">Allow these statements to guide you as we lead, serve, and continue building a healthy culture at City Church.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {teamValues.map((v, i) => (
+          <div class={`card p-6 reveal delay-${Math.min((i + 1) * 100, 500)}`}>
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg font-display text-xs font-black text-white mb-4" style="background: #1A2E5C;">
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{v.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- PARTNERSHIP COMMITMENT -->
+    <div class="reveal">
+      <div class="section-label">Partnership Commitment</div>
+      <h2 class="display-sm text-navy-800 mb-6">What We Commit to Together</h2>
+      <div class="rounded-2xl overflow-hidden" style="background: #101B2E;">
+        <div class="px-8 py-8 sm:px-10">
+          <p class="text-white/60 text-sm leading-relaxed mb-8">
+            Having received Christ as my Lord and Savior and being in agreement with the values presented here, I now feel led by the Holy Spirit to unite with the City Church family.
+          </p>
+          <div class="space-y-5">
+            {[
+              { label: 'Protect Unity', desc: 'By acting in love toward other members. By refusing to gossip. By following the direction of pastors and leaders.' },
+              { label: 'Share Responsibility', desc: 'By praying for its growth. By inviting the unchurched to attend. By warmly welcoming those who visit. Everyone\'s a greeter in God\'s house!' },
+              { label: 'Serve the Ministry', desc: 'By discovering my gifts and talents. By finding a place where I can serve others in my gifting. By committing to having a servant\'s heart.' },
+              { label: 'Support the Mission', desc: 'By attending faithfully. By living a godly life. By giving regularly — time, talent, and treasure.' },
+            ].map((item, i) => (
+              <div class="flex items-start gap-4">
+                <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full mt-0.5" style="background: rgba(140,198,64,0.20);">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-bold uppercase tracking-widest text-white mb-0.5" style="letter-spacing: 0.05em;">I Will {item.label}</p>
+                  <p class="text-sm" style="color: rgba(255,255,255,0.50);">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
 
