@@ -1,0 +1,140 @@
+---
+import PlanningCenterCard from './PlanningCenterCard.astro';
+
+interface Props {
+  team?: string;
+}
+const { team } = Astro.props;
+
+type Resource = { title: string; desc: string; type: string; href: string | null; highlight?: boolean };
+
+const teamResourceMap: Record<string, Resource[]> = {
+  'impressions': [
+    { title: 'Impressions Team Guidebook', desc: 'Mission, team standards, role descriptions, and expectations for all Impressions Team volunteers.', type: 'PDF', href: '/Impressions_Team_Guidebook_2026.pdf' },
+  ],
+  'kid-city': [
+    { title: 'Kid City Volunteer Guidebook', desc: 'Everything a Kid City volunteer needs to know — curriculum, rooms, policies, and expectations.', type: 'PDF', href: '/Kid_City_Guidebook_2026_v3.pdf' },
+    { title: 'Child Safety & Protection Policy', desc: 'Full policy documentation for child safety at City Church Lufkin.', type: 'PDF', href: '/KidCity_Child_Safety_Protection_Protocol.pdf' },
+    { title: 'Allergy & Medical Protocol', desc: 'How to handle allergies, medical needs, and emergencies in Kid City.', type: 'PDF', href: '/KidCity_Allergy_Medical_Protocol.pdf' },
+    { title: 'Incident Report Form', desc: 'File an incident report for any child injury, illness, or behavioral incident.', type: 'Form', href: '/teams/kid-city/incident-report/', highlight: true },
+  ],
+  'production': [
+    { title: 'Stage Plot & Input List', desc: 'Standard stage plot and channel strip for the main auditorium.', type: 'PDF', href: null },
+    { title: 'ProPresenter Template Guide', desc: 'How to use and update sermon slide templates in ProPresenter.', type: 'PDF', href: null },
+    { title: 'Livestream Checklist', desc: 'Pre-service checklist for the livestream operator.', type: 'PDF', href: null },
+  ],
+  'worship': [
+    { title: 'Worship Team Standards & Expectations', desc: "Full overview of what's expected of worship team members at City Church Lufkin.", type: 'PDF', href: null },
+    { title: 'Chord Chart Library', desc: 'Access chord charts for all songs in our current rotation.', type: 'Link', href: null },
+  ],
+};
+
+const sharedResources: Resource[] = [
+  { title: 'Serve Team Handbook', desc: 'The complete guide to serving at City Church Lufkin — culture, expectations, and policies.', type: 'PDF', href: null },
+  { title: 'Volunteer Code of Conduct', desc: 'Standards of conduct for all City Church volunteers.', type: 'PDF', href: null },
+  { title: 'Background Check Process', desc: 'How to complete your background check through Ministry Safe.', type: 'Link', href: null },
+  { title: 'How to Use Planning Center Services', desc: 'Step-by-step video walkthrough for scheduling, accepting requests, and managing your serve slots.', type: 'Video', href: 'https://youtu.be/pHCyLDuMWO0?si=Bc7LZDueKrOBMXiA' },
+];
+
+const myResources = teamResourceMap[team ?? ''] ?? [];
+---
+
+<div class="reveal">
+  <div class="section-label">Resources</div>
+  <h2 class="display-sm text-navy-800 mb-6">Documents & Tools</h2>
+
+  {myResources.length > 0 && (
+    <div class="mb-8">
+      <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #8CC640;">For This Team</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {myResources.map((res) => (
+          res.href ? (
+            <a
+              href={res.href}
+              target={res.type === 'Form' ? '_self' : '_blank'}
+              rel="noopener"
+              class={`card group block p-5 ${res.highlight ? 'border-red-200' : ''}`}
+              style={res.highlight ? 'background: #fff5f5;' : ''}
+            >
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex-1">
+                  <h3 class="font-semibold text-navy-800 text-sm mb-1 group-hover:text-brand-green transition-colors duration-200">{res.title}</h3>
+                  <p class="text-xs text-stone-500 leading-relaxed">{res.desc}</p>
+                </div>
+                <span class={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${res.highlight ? 'text-red-600 bg-red-100' : 'text-brand-green-dark bg-brand-green-light'}`}>
+                  {res.type}
+                </span>
+              </div>
+              <div class={`mt-3 flex items-center gap-1 text-xs font-semibold uppercase tracking-widest transition-[gap] duration-200 group-hover:gap-2 ${res.highlight ? 'text-red-500' : 'text-brand-green'}`}>
+                Open <span>→</span>
+              </div>
+            </a>
+          ) : (
+            <div class="card p-5 opacity-60">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex-1">
+                  <h3 class="font-semibold text-navy-800 text-sm mb-1">{res.title}</h3>
+                  <p class="text-xs text-stone-500 leading-relaxed">{res.desc}</p>
+                </div>
+                <span class="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-stone-400 bg-stone-100">
+                  {res.type}
+                </span>
+              </div>
+              <p class="mt-3 text-xs text-stone-400 italic">Coming soon</p>
+            </div>
+          )
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="mb-8">
+    <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #8CC640;">All Teams</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {sharedResources.map((res) => (
+        res.href ? (
+          <a
+            href={res.href}
+            target="_blank"
+            rel="noopener"
+            class="card group block p-5"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1">
+                <h3 class="font-semibold text-navy-800 text-sm mb-1 group-hover:text-brand-green transition-colors duration-200">{res.title}</h3>
+                <p class="text-xs text-stone-500 leading-relaxed">{res.desc}</p>
+              </div>
+              <span class="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-brand-green-dark bg-brand-green-light">
+                {res.type}
+              </span>
+            </div>
+            <div class="mt-3 flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-brand-green transition-[gap] duration-200 group-hover:gap-2">
+              Open <span>→</span>
+            </div>
+          </a>
+        ) : (
+          <div class="card p-5 opacity-60">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1">
+                <h3 class="font-semibold text-navy-800 text-sm mb-1">{res.title}</h3>
+                <p class="text-xs text-stone-500 leading-relaxed">{res.desc}</p>
+              </div>
+              <span class="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-stone-400 bg-stone-100">
+                {res.type}
+              </span>
+            </div>
+            <p class="mt-3 text-xs text-stone-400 italic">Coming soon</p>
+          </div>
+        )
+      ))}
+    </div>
+  </div>
+
+  <div>
+    <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #8CC640;">Apps</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <PlanningCenterCard type="services" />
+      <PlanningCenterCard type="app" />
+    </div>
+  </div>
+</div>

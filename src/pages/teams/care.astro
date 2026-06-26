@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeamHero from '../../components/TeamHero.astro';
-import PlanningCenterCard from '../../components/PlanningCenterCard.astro';
+import TeamResources from '../../components/TeamResources.astro';
 
 const roles = [
   {
@@ -101,11 +101,9 @@ const expectations = [
       </div>
       <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
 
-      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <PlanningCenterCard type="services" />
-        <PlanningCenterCard type="app" />
-      </div>
     </div>
+
+    <TeamResources team="care" />
 
   </div>
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeamHero from '../../components/TeamHero.astro';
+import TeamResources from '../../components/TeamResources.astro';
 
 const groupTypes = [
   {
@@ -231,6 +232,8 @@ const topTen = [
       </div>
       <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
     </div>
+
+    <TeamResources team="life-groups" />
 
   </div>
 </BaseLayout>
