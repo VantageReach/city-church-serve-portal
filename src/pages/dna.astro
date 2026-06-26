@@ -1,23 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const pillars = ['Hope', 'Community', 'Purpose', 'Impact'];
+
 const values = [
-  {
-    title: 'Faith',
-    desc: '[Replace with your value description — what does this value mean at City Church Lufkin and how does it shape the way you serve?]',
-  },
-  {
-    title: 'Family',
-    desc: '[Replace with your value description — how does City Church live this out in community and in every ministry?]',
-  },
-  {
-    title: 'Freedom',
-    desc: '[Replace with your value description — describe what freedom means in the context of your church culture and mission.]',
-  },
-  {
-    title: 'Fruit',
-    desc: '[Replace with your value description — what does it look like to produce lasting fruit in your city and your people?]',
-  },
+  'Love Is Our Motive',
+  'God\'s Presence Is Our Passion',
+  'Joy Is Our Expression',
+  'Community Is Our Commitment',
+  'Serving Is Our Privilege',
+  'Excellence Is Our Worship',
+  'Generosity Is Our Way',
 ];
 ---
 
@@ -41,60 +34,52 @@ const values = [
 
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-20">
 
-    <!-- MISSION -->
-    <div class="reveal">
-      <div class="section-label">Mission</div>
-      <h2 class="display-sm text-navy-800 mb-6">What We Do</h2>
-      <div class="rounded-2xl p-8 sm:p-10" style="background: #101B2E;">
-        <p class="font-display text-2xl sm:text-3xl font-bold uppercase leading-snug text-white" style="letter-spacing: 0.01em;">
-          [Replace with your church mission statement — this is the one sentence that defines what City Church Lufkin exists to do.]
-        </p>
-      </div>
-    </div>
-
     <!-- VISION -->
     <div class="reveal">
-      <div class="section-label">Vision</div>
-      <h2 class="display-sm text-navy-800 mb-6">Where We're Going</h2>
-      <div class="rounded-2xl border-l-4 border-brand-green bg-white p-8 sm:p-10" style="box-shadow: 0 2px 8px -1px rgba(16,27,46,0.08);">
-        <p class="text-lg leading-relaxed text-stone-700">
-          [Replace with your vision statement — describe the preferred future you're building toward. What does Lufkin look like when City Church is fully living out its calling?]
+      <div class="section-label">City Church Vision</div>
+      <div class="rounded-2xl p-8 sm:p-12" style="background: #101B2E;">
+        <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color: rgba(255,255,255,0.35);">We Exist To</p>
+        <p class="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase leading-tight text-white" style="letter-spacing: 0.01em;">
+          Lead People to Full Lives in Christ.
         </p>
       </div>
     </div>
 
-    <!-- VALUES -->
+    <!-- MISSIONAL PILLARS -->
     <div class="reveal">
-      <div class="section-label">Values</div>
-      <h2 class="display-sm text-navy-800 mb-8">What We Believe</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {values.map((v, i) => (
-          <div class={`card p-7 reveal delay-${(i + 1) * 100}`}>
-            <div class="flex items-start gap-4">
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg font-display text-sm font-black text-white" style="background: #8CC640;">
-                {String(i + 1).padStart(2, '0')}
-              </div>
-              <div>
-                <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{v.title}</h3>
-                <p class="text-sm leading-relaxed text-stone-600">{v.desc}</p>
-              </div>
-            </div>
+      <div class="section-label">Missional Pillars</div>
+      <h2 class="display-sm text-navy-800 mb-8">How We Pursue the Vision</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {pillars.map((pillar, i) => (
+          <div class={`rounded-2xl p-6 text-center reveal delay-${(i + 1) * 100}`} style="background: #101B2E;">
+            <div class="font-display text-4xl font-black uppercase text-white mb-1" style="letter-spacing: 0.01em;">{pillar}</div>
+            <div class="w-8 h-0.5 mx-auto mt-3 rounded-full" style="background: #8CC640;"></div>
           </div>
         ))}
       </div>
     </div>
 
-    <!-- SERVE CULTURE -->
+    <!-- VALUES -->
     <div class="reveal">
-      <div class="section-label">Why We Serve</div>
-      <h2 class="display-sm text-navy-800 mb-6">The Heart Behind It</h2>
-      <div class="prose prose-stone max-w-none text-stone-700 leading-relaxed space-y-4">
-        <p>
-          [Replace with a short statement about why serving matters at City Church Lufkin — the theology and heart behind mobilizing the congregation. This is a great place to cast vision for your serve team culture.]
-        </p>
-        <p>
-          [Add a second paragraph if needed — this could be a personal word from the Lead Pastor about why the serve team is central to the church's mission.]
-        </p>
+      <div class="section-label">City Church Values</div>
+      <h2 class="display-sm text-navy-800 mb-8">What We Believe About How We Do This</h2>
+      <div class="space-y-3">
+        {values.map((value, i) => {
+          const [firstWord, ...rest] = value.split(' ');
+          return (
+            <div
+              class={`flex items-center gap-5 rounded-xl border border-stone-200 bg-white px-6 py-5 reveal delay-${Math.min((i + 1) * 100, 500)}`}
+              style="box-shadow: 0 1px 4px rgba(16,27,46,0.05);"
+            >
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-display text-xs font-black text-white" style="background: #8CC640;">
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <p class="font-display text-xl font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">
+                <span style="color: #8CC640;">{firstWord}</span>{' '}{rest.join(' ')}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
 
