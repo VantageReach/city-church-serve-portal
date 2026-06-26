@@ -26,11 +26,14 @@ const roles = [
 ];
 
 const trainingVideos = [
-  { title: 'Media Team Orientation' },
-  { title: 'Sound Tech Basics' },
-  { title: 'ProPresenter Operator Training' },
-  { title: 'Livestream Setup & Monitoring' },
-  { title: 'Camera Operation Guide' },
+  { title: 'Media Team Orientation', youtubeId: null },
+  { title: 'How to Run a Soundcheck', youtubeId: 'risVQWHLURY' },
+  { title: 'Behringer Wing: Getting Started', youtubeId: '0eMiWAVb-aQ' },
+  { title: 'Behringer Wing: Routing & Mixing', youtubeId: 'y_WgPYZziDI' },
+  { title: 'Behringer Wing: FX & Advanced Features', youtubeId: '36A45sDxd0E' },
+  { title: 'ProPresenter Operator Training', youtubeId: null },
+  { title: 'Livestream Setup & Monitoring', youtubeId: null },
+  { title: 'Camera Operation Guide', youtubeId: null },
 ];
 
 const expectations = [
@@ -98,17 +101,23 @@ const expectations = [
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {trainingVideos.map((video, i) => (
           <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
-            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
-              <div class="text-center">
-                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
-                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+            {video.youtubeId ? (
+              <div class="mb-3 rounded-lg overflow-hidden aspect-video w-full">
+                <iframe class="w-full h-full" src={`https://www.youtube.com/embed/${video.youtubeId}`} title={video.title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
               </div>
-            </div>
+            ) : (
+              <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+                <div class="text-center">
+                  <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                    <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+                </div>
+              </div>
+            )}
             <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
           </div>
         ))}
