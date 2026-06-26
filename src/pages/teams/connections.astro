@@ -3,20 +3,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const roles = [
   {
-    title: 'Parking Team',
-    desc: '[Describe the parking team role — directing traffic, assisting elderly or families, safety awareness, communication with other teams, etc.]',
+    title: 'Greeter — Front Door, Lobby & Outside',
+    desc: 'The first face of City Church — welcoming every person with a smile, genuine warmth, and the message: You belong here. In position before the service begins. Greets guests and regulars with warmth, eye contact, and authentic friendliness. Helps first-time guests find what they need — restrooms, Kid City, coffee, seating.',
+    win: 'Every person who walks through the door feels genuinely welcomed — not just handed a program, but actually seen and treated like family.',
   },
   {
-    title: 'Door Host / Greeter',
-    desc: '[Describe the greeter role — standing at doors, opening them, making eye contact, greeting warmly, looking for first-time guests, etc.]',
+    title: 'Usher',
+    desc: 'Serves the congregation during the service — helping seat people, facilitating the offering, and managing the auditorium experience with care and professionalism. Helps seat guests and latecomers with minimal disruption. Facilitates the offering, communion, and any in-service needs with excellence. Stays attentive throughout the service.',
+    win: 'The auditorium runs smoothly. People are comfortable, the offering flows naturally, and anyone who needs help can always find it.',
   },
   {
-    title: 'Lobby Host',
-    desc: '[Describe the lobby host role — circulating during pre-service time, proactively introducing people, pointing guests to resources, etc.]',
+    title: 'Connections Table',
+    desc: 'The go-to resource for first-time guests and members exploring their next step — helping people find their place at City Church. Staffs the connections table before and after services, ready to answer questions and provide resources. Knows City Church\'s Next Steps pathway and explains it clearly to brand-new guests. Connects interested guests with the right person or resource.',
+    win: 'Every first-time guest who visits the connections table leaves with a clear next step and a personal connection to someone at City Church.',
   },
   {
-    title: 'Connection Card Processor',
-    desc: '[Describe the follow-up role — collecting connection cards, entering data, handing off to pastoral staff for follow-up, etc.]',
+    title: 'Impressions Team Lead',
+    desc: 'Oversees all front-door volunteers — greeters, ushers, the connections table, and the coffee team — ensuring every person who walks in feels immediately welcomed. Leads and coordinates all Impressions volunteers before and during services. Casts the vision for first impressions and ensures every team member understands the why behind their role.',
+    win: 'Every guest\'s first experience at City Church is warm, welcoming, and memorable. Nobody slips through unnoticed.',
   },
 ];
 
@@ -24,20 +28,21 @@ const trainingVideos = [
   { title: 'First Impressions Team Orientation' },
   { title: 'The Art of Making Someone Feel Welcome' },
   { title: 'How to Spot and Engage a First-Time Guest' },
-  { title: 'Parking Team Safety Protocols' },
+  { title: 'Connections Table Training' },
 ];
 
 const expectations = [
   'Arrive 30 minutes before service to take your position.',
   'Smile, make eye contact, and initiate — don\'t wait for people to come to you.',
   'You are often the first (and last) experience someone has at City Church.',
-  'Know the basics: kids check-in location, bathrooms, welcome desk, service times.',
-  'Look for the person standing alone — they\'re your priority.',
+  'Know the basics: Kid City location, restrooms, coffee area, connections table, service times.',
+  'Look for the person standing alone — they are your priority.',
   'Stay engaged and alert throughout the pre- and post-service window.',
+  'Know City Church\'s Next Steps pathway so you can point people in the right direction.',
 ];
 ---
 
-<BaseLayout title="First Impressions Team">
+<BaseLayout title="First Impressions Team" description="The first face people see at City Church Lufkin — setting the tone for every person's entire experience.">
   <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #4A1E7A 100%);">
     <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -64,7 +69,7 @@ const expectations = [
       <div class="section-label">About This Team</div>
       <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
       <p class="text-stone-600 leading-relaxed">
-        [Replace with a short paragraph about the First Impressions team — the vision for creating a church culture where every person feels immediately welcomed and known from the moment they pull into the parking lot.]
+        The First Impressions team is the front door of City Church Lufkin. Before anyone hears a song or a message, they experience us — our warmth, our attention, our genuine care. This team's job is to make sure that every single person who walks through our doors feels expected, welcomed, and like they belong here. We believe church should feel like family the moment you arrive, and that starts with the people standing at the door. You are not just a volunteer — you are the face of City Church.
       </p>
     </div>
 
@@ -90,7 +95,8 @@ const expectations = [
         {roles.map((role, i) => (
           <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
             <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed">{role.desc}</p>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
           </div>
         ))}
       </div>
@@ -117,6 +123,7 @@ const expectations = [
           </div>
         ))}
       </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
     </div>
 
   </div>

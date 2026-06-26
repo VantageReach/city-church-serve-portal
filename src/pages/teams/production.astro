@@ -3,46 +3,52 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const roles = [
   {
-    title: 'FOH Audio Engineer',
-    desc: '[Describe the front-of-house audio role — mixing the house, managing stage plots, running inputs/outputs, communicating with the band, etc.]',
+    title: 'Media Team Lead',
+    desc: 'Oversees all Sunday technical production — sound, presentation, livestream, and cameras — ensuring every technical element serves the service. Leads, schedules, and supports all tech team members. Ensures all systems are checked, operational, and ready before every service. Problem-solves technical issues quickly and communicates proactively.',
+    win: 'Every service sounds great, looks great, and the stream is clean. Technical issues never stop the service.',
   },
   {
-    title: 'Monitor Engineer',
-    desc: '[Describe the monitor mix role — managing in-ear mixes for each musician, responding to on-stage requests, console operation, etc.]',
+    title: 'Sound Tech',
+    desc: 'Runs front-of-house audio, ensuring every voice and instrument sounds excellent in the room. Sets up, soundchecks, and mixes the service from start to finish. Balances all channels for a clear, warm, and distraction-free mix. Responds to feedback and cues with a servant heart and quick adjustments.',
+    win: 'Sound is clear and balanced. People hear every word and every note. Nobody notices the tech — they just experience great worship.',
   },
   {
-    title: 'Video Director',
-    desc: '[Describe the video/broadcast director role — camera cuts, ProPresenter operation, lyric slides, sermon slides, managing the IMAG feed, etc.]',
+    title: 'Presentation Operator',
+    desc: 'Manages all slides during the service — worship lyrics, announcements, sermon notes, and graphics — with accuracy and flow. Builds and reviews all ProPresenter slides before the service. Runs slides accurately and in sync with the speaker and worship leader throughout the service. Stays one step ahead at all times.',
+    win: 'Every lyric, slide, and graphic is on screen at the right moment. Nobody ever loses the words.',
   },
   {
-    title: 'Lighting Operator',
-    desc: '[Describe the lighting role — programming cues, running lighting live during worship and service, haze machine, special events, etc.]',
+    title: 'Live Stream Director',
+    desc: 'Ensures our online audience experiences City Church services with excellence — managing the stream, directing cameras, and overseeing the digital experience. Sets up, monitors, and manages the live stream from start to finish every Sunday. Directs camera cuts for online viewers, creating an engaging viewing experience.',
+    win: 'The stream is clean, consistent, and watchable. Online guests feel like they\'re in the room with us.',
   },
   {
-    title: 'Livestream Operator',
-    desc: '[Describe the livestream role — managing the online broadcast, stream health monitoring, chat moderation, platform coordination, etc.]',
+    title: 'Camera Operator',
+    desc: 'Captures the service on video, providing clean and well-framed footage for the live stream and recordings. Operates their assigned camera with steady, intentional framing throughout the service. Follows direction from the Live Stream Director and stays responsive to calls. Arrives early and is ready before the service begins.',
+    win: 'Every shot is clean and intentional. The live stream and recordings look professional and represent City Church well.',
   },
 ];
 
 const trainingVideos = [
-  { title: 'Production Team Orientation' },
-  { title: 'FOH Audio Basics' },
+  { title: 'Media Team Orientation' },
+  { title: 'Sound Tech Basics' },
   { title: 'ProPresenter Operator Training' },
-  { title: 'Lighting Board Overview' },
   { title: 'Livestream Setup & Monitoring' },
+  { title: 'Camera Operation Guide' },
 ];
 
 const expectations = [
-  'Arrive at least 60 minutes before service for full soundcheck.',
+  'Arrive at least 60 minutes before service for full setup and soundcheck.',
   'Know your gear — show up ready to operate, not to learn.',
   'Communicate clearly and calmly with the worship team and leadership.',
   'No distractions at your station during service — full focus required.',
   'Run tech as worship — your role is spiritual, not just technical.',
-  'Document any equipment issues and report them to the team lead.',
+  'Problem-solve issues quickly and communicate proactively to the Media Team Lead.',
+  'Document any equipment issues and report them promptly.',
 ];
 ---
 
-<BaseLayout title="Production Team">
+<BaseLayout title="Media Team" description="Running audio, video, presentation, and livestream so nothing gets in the way of the message at City Church Lufkin.">
   <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
     <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -58,8 +64,8 @@ const expectations = [
         All Teams
       </a>
       <div class="section-label">Serve Team</div>
-      <h1 class="display-lg text-white mt-2">🎛️ Production</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Running audio, video, lighting, and livestream so nothing gets in the way of the message.</p>
+      <h1 class="display-lg text-white mt-2">🎛️ Media Team</h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Running audio, video, presentation, and livestream so nothing gets in the way of the message.</p>
     </div>
   </section>
 
@@ -69,7 +75,7 @@ const expectations = [
       <div class="section-label">About This Team</div>
       <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
       <p class="text-stone-600 leading-relaxed">
-        [Replace with a short paragraph about the production team — the role they play in enabling worship and preaching to reach every person in the room and online.]
+        The Media Team makes sure every Sunday sounds great, looks great, and the stream is clean. We handle sound, presentation, cameras, and the live stream — and every one of those roles is an act of worship. When the tech is invisible, the message gets through. When it's not, it's a distraction. That's the standard we hold. We are the team that makes sure what happens in the room also reaches every person watching online, and that every person in the building can hear the Word with clarity.
       </p>
     </div>
 
@@ -95,7 +101,8 @@ const expectations = [
         {roles.map((role, i) => (
           <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
             <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed">{role.desc}</p>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
           </div>
         ))}
       </div>
@@ -122,6 +129,7 @@ const expectations = [
           </div>
         ))}
       </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
     </div>
 
   </div>

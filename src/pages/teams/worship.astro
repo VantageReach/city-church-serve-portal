@@ -4,48 +4,60 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const roles = [
   {
     title: 'Worship Leader',
-    desc: '[Describe the responsibilities of the Worship Leader — song selection, leading rehearsal, shepherding the team spiritually, communicating with the pastor, etc.]',
+    desc: 'Guides the congregation into an encounter with God through music, Scripture, and authentic leadership. Prepares set lists, leads rehearsals, and communicates effectively with the band and team. Models a life of worship — both on stage and off.',
+    win: 'The congregation is engaged, the band is confident, and people leave Sunday having genuinely encountered God.',
+  },
+  {
+    title: 'Music Director (MD)',
+    desc: 'Supports the worship leader in the musical execution of Sunday services, ensuring the band is prepared, tight, and fully serving the music. Leads and directs the band during rehearsals and services, arranges charts, communicates keys and tempos, and helps develop and coach other musicians.',
+    win: 'The band plays as one unit, transitions are smooth, and every musician feels supported and set up to do their best.',
   },
   {
     title: 'Vocalist',
-    desc: '[Describe the vocalist role — harmony responsibilities, preparation expectations, microphone etiquette, serving under the worship leader, etc.]',
+    desc: 'Supports the worship experience through harmony and depth. Attends all scheduled rehearsals and services prepared, on time, and ready to serve. Sings with excellence and a heart of worship, supporting — not competing with — the lead vocal.',
+    win: 'Harmonies are solid, the sound is full, and the team feels unified in heart and voice.',
   },
   {
-    title: 'Guitarist (Lead & Rhythm)',
-    desc: '[Describe what\'s expected of guitarists — charts, amps, gear, rehearsal prep, and communication with production.]',
+    title: 'Instrumentalist — Guitar',
+    desc: 'Serves the worship experience through musical excellence. Prepares parts before rehearsal — knows the charts and songs before arriving. Serves the song and the moment, playing with excellence and restraint. On time, coachable, and encouraging to those around them.',
+    win: 'The music supports the worship environment without distraction, and every song lands exactly as intended.',
   },
   {
-    title: 'Bassist',
-    desc: '[Describe the bassist role — serving the groove, communication with drummer, direct in vs. amp, DI box setup, etc.]',
+    title: 'Instrumentalist — Drums',
+    desc: 'Anchors the rhythmic foundation of the worship team. Prepares parts before rehearsal, serves the song and the moment, and keeps time for the full team. On time, coachable, and encouraging to those around them.',
+    win: 'The band locks in, tempo is consistent, and the music carries the room.',
   },
   {
-    title: 'Drummer',
-    desc: '[Describe drummer expectations — in-ear mix, click track, kit setup, tear down, keeping time for the team, etc.]',
+    title: 'Instrumentalist — Keys / Piano',
+    desc: 'Provides harmonic depth and texture to the worship sound. Prepares patches and parts before rehearsal, serves the song and the moment with excellence and restraint. On time, coachable, and encouraging to those around them.',
+    win: 'The music supports the worship environment without distraction, and every song lands exactly as intended.',
   },
   {
-    title: 'Keys / Piano',
-    desc: '[Describe keys role — patches, pads, split responsibilities, serving the song, communication with worship leader, etc.]',
+    title: 'Instrumentalist — Bass',
+    desc: 'Serves the groove and foundation of the band. Prepares parts before rehearsal, locks in with the drummer, and plays with excellence and restraint. On time, coachable, and encouraging to those around them.',
+    win: 'The bottom end is solid, the band feels locked in, and the music carries people into worship.',
   },
 ];
 
 const trainingVideos = [
-  { title: 'Worship Leader Orientation', placeholder: true },
-  { title: 'Vocalist Training', placeholder: true },
-  { title: 'Band Culture & Expectations', placeholder: true },
-  { title: 'Rehearsal Process Walkthrough', placeholder: true },
+  { title: 'Worship Team Orientation' },
+  { title: 'Vocalist Training & Standards' },
+  { title: 'Band Culture & Expectations' },
+  { title: 'Rehearsal Process Walkthrough' },
 ];
 
 const expectations = [
   'Arrive at your scheduled call time — not service time.',
-  'Come prepared. Know the songs before rehearsal.',
-  'Be submitted and coachable under the Worship Leader.',
+  'Come prepared. Know the songs and charts before rehearsal begins.',
+  'Be submitted and coachable under the Worship Director and Worship Leader.',
   'Serve with a worshiper\'s heart, not just a musician\'s skill.',
-  'Communicate early if you can\'t make it. Give at least one week\'s notice.',
-  'Keep your gear maintained and ready to go each Sunday.',
+  'Communicate early if you can\'t make it — give at least one week\'s notice.',
+  'Represent the worship team with humility both on and off the stage.',
+  'Model a life of worship — what you carry into the room matters.',
 ];
 ---
 
-<BaseLayout title="Worship Team">
+<BaseLayout title="Worship Team" description="Leading City Church Lufkin into an encounter with God through music, song, and authentic worship.">
   <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #3A5490 100%);">
     <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -62,7 +74,7 @@ const expectations = [
       </a>
       <div class="section-label">Serve Team</div>
       <h1 class="display-lg text-white mt-2">🎸 Worship</h1>
-      <p class="mt-4 text-lg text-white/60 max-w-xl">Leading the church into the presence of God through music and song.</p>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Leading the church into the presence of God through music, song, and authentic worship.</p>
     </div>
   </section>
 
@@ -73,7 +85,7 @@ const expectations = [
       <div class="section-label">About This Team</div>
       <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
       <p class="text-stone-600 leading-relaxed">
-        [Replace with a short paragraph about the worship team at City Church Lufkin — the heart behind the team, what you value musically and spiritually, and who this team is for.]
+        The Worship Team leads all things worship at City Church — from Sunday morning music to the overall culture of encounter we build week after week. We are not a performance team; we are guides. Our job is to create space for people to meet God, and that starts long before we step on the stage. If you are on this team, you carry something — and what you carry matters. We build, develop, and shepherd a culture of authentic worship where excellence and surrender work together.
       </p>
     </div>
 
@@ -101,7 +113,8 @@ const expectations = [
         {roles.map((role, i) => (
           <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
             <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed">{role.desc}</p>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
           </div>
         ))}
       </div>

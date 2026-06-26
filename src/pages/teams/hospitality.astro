@@ -3,41 +3,41 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const roles = [
   {
-    title: 'Coffee Bar Volunteer',
-    desc: '[Describe the coffee bar role — setup time, machine operation, cleanup, interacting with guests, supply restocking, etc.]',
+    title: 'Coffee Team',
+    desc: 'Creates a warm and welcoming atmosphere through quality coffee and genuine hospitality before and after services. Sets up, brews, and serves coffee efficiently. Keeps the coffee area clean, stocked, and inviting throughout the morning. Engages warmly with everyone nearby — coffee is the tool; connection is the ministry.',
+    win: 'The coffee area is a hub of warmth and conversation. People linger, connect, and feel right at home.',
   },
   {
-    title: 'Welcome Table Host',
-    desc: '[Describe the welcome table role — greeting new guests, handing out info, directing people, first-time visitor follow-up cards, etc.]',
+    title: 'Experience Team — Design, Décor & Atmosphere',
+    desc: 'Curates the physical atmosphere of City Church — the aesthetics, décor, and environments that make every person feel like someone prepared this space just for them. Designs and sets up décor and environmental elements for Sunday services and special events. Works with leadership to ensure all spaces reflect City Church\'s culture and brand. Finds creative, budget-conscious ways to elevate the atmosphere of every environment.',
+    win: 'People walk in and immediately feel that this place is special. The environment communicates: you are expected, you are welcome, you belong here.',
   },
   {
-    title: 'Guest Services',
-    desc: '[Describe the guest services role — answering questions, helping people find their way, responding to needs during service, etc.]',
-  },
-  {
-    title: 'Event Hosting',
-    desc: '[Describe the event hosting role — setup and teardown for special events, room preparation, decoration, hospitality at non-Sunday events, etc.]',
+    title: 'Care Team',
+    desc: 'Serves the City Church family through practical expressions of love — meals, cards, calls, and presence during life\'s hardest moments. Responds to care needs in the congregation — illness, loss, new babies, and life transitions. Coordinates meals, cards, and practical support for members who need it.',
+    win: 'Every member of City Church who walks through a hard season feels genuinely cared for and covered by their church family. Nobody walks through anything alone.',
   },
 ];
 
 const trainingVideos = [
   { title: 'Hospitality Team Orientation' },
-  { title: 'Coffee Bar Setup & Teardown' },
-  { title: 'Guest Experience Standards' },
-  { title: 'First-Time Guest Follow-Up Process' },
+  { title: 'Coffee Bar Setup & Service' },
+  { title: 'Creating an Atmosphere of Welcome' },
+  { title: 'Care Team: Practical Love in Action' },
 ];
 
 const expectations = [
-  'Arrive 45 minutes before service to set up your area.',
-  'Be the warmest person in the room — your energy sets the tone.',
-  'Proactively look for guests who seem lost or unsure.',
-  'Keep your station clean and stocked throughout service.',
-  'Know the basics: service times, where the bathrooms are, how to connect someone to a group.',
-  'Pray over your station before doors open.',
+  'Arrive early enough to have your area fully set up before doors open.',
+  'Be the warmest presence in the room — your energy sets the tone.',
+  'Keep your station clean, stocked, and inviting throughout the service.',
+  'Proactively look for guests who seem lost or unsure and direct them warmly.',
+  'Know the basics: service times, Kid City location, how to connect someone to a Life Group.',
+  'Coffee is the tool — genuine connection with people is the ministry.',
+  'Communicate any supply needs to your team lead before Sunday, not during.',
 ];
 ---
 
-<BaseLayout title="Hospitality Team">
+<BaseLayout title="Hospitality Team" description="Making every person who walks through City Church Lufkin's door feel welcome, seen, and at home.">
   <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #5C3A1E 100%);">
     <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -64,7 +64,7 @@ const expectations = [
       <div class="section-label">About This Team</div>
       <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
       <p class="text-stone-600 leading-relaxed">
-        [Replace with a short paragraph about the hospitality team — the vision for making City Church a place where everyone feels like they belong from the moment they arrive.]
+        The Hospitality team creates the atmosphere and culture of warmth that City Church is known for. This team serves through coffee, through creating beautiful spaces, and through showing up for people in their hardest moments. We believe hospitality is not just a function — it is a form of ministry. When someone walks into a room we've prepared, or wraps their hands around a cup of coffee we've made, or receives a meal when life has fallen apart — they are experiencing the love of God through the hands of the church.
       </p>
     </div>
 
@@ -90,7 +90,8 @@ const expectations = [
         {roles.map((role, i) => (
           <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
             <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
-            <p class="text-sm text-stone-500 leading-relaxed">{role.desc}</p>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
           </div>
         ))}
       </div>
@@ -117,6 +118,7 @@ const expectations = [
           </div>
         ))}
       </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
     </div>
 
   </div>

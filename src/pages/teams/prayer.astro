@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    title: 'Pre-Service Prayer',
+    desc: 'Gathers before every Sunday service to cover the building, the team, and the people who will attend in focused, expectant prayer. Arrives early and covers the service, the team, and the building in prayer before doors open. Prays specifically for salvation, healing, and life change during the service. Creates a culture of expectation and faith on Sunday mornings.',
+    win: 'The team is covered in prayer before every service, and there is a tangible atmosphere of faith and expectation in the room.',
+  },
+  {
+    title: 'Altar Team',
+    desc: 'Serves during ministry moments — responding to needs at the altar and praying with people who come forward during or after the service. Available and positioned during altar calls and ministry moments. Prays with people with compassion, sensitivity, and biblical truth. Knows when to refer someone to pastoral staff for deeper care.',
+    win: 'Every person who responds at the altar feels genuinely cared for, prayed over, and pointed toward Jesus.',
+  },
+  {
+    title: 'Prayer Request Team',
+    desc: 'Follows up on all prayer requests submitted by the congregation, ensuring everyone who asks for prayer receives it. Prays over every submitted prayer request with intentionality and faith. Follows up with prayer request submitters via a personal note, text, or card when appropriate. Maintains confidentiality and pastoral sensitivity in all prayer communication.',
+    win: 'No prayer request goes unprayed for. People know that when they submit a request at City Church, someone actually prays and genuinely cares.',
+  },
+];
+
+const trainingVideos = [
+  { title: 'Prayer Team Orientation' },
+  { title: 'How to Pray with Someone at the Altar' },
+  { title: 'Pre-Service Prayer Strategy' },
+  { title: 'Prayer Request Follow-Up Process' },
+];
+
+const expectations = [
+  'Arrive before doors open — pre-service prayer starts before the building fills.',
+  'Come with a heart positioned for intercession, not just attendance.',
+  'Maintain confidentiality in all prayer — what is shared in prayer stays there.',
+  'Follow pastoral guidance when praying with others at the altar.',
+  'Know when to refer — some needs require pastoral staff or professional care.',
+  'Be consistent. This ministry requires reliability and spiritual readiness.',
+  'Pray for the team, the service, and the people before every service.',
+];
+
+const contact = {
+  name: 'Tom Nevier',
+  email: 'prayer@citychurchlufkin.com',
+  role: 'Prayer Team Lead',
+};
+---
+
+<BaseLayout title="Prayer Team" description="Covering City Church Lufkin in prayer — before every service, at the altar, and through every request submitted.">
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #2E1A5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-prayer" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-prayer)"/>
+    </svg>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <a href="/teams/" class="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors duration-200 mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        All Teams
+      </a>
+      <div class="section-label">Serve Team</div>
+      <h1 class="display-lg text-white mt-2">🙏 Prayer Team</h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Covering City Church in prayer — before every service, at the altar, and through every request submitted by the congregation.</p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+    <!-- ABOUT -->
+    <div class="reveal">
+      <div class="section-label">About This Team</div>
+      <h2 class="display-sm text-navy-800 mb-4">Who We Are</h2>
+      <p class="text-stone-600 leading-relaxed">
+        The Prayer Team is the spiritual engine behind everything City Church does. Before the doors open, this team is in the building — covering the service, the team, and the people who will walk in. When ministry moments happen during the service, this team is positioned and ready to pray with anyone who responds. And after Sunday, this team faithfully intercedes over every prayer request submitted — because we believe no prayer goes unheard, and no request should go unprayed for. If you feel called to intercession, this team is for you.
+      </p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="reveal">
+      <div class="rounded-2xl p-7 border border-stone-200" style="background: #f8fbf2;">
+        <div class="flex items-center gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style="background: #8CC640;">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5">Prayer Team Lead</p>
+            <p class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing: 0.01em;">{contact.name}</p>
+            <a href={`mailto:${contact.email}`} class="text-sm font-medium hover:underline" style="color: #6FA32E;">{contact.email}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPECTATIONS -->
+    <div class="reveal">
+      <div class="section-label">Volunteer Standards</div>
+      <h2 class="display-sm text-navy-800 mb-6">Expectations</h2>
+      <ul class="space-y-3">
+        {expectations.map((item, i) => (
+          <li class={`flex items-start gap-3 reveal delay-${(i + 1) * 100}`}>
+            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style="background: #8CC640;">
+              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <p class="text-stone-700 leading-snug">{item}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- ROLES -->
+    <div class="reveal">
+      <div class="section-label">Positions</div>
+      <h2 class="display-sm text-navy-800 mb-6">Team Roles</h2>
+      <div class="space-y-4">
+        {roles.map((role, i) => (
+          <div class={`card p-6 reveal delay-${(i + 1) * 100}`}>
+            <h3 class="font-display text-lg font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">{role.title}</h3>
+            <p class="text-sm text-stone-500 leading-relaxed mb-3">{role.desc}</p>
+            <p class="text-xs text-brand-green-dark font-semibold italic">The Win: {role.win}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- TRAINING VIDEOS -->
+    <div class="reveal">
+      <div class="section-label">Training</div>
+      <h2 class="display-sm text-navy-800 mb-6">Training Videos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {trainingVideos.map((video, i) => (
+          <div class={`card p-5 reveal delay-${(i + 1) * 100}`}>
+            <div class="mb-3 flex items-center justify-center rounded-lg aspect-video w-full" style="background: #f0f0f0;">
+              <div class="text-center">
+                <div class="mb-2 flex h-12 w-12 mx-auto items-center justify-center rounded-full" style="background: rgba(140,198,64,0.15);">
+                  <svg class="w-6 h-6" fill="none" stroke="#8CC640" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="text-xs text-stone-400 font-medium">Video coming soon</p>
+              </div>
+            </div>
+            <h4 class="font-semibold text-navy-800 text-sm">{video.title}</h4>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-stone-400 italic">Training videos will be added here as YouTube links. Check back soon.</p>
+    </div>
+
+  </div>
+</BaseLayout>
