@@ -259,6 +259,7 @@ var TEAM_PAGES = {
  add("Milestones","Water Baptism Team","Helps prepare for and serve at baptisms, one of the sacred moments of the church.",["helps","service","shepherding","mercy"],["S"]);
  add("Milestones","Communion Team","Prepares and serves communion.",["service","helps","intercession"],["S","C"]);
  add("Facilities","Facilities","Cares for our building so it's ready for ministry every week. This may include cleaning, repairs, and general upkeep.",["service","helps"],["S","C"]);
+ add("Facilities","Facilities","Cares for our building so it's ready for ministry every week. This may include cleaning, repairs, and general upkeep.",["craftsmanship"],["S","C"]);
 })();
 
 /* ===================== GIFTS ===================== */
@@ -548,7 +549,11 @@ function teamMatches(R){
     var dScore=ds.length?ds.reduce(function(s,v){return s+v;},0)/ds.length:50;
     var best=gl.slice().sort(function(a,b){return b.sum-a.sum;}).slice(0,2).map(function(x){return x.g.name;});
     return {t:t,score:0.75*gScore+0.25*dScore,best:best};
-  }).sort(function(a,b){return b.score-a.score;});
+  }).sort(function(a,b){return b.score-a.score;}).filter(function(m,i,all){
+    // A role listed more than once (different gift paths) keeps only its best-scoring entry.
+    for(var j=0;j<i;j++)if(all[j].t.team===m.t.team&&all[j].t.role===m.t.role)return false;
+    return true;
+  });
 }
 
 function pickRoles(R){
@@ -565,7 +570,8 @@ function discLabel(R){
 function rolesForGift(id){
   var out=[];
   TEAMS.forEach(function(t){var i=(t.gifts||[]).indexOf(id);if(i>=0)out.push({t:t,rank:i});});
-  return out.sort(function(a,b){return a.rank-b.rank;}).map(function(x){return x.t;});
+  return out.sort(function(a,b){return a.rank-b.rank;}).map(function(x){return x.t;})
+    .filter(function(t,i,all){for(var j=0;j<i;j++)if(all[j].team===t.team&&all[j].role===t.role)return false;return true;});
 }
 
 function giftMore(g){
