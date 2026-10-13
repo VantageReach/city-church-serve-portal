@@ -36,5 +36,7 @@ create policy "staff can see own staff row" on public.staff
   for select to authenticated
   using (lower(email) = lower(auth.jwt() ->> 'email'));
 
--- Add staff here (and invite the same email under Authentication → Users):
+-- Add staff here. Also create the same email under Authentication → Users → Add user →
+-- Create new user with "Auto Confirm User" checked (any password; they sign in by email link).
+-- Don't use "Send invitation": unconfirmed invites can't sign in while signups are disabled.
 -- insert into public.staff (email, name) values ('someone@citychurchlufkin.com', 'Someone');
