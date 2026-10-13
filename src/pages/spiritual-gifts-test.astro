@@ -130,6 +130,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .team .why{font-size:.95rem;color:var(--muted)}
 #sg .roles{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
 #sg .roles li{font-size:.95rem}
+#sg .team-about{font-size:.9rem;color:var(--muted);background:#F6F8FB;border-radius:8px;padding:10px 12px;margin:10px 0 4px}
+#sg .team-about b{color:var(--ink);font-weight:700}
+#sg .team-blurb{font-size:.9rem;color:var(--muted);margin:4px 0 10px;font-style:italic}
 #sg .team-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand-dark);text-decoration:none}
 #sg .team-link span,#sg .team-head span{display:inline-block;transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
 #sg .team-link:hover span,#sg .team-head:hover span{transform:translateX(3px)}
@@ -186,6 +189,22 @@ var CONFIG = {
    add("Impressions", "Greeter", "Welcomes people warmly.", ["hospitality","mercy","service"], ["I","S"])   (list the most important gift first)
 */
 var TEAMS = [];
+var TEAM_ABOUT = {
+ "Worship":"Leading the church into the presence of God through music, song, and authentic worship.",
+ "Kid City":"Reaching the next generation — creating a safe, fun, and transformative environment for every child at City Church Lufkin.",
+ "Production":"Running audio, video, presentation, and livestream so nothing gets in the way of the message.",
+ "Impressions":"Setting the tone for every person's experience — from the parking lot to the pew.",
+ "Care Team":"Serving the City Church family through practical love — meals, presence, and care during life's hardest moments.",
+ "Prayer Team":"Covering City Church in prayer — before every service, at the altar, and through every request submitted by the congregation.",
+ "Creative Team":"Telling the City Church story through photography, video, graphics, and social media.",
+ "Safety Team":"Ensuring City Church is one of the safest places in Lufkin — for every family, guest, and team member.",
+ "Student Ministry":"Creating a fun, safe, and spiritually rich environment where Jr High and High School students encounter Jesus and find their place.",
+ "Outreach":"Mobilizing City Church to serve locally and globally — a giving, going church.",
+ "Next Steps":"Helping new people connect deeply to City Church through a personal, intentional pathway.",
+ "Life Groups":"Where people grow, belong, and do life together — in every season.",
+ "Milestones":"Facilitating the sacred moments of Water Baptism and Communion with care and intentionality.",
+ "Facilities":"Keeping City Church's spaces clean, safe, and ready for ministry — every single week."
+};
 var TEAM_PAGES = {
  "Worship":"/teams/worship/",
  "Kid City":"/teams/kid-city/",
@@ -232,8 +251,7 @@ var TEAM_PAGES = {
  add("Student Ministry","Student Ministry Volunteer","Comes alongside our student leaders to love, support, and connect with students, and sometimes to teach.",["shepherding","mercy","exhortation","helps","teaching"],["I","S"]);
  add("Outreach","Global Outreach Lead","Leads the church's efforts to give and go beyond our own walls.",["missionary","apostleship","leadership","evangelism","giving"],["D","I"]);
  add("Outreach","Serve Weekend Volunteer","Helps with serve weekends that show God's love in practical ways.",["service","evangelism","giving","helps"],["I","S"]);
- add("Next Steps","Event Coordinator","Plans and runs events that connect new people to the church family.",["administration","leadership","hospitality"],["C","D"]);
- add("Next Steps","Greeter / Helper","Welcomes newcomers and helps at Next Steps events.",["hospitality","helps","service"],["I","S"]);
+ add("Next Steps","Next Steps Event Team","Helps host Next Steps, our partnership class: meeting new people, setting up and tearing down, and taking part in the event.",["hospitality","helps","service","exhortation","shepherding"],["I","S"]);
  add("Life Groups","Life Group Leader","Leads a Bible study or interest group: hosts, guides the discussion, and builds community and discipleship.",["shepherding","hospitality","teaching","leadership","exhortation"],["I","S"]);
  
  
@@ -626,6 +644,7 @@ function viewResults(){
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team&&m.t.team!==m.t.role?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
+         (TEAM_ABOUT[m.t.team]?'<p class="team-about"><b>About the '+esc(m.t.team)+(/team$/i.test(m.t.team)?'':' team')+':</b> '+esc(TEAM_ABOUT[m.t.team])+'</p>':"")+
          (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+
          '<div class="team-actions"><div class="interest-wrap" data-key="'+esc(m.t.team+"|"+m.t.role)+'">'+interestBtn(m)+'</div>'+
          (TEAM_PAGES[m.t.team]?'<a class="team-link" href="'+TEAM_PAGES[m.t.team]+'">View team page <span aria-hidden="true">→</span></a>':"")+'</div></div>';
@@ -634,7 +653,8 @@ function viewResults(){
     all.forEach(function(m){if(used[m.t.team+"|"+m.t.role])return;if(!groups[m.t.team]){groups[m.t.team]=[];order.push(m.t.team);}groups[m.t.team].push(m);});
     h+='<h3 style="margin:30px 0 12px">The rest of our serving teams</h3>';
     order.forEach(function(team){
-      h+='<div class="card"><h3>'+(TEAM_PAGES[team]?'<a class="team-head" href="'+TEAM_PAGES[team]+'">'+esc(team)+' <span aria-hidden="true">→</span></a>':esc(team))+'</h3><ul class="roles">';
+      h+='<div class="card"><h3>'+(TEAM_PAGES[team]?'<a class="team-head" href="'+TEAM_PAGES[team]+'">'+esc(team)+' <span aria-hidden="true">→</span></a>':esc(team))+'</h3>'+
+        (TEAM_ABOUT[team]?'<p class="team-blurb">'+esc(TEAM_ABOUT[team])+'</p>':'')+'<ul class="roles">';
       groups[team].forEach(function(m){h+='<li><b>'+esc(m.t.role)+'</b>'+(m.t.description?' <span class="muted">'+esc(m.t.description)+'</span>':"")+'</li>';});
       h+='</ul></div>';
     });
