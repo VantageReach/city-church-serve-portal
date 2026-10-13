@@ -93,11 +93,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .meter>span{display:block;height:100%;border-radius:999px;background:var(--navy-mid)}
 #sg .card.top .meter>span{background:var(--brand)}
 #sg .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-#sg .list li{display:grid;grid-template-columns:9.5rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.95rem}
-#sg .list li b{font-weight:600}
+#sg .list li{font-size:.95rem}
+#sg .list summary{display:grid;grid-template-columns:9.5rem 1fr 2.6rem;gap:10px;align-items:center;cursor:pointer;list-style:none;padding:4px 0;border-radius:6px}
+#sg .list summary::-webkit-details-marker{display:none}
+#sg .list summary:hover b{color:var(--brand-dark)}
+#sg .list summary:active{opacity:.7}
+#sg .list li b{font-weight:600;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
 #sg .list li em{font-style:normal;color:var(--muted);text-align:right}
+#sg .gift-body .ref{font-size:.85rem;color:var(--muted);margin:0;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+#sg .gift-body{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:8px 0 6px}
+#sg .def{font-weight:600}
+#sg .signs-h{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:1rem;margin:12px 0 6px !important}
+#sg .signs{margin:0 0 10px;padding-left:1.2rem;list-style:disc;display:grid;gap:4px;font-size:.95rem}
+#sg details.more{margin:6px 0 10px}
+#sg details.more summary{cursor:pointer;font-weight:600;color:var(--brand-dark);font-size:.9rem}
+#sg details.more summary:hover{text-decoration:underline;text-underline-offset:3px}
+#sg details.more summary:active{opacity:.7}
 #sg details.all{margin-top:6px}
-#sg details.all summary{cursor:pointer;font-weight:600;padding:10px 0;color:var(--brand-dark)}
+#sg details.all > summary{cursor:pointer;font-weight:600;padding:10px 0;color:var(--brand-dark)}
 #sg .disc-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
 #sg .disc-head .big{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:3.6rem;line-height:1;color:var(--brand-dark)}
 #sg .disc-bars{display:grid;gap:12px;margin:18px 0}
@@ -140,7 +153,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .linkbtn:active{opacity:.7}
 
 @media (max-width:420px){
-  #sg .list li{grid-template-columns:7.4rem 1fr 2.4rem}
+  #sg .list summary{grid-template-columns:7.4rem 1fr 2.4rem}
 }
 @media print{
   body>header,body>footer,.sg-hero,#sg .prog,#sg .nav,#sg .noprint{display:none !important}
@@ -347,6 +360,34 @@ var GIFTS = [
   "Others have said my advice turned out to be wise."]}
 ];
 
+var GIFT_INFO={
+ administration:{about:"People with this gift see both the big picture and the steps it takes to get there. They bring the kind of order that frees everyone else to minister, turning a vision into schedules, teams, and checklists that actually work.",signs:["You naturally reach for lists, timelines, and plans when a project starts.","You spot the gaps in a process before they turn into problems.","Disorganization bothers you, and you enjoy building systems that fix it."]},
+ apostleship:{about:"Apostolic people are pioneers. They are drawn to places and people the church hasn't reached yet, and they are willing to lay foundations, take risks, and hand the work to others once it can stand on its own.",signs:["You get restless when things stay the same for too long.","You dream about new churches, campuses, or ministries.","You enjoy starting things more than keeping them running."]},
+ craftsmanship:{about:"Like Bezalel, whom God filled with skill to build the tabernacle, people with this gift use their hands and creativity to make things that serve worship and ministry. Their medium might be wood, metal, paint, fabric, stage sets, or screens.",signs:["You look at a space or a need and picture what could be built.","You care about quality and the small details others overlook.","You feel close to God when you are making something."]},
+ discernment:{about:"This gift helps the church tell what is from God and what isn't. People with discernment sense when something is off in a teaching, a situation, or a motive, and they help guard the church from error and deception.",signs:["You often have a sense about people or teaching that later proves right.","You notice when something sounds biblical but doesn't line up with Scripture.","Others ask what you think before they make a spiritual decision."]},
+ evangelism:{about:"People with this gift share the good news about Jesus naturally and often, and people respond. They build real friendships with people far from God and are comfortable talking about faith with almost anyone.",signs:["Your conversations often turn toward faith without forcing it.","You have more friends outside the church than most believers.","You feel joy, not fear, when someone asks why you believe."]},
+ exhortation:{about:"Exhorters come alongside people to comfort, encourage, and challenge them toward growth. They see potential in others and help them take their next step with God.",signs:["People leave conversations with you encouraged and clearer about what to do.","You naturally offer practical next steps, not just sympathy.","You believe in people, sometimes before they believe in themselves."]},
+ faith:{about:"Every believer has faith, but people with this gift trust God with unusual confidence for big things. They keep the church hopeful and steady when the way forward isn't clear yet.",signs:["You stay calm when others are anxious about the future.","You believe God for things others think are unrealistic.","Your prayers tend to be bold and expectant."]},
+ giving:{about:"People with this gift give generously, cheerfully, and wisely, often well beyond what's expected. They see money and possessions as tools for God's work and love meeting real needs.",signs:["You feel real joy when you're able to meet a need.","You manage your resources carefully so you can give more.","You often give quietly, without needing anyone to know."]},
+ healing:{about:"God sometimes uses people with this gift to bring restoration to body, mind, or spirit, most often through prayer. They pray with compassion and faith while trusting God with the outcome.",signs:["You are drawn to pray for people who are sick or hurting.","You have seen God answer your prayers for healing.","You are moved by suffering and believe God can restore."]},
+ helps:{about:"People with this gift multiply ministry by supporting the people who lead it. They take tasks off others' plates so those leaders can focus on what God has called them to do.",signs:["You would rather assist than be in charge.","You notice what a leader needs and quietly take care of it.","You find meaning in work that happens behind the scenes."]},
+ hospitality:{about:"People with this gift make others feel welcome and at home, especially newcomers and strangers. They create spaces, at church or around their own table, where people feel seen and know they belong.",signs:["You notice the person standing alone and go talk to them.","You enjoy having people in your home.","You think about how a room or an event will feel to a first-time guest."]},
+ intercession:{about:"Every believer prays, but intercessors pray for others with unusual persistence and burden. They often sense what to pray for and keep praying until they see God answer.",signs:["You can pray for long stretches and enjoy it.","People and situations come to mind and you feel led to pray for them.","You keep track of prayer requests and follow up on how God answered."]},
+ knowledge:{about:"People with this gift love to study and understand God's Word. They gather and organize biblical truth so it can strengthen the church at just the right moment.",signs:["You enjoy deep Bible study and research.","You remember details of Scripture that others forget.","People come to you to find out what the Bible says about a topic."]},
+ leadership:{about:"Leaders cast vision and move people toward it together. They set direction, make decisions, and help a team stay focused on what matters most.",signs:["People naturally look to you when a group needs direction.","You can see where things need to go and how to get there.","You are willing to make hard decisions for the good of the team."]},
+ mercy:{about:"People with this gift feel deeply for those who are hurting and move toward them with practical, cheerful compassion. They can stay present in someone's pain without rushing to fix it.",signs:["You are drawn to people who are hurting, sick, or overlooked.","You can sit with someone in grief without rushing them.","You feel other people's pain almost as if it were your own."]},
+ miracles:{about:"God sometimes works through people with this gift in ways that go beyond natural explanation. These works point people to Jesus and awaken and strengthen faith.",signs:["You pray expecting God to act in powerful ways.","You have seen God do things through prayer that can't be explained naturally.","You lean in rather than pull back when God moves in unusual ways."]},
+ missionary:{about:"People with this gift minister effectively in a culture that isn't their own. They adapt easily, love people very different from themselves, and help the gospel take root in new places.",signs:["You are curious about other cultures, languages, and customs.","You feel at home with people whose background is very different from yours.","You would be willing to move somewhere new to share the gospel."]},
+ music:{about:"People with this gift use singing or playing to help others worship God. Their music teaches truth, unites the church, and lifts people's hearts toward God.",signs:["You feel closest to God when you are singing or playing.","You learn music quickly and can help others follow along.","People say your music helps them worship."]},
+ prophecy:{about:"People with this gift speak God's truth at the right moment to strengthen, encourage, and comfort the church. What they share is always tested against Scripture.",signs:["You often sense what God wants to say to a person or a group.","You are willing to speak the truth even when it's uncomfortable.","Your words often land at exactly the right moment for someone."]},
+ service:{about:"People with this gift see practical needs and meet them joyfully, often before anyone asks. They are the reason the chairs are set up, the coffee is ready, and the building is cared for.",signs:["You see what needs doing and simply do it.","You enjoy hands-on tasks more than meetings.","You are the person others count on to show up."]},
+ shepherding:{about:"Shepherds care for a group of people over the long haul. They guide, protect, and nurture others spiritually, and they go after the one who drifts away.",signs:["You care about the long-term spiritual health of the people around you.","You notice when someone is missing and reach out.","You enjoy walking with the same people through every season of life."]},
+ teaching:{about:"Teachers explain God's Word so clearly that people understand it and put it into practice. They love helping others grow in their knowledge of God.",signs:["You enjoy explaining things and watching them click for someone.","You study in order to make hard ideas simple.","People say they understand the Bible better after hearing you."]},
+ tongues:{about:"This gift enables a person to pray or speak in a language they never learned. When a message in tongues is interpreted, the whole church can understand it and be built up, as Paul describes in 1 Corinthians 14.",signs:["You have prayed in a language you did not learn.","You sometimes sense the meaning of a message given in tongues.","You value using this gift in an orderly way that builds others up."]},
+ wisdom:{about:"People with this gift know how to apply God's truth to real life. They help others make sound decisions and see the best way forward in complicated situations.",signs:["People come to you for advice on hard decisions.","You can see a practical, godly way through a messy problem.","Your counsel tends to hold up over time."]}
+};
+GIFTS.forEach(function(g){var x=GIFT_INFO[g.id];g.about=x.about;g.signs=x.signs;});
+
 /* ===================== DISC ===================== */
 var DISC = {
  D:["I make decisions quickly and don't need much time to deliberate.",
@@ -492,13 +533,18 @@ function pickRoles(R){
 }
 
 function discLabel(R){
-  var p1=R.ranked[0], p2=R.ranked[1], both=p2.raw>0||p2.raw===p1.raw;
-  return {code:p1.k+(both?p2.k:""),label:DISC_INFO[p1.k].name+(both?" with "+DISC_INFO[p2.k].name:"")};
+  var p1=R.ranked[0], p2=R.ranked[1];
+  return {code:p1.k+"/"+p2.k,label:DISC_INFO[p1.k].name+" and "+DISC_INFO[p2.k].name};
+}
+
+function giftMore(g){
+  return '<p>'+esc(g.about)+'</p><p class="signs-h">Signs you may have this gift</p><ul class="signs">'+
+    g.signs.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>';
 }
 
 function summary(){
   var R=compute(), d=discLabel(R), P=pickRoles(R);
-  function gift(x,full){var o={name:x.g.name,score:x.sum,pct:x.pct};if(full){o.def=x.g.def;o.ref=x.g.ref;}return o;}
+  function gift(x,full){var o={name:x.g.name,score:x.sum,pct:x.pct};if(full){o.def=x.g.def;o.ref=x.g.ref;o.about=x.g.about;o.signs=x.g.signs;}return o;}
   function style(k){var i=DISC_INFO[k];return {k:k,name:i.name,line:i.line,use:i.use,grow:i.grow};}
   return {
     topGifts:R.gifts.slice(0,5).map(function(x){return gift(x,true);}),
@@ -521,15 +567,16 @@ function viewResults(){
   top.forEach(function(x){
     h+='<div class="card top"><div class="meta"><h3>'+esc(x.g.name)+'</h3><span class="score">'+x.sum+' of 20</span></div>'+
        '<div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div>'+
-       '<p>'+esc(x.g.def)+'</p><p class="ref">'+esc(x.g.ref)+'</p></div>';
+       '<p class="def">'+esc(x.g.def)+'</p>'+giftMore(x.g)+'<p class="ref">'+esc(x.g.ref)+'</p></div>';
   });
   next.forEach(function(x){
     h+='<div class="card"><div class="meta"><h3>'+esc(x.g.name)+'</h3><span class="score">'+x.sum+' of 20</span></div>'+
        '<div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div>'+
-       '<p>'+esc(x.g.def)+'</p><p class="ref">'+esc(x.g.ref)+'</p></div>';
+       '<p class="def">'+esc(x.g.def)+'</p><details class="more"><summary>Read more about '+esc(x.g.name)+'</summary>'+giftMore(x.g)+'</details><p class="ref">'+esc(x.g.ref)+'</p></div>';
   });
   h+='<details class="all"><summary>See all '+GIFTS.length+' gifts</summary><ul class="list">';
-  R.gifts.forEach(function(x){h+='<li><b>'+esc(x.g.name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.sum+'</em></li>';});
+  R.gifts.forEach(function(x){h+='<li><details class="gift"><summary><b>'+esc(x.g.name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.sum+'</em></summary>'+
+    '<div class="gift-body"><p class="def">'+esc(x.g.def)+'</p>'+giftMore(x.g)+'<p class="ref">'+esc(x.g.ref)+'</p></div></details></li>';});
   h+='</ul></details></div>';
 
   h+='<div class="sec"><h2>Your personality style</h2>'+

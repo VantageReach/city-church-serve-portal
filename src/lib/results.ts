@@ -1,4 +1,4 @@
-export interface GiftResult { name: string; score: number; pct: number; def?: string; ref?: string }
+export interface GiftResult { name: string; score: number; pct: number; def?: string; ref?: string; about?: string; signs?: string[] }
 export interface DiscStyle { k: string; name: string; line: string; use: string; grow: string }
 export interface RoleResult { role: string; team: string; description?: string; why?: string; url?: string }
 
@@ -25,7 +25,7 @@ export function isValidResults(r: any): r is QuizResults {
   return (
     Array.isArray(r.topGifts) && r.topGifts.length >= 3 && r.topGifts.length <= 10 && r.topGifts.every(gift) &&
     Array.isArray(r.allGifts) && r.allGifts.length <= 40 && r.allGifts.every(gift) &&
-    r.disc && str(r.disc.code, 2) && str(r.disc.label, 80) && style(r.disc.primary) && style(r.disc.secondary) &&
+    r.disc && str(r.disc.code, 3) && str(r.disc.label, 80) && style(r.disc.primary) && style(r.disc.secondary) &&
     Array.isArray(r.disc.bars) && r.disc.bars.length === 4 &&
     Array.isArray(r.roles) && r.roles.length <= 5 && r.roles.every((x: any) => x && str(x.role, 80) && str(x.team, 80))
   );
@@ -76,7 +76,8 @@ function giftsBlock(r: QuizResults) {
           <td align="right" style="font-size:13px;color:${MUTED};white-space:nowrap">${g.score} of 20</td>
         </tr></table>
         ${bar(g.pct, top ? GREEN : '#3A5490')}
-        ${g.def ? `<p style="margin:6px 0;font-size:14px;line-height:1.55">${esc(g.def)}</p>` : ''}
+        ${g.def ? `<p style="margin:6px 0;font-size:14px;line-height:1.55;font-weight:600">${esc(g.def)}</p>` : ''}
+        ${top && g.about ? `<p style="margin:6px 0;font-size:14px;line-height:1.55">${esc(g.about)}</p>` : ''}
         ${g.ref ? `<p style="margin:0;font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:1px">${esc(g.ref)}</p>` : ''}
       </div>`;
     })
