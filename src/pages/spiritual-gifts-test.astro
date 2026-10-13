@@ -58,6 +58,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);box-shadow:none}
 #sg .btn.ghost:hover{border-color:var(--ink);background:transparent}
 #sg .btn[disabled]{opacity:.45;cursor:not-allowed}
+#sg .btn[disabled]:hover{transform:none;background:var(--brand);border-color:var(--brand)}
 #sg .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 #sg .prog{position:sticky;top:64px;background:#FAFAFA;padding:14px 0 12px;z-index:5}
@@ -115,6 +116,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .team-head span{color:var(--brand-dark)}
 #sg .team-head:hover{color:var(--brand-dark)}
 @media print{#sg .team-link{display:none}}
+
+#sg .who{margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 20px;box-shadow:0 2px 8px -1px rgba(16,27,46,0.08),0 1px 2px -1px rgba(16,27,46,0.04)}
+#sg .who h3{margin-bottom:4px}
+#sg .who > .muted{margin-bottom:18px;font-size:.95rem}
+#sg .field{margin-bottom:14px}
+#sg .field label{display:block;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+#sg .field input{width:100%;min-height:48px;padding:10px 14px;border:2px solid var(--line);border-radius:10px;font:inherit;font-size:1rem;color:var(--ink);background:#fff}
+#sg .field input:hover{border-color:#B0BCDD}
+#sg .field input:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-color:var(--brand)}
+#sg .field input[aria-invalid="true"]{border-color:#C41C35}
+#sg .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#sg .form-error{color:#C41C35;font-weight:600;font-size:.95rem;margin:0}
+#sg .form-error:empty{display:none}
+#sg .form-error:not(:empty){margin-bottom:12px}
+#sg .privacy{font-size:.85rem;color:var(--muted);margin:4px 0 18px}
+#sg .status{margin:16px 0 0;font-size:.95rem;font-weight:600;color:var(--muted)}
+#sg .status.ok{color:var(--brand-dark)}
+#sg .status.err{color:#C41C35}
+#sg .small{font-size:.85rem;margin-top:10px}
+#sg .linkbtn{background:none;border:0;padding:0;font-weight:700;text-decoration:underline;text-underline-offset:3px;color:inherit}
+#sg .linkbtn:hover{color:var(--ink)}
+#sg .linkbtn:active{opacity:.7}
 
 @media (max-width:420px){
   #sg .list li{grid-template-columns:7.4rem 1fr 2.4rem}
@@ -393,19 +416,32 @@ function dots(n){var h='<span class="dots" aria-hidden="true">';for(var i=1;i<=5
 function header(){return CONFIG.churchName?'<p class="muted" style="margin-bottom:10px">'+esc(CONFIG.churchName)+'</p>':"";}
 
 function viewIntro(){
-  var cont=S.started&&S.i>0&&S.i<TOTAL;
+  var cont=S.started&&S.i>0;
   return '<div class="intro">'+header()+
   '<h2 class="sg-title" tabindex="-1" id="focus">Find your spiritual gifts and your personality style</h2>'+
   '<p class="lede">Answer '+TOTAL+' short statements and see which of the '+GIFTS.length+' spiritual gifts fit you best, along with your personality style and the places you could serve.</p>'+
   '<ul class="facts">'+
    '<li><b>One simple scale.</b> Read each statement and tap how much it sounds like you.</li>'+
-   '<li><b>About 20 minutes.</b> Answers stay on this device, and you can close the page and come back where you left off.</li>'+
+   '<li><b>About 20 minutes.</b> You can close the page and come back where you left off on this device.</li>'+
   '</ul>'+
   '<p>Answer for who you are most of the time, not who you wish you were. There are no right or wrong answers.</p>'+
-  '<div class="row" style="margin-top:20px">'+
-   (cont?'<button class="btn" data-act="start">Continue where I left off</button><button class="btn ghost" data-act="restart">Start over</button>':
-         '<button class="btn" data-act="start">Begin</button>')+
-  '</div></div>';
+  (cont&&S.who?'<div class="row" style="margin-top:20px"><button class="btn" data-act="start">Continue where I left off</button><button class="btn ghost" data-act="restart">Start over</button></div>':whoForm(cont))+
+  '</div>';
+}
+
+function whoForm(cont){
+  var w=S.who||{};
+  return '<form class="who" id="who-form" novalidate>'+
+   '<h3>Tell us who you are</h3>'+
+   '<p class="muted">We’ll use this to send you your results and help you find a team.</p>'+
+   '<div class="field"><label for="who-name">Full name</label><input id="who-name" name="name" type="text" autocomplete="name" required maxlength="100" value="'+esc(w.name||"")+'"></div>'+
+   '<div class="field"><label for="who-email">Email</label><input id="who-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" value="'+esc(w.email||"")+'"></div>'+
+   '<div class="field"><label for="who-phone">Phone</label><input id="who-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" value="'+esc(w.phone||"")+'"></div>'+
+   '<div class="hp" aria-hidden="true"><label for="who-website">Website</label><input id="who-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>'+
+   '<p class="form-error" id="who-error" role="alert"></p>'+
+   '<p class="privacy">Your contact info and results are shared with City Church staff so they can help you take a next step. They are never shared outside the church.</p>'+
+   '<div class="row"><button class="btn" type="submit">'+(cont?"Continue where I left off":"Begin the test")+'</button></div>'+
+  '</form>';
 }
 
 function progress(){
@@ -449,9 +485,34 @@ function teamMatches(R){
   }).sort(function(a,b){return b.score-a.score;});
 }
 
+function pickRoles(R){
+  var all=teamMatches(R),cnt={},M=[],used={};
+  all.forEach(function(m){if(M.length<3&&(cnt[m.t.team]||0)<2){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[m.t.team+"|"+m.t.role]=1;}});
+  return {all:all,M:M,used:used};
+}
+
+function discLabel(R){
+  var p1=R.ranked[0], p2=R.ranked[1], both=p2.raw>0||p2.raw===p1.raw;
+  return {code:p1.k+(both?p2.k:""),label:DISC_INFO[p1.k].name+(both?" with "+DISC_INFO[p2.k].name:"")};
+}
+
+function summary(){
+  var R=compute(), d=discLabel(R), P=pickRoles(R);
+  function gift(x,full){var o={name:x.g.name,score:x.sum,pct:x.pct};if(full){o.def=x.g.def;o.ref=x.g.ref;}return o;}
+  function style(k){var i=DISC_INFO[k];return {k:k,name:i.name,line:i.line,use:i.use,grow:i.grow};}
+  return {
+    topGifts:R.gifts.slice(0,5).map(function(x){return gift(x,true);}),
+    allGifts:R.gifts.map(function(x){return gift(x,false);}),
+    disc:{code:d.code,label:d.label,primary:style(R.ranked[0].k),secondary:style(R.ranked[1].k),
+      bars:R.disc.map(function(x){return {k:x.k,name:DISC_INFO[x.k].name,pct:x.pct};})},
+    roles:P.M.map(function(m){return {role:m.t.role,team:m.t.team,description:m.t.description,
+      why:m.best.length?"Fits your gifts in "+m.best.join(" and ")+".":"",url:TEAM_PAGES[m.t.team]||""};})
+  };
+}
+
 function viewResults(){
   var R=compute(), top=R.gifts.slice(0,3), next=R.gifts.slice(3,5);
-  var p1=R.ranked[0], p2=R.ranked[1];
+  var p1=R.ranked[0], p2=R.ranked[1], dl=discLabel(R);
   var h='<div class="res">'+header()+
    '<h2 class="sg-title" tabindex="-1" id="focus">Your results</h2>'+
    '<p class="lede muted">Your strongest gifts are '+esc(top[0].g.name)+', '+esc(top[1].g.name)+', and '+esc(top[2].g.name)+'. Your personality style is mostly '+esc(DISC_INFO[p1.k].name)+', with some '+esc(DISC_INFO[p2.k].name)+'.</p>';
@@ -472,7 +533,7 @@ function viewResults(){
   h+='</ul></details></div>';
 
   h+='<div class="sec"><h2>Your personality style</h2>'+
-     '<div class="disc-head"><span class="big">'+p1.k+(p2.raw>0||p2.raw===p1.raw?p2.k:"")+'</span><span class="muted">'+esc(DISC_INFO[p1.k].name)+(p2.raw>0||p2.raw===p1.raw?" with "+esc(DISC_INFO[p2.k].name):"")+'</span></div>'+
+     '<div class="disc-head"><span class="big">'+dl.code+'</span><span class="muted">'+esc(dl.label)+'</span></div>'+
      '<div class="disc-bars">';
   R.disc.forEach(function(x){h+='<div class="r"><b>'+esc(DISC_INFO[x.k].name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.pct+'</em></div>';});
   h+='</div>'+
@@ -481,8 +542,7 @@ function viewResults(){
      '</div>';
 
   if(TEAMS.length){
-    var all=teamMatches(R),cnt={},M=[],used={};
-    all.forEach(function(m){if(M.length<3&&(cnt[m.t.team]||0)<2){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[m.t.team+"|"+m.t.role]=1;}});
+    var P=pickRoles(R),all=P.all,M=P.M,used=P.used;
     h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three roles fit your gifts and style best. They are suggestions, not assignments.</p>';
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
@@ -502,19 +562,74 @@ function viewResults(){
   }
 
   h+='<p class="note">This is a tool for reflection, not a diagnosis, and it is not a formal or validated assessment. '+esc(CONFIG.followUp)+'</p>'+
-     '<div class="row noprint" style="margin-top:20px"><button class="btn" data-act="print">Save or print my results</button>'+
-     '<button class="btn ghost" data-act="restart">'+(confirmReset?"Tap again to erase and retake":"Retake the test")+'</button></div></div>';
+     '<div class="noprint" id="sg-actions">'+actionsHtml()+'</div></div>';
   return h;
+}
+
+var saveState="idle", saveError="", emailState="idle", emailMsg="";
+
+function actionsHtml(){
+  var email=S.who&&S.who.email?S.who.email:"";
+  var status="";
+  if(saveState==="saving")status='<p class="status">Saving your results…</p>';
+  else if(saveState==="error")status='<p class="status err">'+esc(saveError)+' <button class="linkbtn" data-act="resubmit">Try again</button></p>';
+  if(emailState==="sent")status+='<p class="status ok">'+esc(emailMsg)+'</p>';
+  else if(emailState==="error")status+='<p class="status err">'+esc(emailMsg)+'</p>';
+  var canEmail=!!S.sid&&emailState!=="sending";
+  return '<div aria-live="polite">'+status+'</div>'+
+   '<div class="row" style="margin-top:16px">'+
+    '<button class="btn" data-act="email"'+(canEmail?'':' disabled')+'>'+(emailState==="sending"?"Sending…":"Email my results")+'</button>'+
+    '<button class="btn ghost" data-act="print">Download or print</button>'+
+    '<button class="btn ghost" data-act="restart">'+(confirmReset?"Tap again to erase and retake":"Retake the test")+'</button>'+
+   '</div>'+
+   (email?'<p class="muted small">Email goes to '+esc(email)+'.</p>':'');
+}
+
+function updateActions(){var a=document.getElementById("sg-actions");if(a)a.innerHTML=actionsHtml();}
+
+function post(url,body){
+  return fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+    .then(function(r){return r.json().catch(function(){return {};}).then(function(j){if(!r.ok)throw new Error(j.error||"Something went wrong. Please try again.");return j;});});
+}
+
+function submitResults(){
+  if(S.sid||saveState==="saving"||!S.who)return;
+  saveState="saving";updateActions();
+  post("/api/submit/",{name:S.who.name,email:S.who.email,phone:S.who.phone,website:S.who.website||"",answers:S.g,results:summary()})
+    .then(function(j){S.sid=j.id;save();saveState="saved";updateActions();})
+    .catch(function(err){saveState="error";saveError=err.message||"We couldn’t save your results.";updateActions();});
+}
+
+function emailResults(){
+  if(!S.sid||emailState==="sending")return;
+  emailState="sending";updateActions();
+  post("/api/email-results/",{id:S.sid})
+    .then(function(j){emailState="sent";emailMsg="Sent! Check "+(j.email||"your inbox")+" in the next few minutes (and your spam folder).";updateActions();})
+    .catch(function(err){emailState="error";emailMsg=err.message;updateActions();});
+}
+
+function readWho(form){
+  var f=form.elements, e=document.getElementById("who-error");
+  var who={name:f.name.value.trim(),email:f.email.value.trim(),phone:f.phone.value.trim(),website:f.website.value};
+  var err="", field=null;
+  if(!who.name){err="Enter your name.";field=f.name;}
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(who.email)){err="Enter a valid email address.";field=f.email;}
+  else{var digits=who.phone.replace(/\D/g,"");if(digits.length<7||digits.length>15){err="Enter a valid phone number.";field=f.phone;}}
+  [f.name,f.email,f.phone].forEach(function(x){x.removeAttribute("aria-invalid");});
+  if(err){e.textContent=err;field.setAttribute("aria-invalid","true");field.focus();return null;}
+  e.textContent="";
+  return who;
 }
 
 function render(){
   var h;
-  if(!S.started)h=viewIntro();
+  if(!S.started||!S.who)h=viewIntro();
   else if(S.i>=TOTAL)h=viewResults();
   else h=viewGift();
   root.innerHTML=h;
   var f=document.getElementById("focus");
   if(f){try{f.focus({preventScroll:true});}catch(e){}}
+  if(S.started&&S.i>=TOTAL&&!S.sid)submitResults();
 }
 function go(delta){S.i=Math.max(0,Math.min(TOTAL,S.i+delta));confirmReset=false;save();render();window.scrollTo(0,0);}
 
@@ -530,11 +645,20 @@ root.addEventListener("click",function(e){
   else if(act==="next"){go(1);}
   else if(act==="back"){go(-1);}
   else if(act==="print"){try{window.print();}catch(err){}}
+  else if(act==="email"){emailResults();}
+  else if(act==="resubmit"){submitResults();}
   else if(act==="restart"){
     var needConfirm=S.i>=TOTAL;
-    if(needConfirm&&!confirmReset){confirmReset=true;render();return;}
-    S={started:false,i:0,g:{},d:{}};confirmReset=false;save();render();window.scrollTo(0,0);
+    if(needConfirm&&!confirmReset){confirmReset=true;updateActions();return;}
+    S={started:false,i:0,g:{},d:{},who:S.who};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
   }
+});
+
+root.addEventListener("submit",function(e){
+  if(e.target.id!=="who-form")return;
+  e.preventDefault();
+  var who=readWho(e.target); if(!who)return;
+  S.who=who;S.started=true;save();render();window.scrollTo(0,0);
 });
 
 render();

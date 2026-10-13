@@ -1,0 +1,344 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Staff Dashboard" description="Spiritual Gifts Test results for City Church Lufkin staff." noindex>
+
+  <section class="relative overflow-hidden py-14" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-staff" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-staff)"/>
+    </svg>
+    <div class="absolute left-0 top-0 bottom-0 w-1" style="background: linear-gradient(180deg, transparent, #8CC640 30%, #8CC640 70%, transparent);"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div>
+        <div class="section-label">Staff Only</div>
+        <h1 class="display-md text-white mt-2">Spiritual Gifts <span style="color: #8CC640;">Results</span></h1>
+      </div>
+      <div id="who-bar" class="hidden items-center gap-3 text-sm text-white/60">
+        <span id="who-email"></span>
+        <button id="sign-out" class="btn-ghost !px-4 !py-2 !text-xs">Sign out</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mx-auto max-w-7xl">
+
+      <p id="loading" class="text-stone-500">Loading…</p>
+
+      <!-- SIGN IN -->
+      <div id="view-signin" class="hidden mx-auto max-w-md">
+        <div class="card p-7 staff-static">
+          <h2 class="font-display text-2xl font-black uppercase text-navy-800 mb-1" style="letter-spacing: 0.01em;">Staff sign in</h2>
+          <p class="text-sm text-stone-500 mb-6 leading-relaxed">Enter your church email and we’ll send you a sign-in link. Only approved staff can sign in.</p>
+          <form id="signin-form" novalidate>
+            <label for="signin-email" class="staff-label">Email</label>
+            <input id="signin-email" type="email" autocomplete="email" inputmode="email" required class="staff-input" />
+            <p id="signin-msg" class="mt-3 text-sm font-semibold" role="status"></p>
+            <button type="submit" id="signin-btn" class="btn-primary mt-4 w-full justify-center">Email me a sign-in link</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- NO ACCESS -->
+      <div id="view-denied" class="hidden mx-auto max-w-md">
+        <div class="card p-7 staff-static">
+          <h2 class="font-display text-2xl font-black uppercase text-navy-800 mb-2" style="letter-spacing: 0.01em;">No dashboard access</h2>
+          <p class="text-sm text-stone-500 leading-relaxed">You’re signed in as <b id="denied-email" class="text-navy-800"></b>, but this email isn’t on the staff list. Ask the portal admin to add you.</p>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div id="view-list" class="hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <p class="text-sm text-stone-500"><b id="count" class="text-navy-800 font-display text-2xl font-black align-middle mr-1"></b> <span id="count-label"></span></p>
+          <div class="relative w-full sm:w-80">
+            <label for="search" class="sr-only">Search responses</label>
+            <input id="search" type="search" placeholder="Search name, email, phone, or gift" class="staff-input !pl-10" />
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
+          </div>
+        </div>
+        <p id="list-error" class="hidden mb-4 text-sm font-semibold" style="color:#C41C35;"></p>
+        <div class="card staff-static overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs uppercase tracking-widest text-stone-500 border-b border-stone-200">
+                <th class="px-5 py-3 font-semibold">Name</th>
+                <th class="px-5 py-3 font-semibold hidden md:table-cell">Contact</th>
+                <th class="px-5 py-3 font-semibold hidden sm:table-cell">Top gifts</th>
+                <th class="px-5 py-3 font-semibold">Style</th>
+                <th class="px-5 py-3 font-semibold hidden lg:table-cell">Taken</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <p id="empty" class="hidden px-5 py-10 text-center text-stone-500"></p>
+        </div>
+      </div>
+
+      <!-- DETAIL -->
+      <div id="view-detail" class="hidden">
+        <button id="back" class="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-500 hover:text-navy-800 active:opacity-70 transition-colors duration-200 mb-6">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          All responses
+        </button>
+        <div id="detail"></div>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+  .staff-static:hover { transform: none !important; border-color: #E8E8E8 !important; box-shadow: 0 2px 8px -1px rgba(16,27,46,0.08), 0 1px 2px -1px rgba(16,27,46,0.04) !important; }
+  .staff-label { display:block; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#101B2E; margin-bottom:.4rem; }
+  .staff-input { width:100%; min-height:46px; padding:.6rem .9rem; border:2px solid #E3E6EC; border-radius:10px; background:#fff; font-size:.95rem; color:#101B2E; }
+  .staff-input:hover { border-color:#B0BCDD; }
+  .staff-input:focus-visible { outline:2px solid #8CC640; outline-offset:2px; border-color:#8CC640; }
+  .staff-row { cursor:pointer; border-bottom:1px solid #F0F0F0; }
+  .staff-row:hover { background:#F0F9E0; }
+  .staff-row:active { background:#E3F2CC; }
+  .staff-row:focus-visible { outline:2px solid #8CC640; outline-offset:-2px; }
+  .staff-meter { height:8px; border-radius:999px; background:#E8ECF3; overflow:hidden; }
+  .staff-meter > span { display:block; height:100%; border-radius:999px; background:#3A5490; }
+  .staff-meter.top > span { background:#8CC640; }
+  .staff-link { color:#6FA32E; font-weight:600; }
+  .staff-link:hover { text-decoration:underline; text-underline-offset:3px; }
+</style>
+
+<script>
+  import { createClient, type Session } from '@supabase/supabase-js';
+
+  const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+  const SUPABASE_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    document.getElementById('loading')!.textContent = 'The dashboard isn’t connected to the database yet.';
+    throw new Error('Supabase environment variables are not set');
+  }
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  type Row = {
+    id: string; created_at: string; name: string; email: string; phone: string;
+    top_gifts: string[]; disc_style: string; results?: any;
+  };
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const views = ['loading', 'view-signin', 'view-denied', 'view-list', 'view-detail'];
+  const show = (id: string) => views.forEach((v) => $(v).classList.toggle('hidden', v !== id));
+  const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+  const fmtDate = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const fmtDateTime = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+  let rows: Row[] = [];
+  let loaded = false;
+  let currentUser: string | null | undefined;
+
+  async function start(session: Session | null) {
+    if (!session) {
+      $('who-bar').classList.add('hidden');
+      show('view-signin');
+      return;
+    }
+    const email = session.user.email ?? '';
+    $('who-email').textContent = email;
+    $('who-bar').classList.remove('hidden');
+    $('who-bar').classList.add('flex');
+
+    const { data: staff } = await supabase.from('staff').select('email').maybeSingle();
+    if (!staff) {
+      $('denied-email').textContent = email;
+      show('view-denied');
+      return;
+    }
+    if (!loaded) await loadRows();
+    route();
+  }
+
+  async function loadRows() {
+    const { data, error } = await supabase
+      .from('quiz_responses')
+      .select('id, created_at, name, email, phone, top_gifts, disc_style')
+      .order('created_at', { ascending: false })
+      .limit(2000);
+    const err = $('list-error');
+    if (error) {
+      err.textContent = `Couldn’t load responses: ${error.message}`;
+      err.classList.remove('hidden');
+      return;
+    }
+    err.classList.add('hidden');
+    rows = data ?? [];
+    loaded = true;
+    renderList();
+  }
+
+  function renderList() {
+    const q = (($('search') as HTMLInputElement).value || '').trim().toLowerCase();
+    const list = q
+      ? rows.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || [])].join(' ').toLowerCase().includes(q))
+      : rows;
+
+    $('count').textContent = String(list.length);
+    $('count-label').textContent = q
+      ? `of ${rows.length} ${rows.length === 1 ? 'response' : 'responses'} match`
+      : list.length === 1 ? 'response' : 'responses';
+
+    $('rows').innerHTML = list
+      .map((r) => `<tr class="staff-row" tabindex="0" data-id="${esc(r.id)}">
+        <td class="px-5 py-4"><div class="font-semibold text-navy-800">${esc(r.name)}</div><div class="text-xs text-stone-500 md:hidden">${esc(r.email)}</div></td>
+        <td class="px-5 py-4 hidden md:table-cell"><div class="text-navy-800">${esc(r.email)}</div><div class="text-xs text-stone-500">${esc(r.phone)}</div></td>
+        <td class="px-5 py-4 hidden sm:table-cell text-stone-700">${esc((r.top_gifts || []).join(', '))}</td>
+        <td class="px-5 py-4"><span class="font-display text-lg font-black" style="color:#6FA32E;">${esc(r.disc_style)}</span></td>
+        <td class="px-5 py-4 hidden lg:table-cell text-stone-500 whitespace-nowrap">${fmtDate(r.created_at)}</td>
+      </tr>`)
+      .join('');
+
+    const empty = $('empty');
+    empty.classList.toggle('hidden', list.length > 0);
+    empty.textContent = rows.length === 0 ? 'No one has taken the test yet. Responses will show up here as soon as someone finishes.' : 'No responses match that search.';
+  }
+
+  async function showDetail(id: string) {
+    show('view-detail');
+    $('detail').innerHTML = '<p class="text-stone-500">Loading…</p>';
+    const { data: r, error } = await supabase.from('quiz_responses').select('*').eq('id', id).maybeSingle();
+    if (error || !r) {
+      $('detail').innerHTML = '<p class="font-semibold" style="color:#C41C35;">That response couldn’t be found.</p>';
+      return;
+    }
+    const res = r.results || {};
+    const disc = res.disc || {};
+    const meter = (pct: number, top: boolean) => `<div class="staff-meter ${top ? 'top' : ''}"><span style="width:${Math.max(0, Math.min(100, pct))}%"></span></div>`;
+
+    const gifts = (res.topGifts || []).slice(0, 5).map((g: any, i: number) => `
+      <div class="py-3 ${i ? 'border-t border-stone-200' : ''}">
+        <div class="flex items-baseline justify-between gap-3 mb-2"><span class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing:.01em">${esc(g.name)}</span><span class="text-xs font-semibold text-stone-500">${g.score} of 20</span></div>
+        ${meter(g.pct, i < 3)}
+      </div>`).join('');
+
+    const allGifts = (res.allGifts || []).map((g: any) => `
+      <li class="grid items-center gap-3 text-sm" style="grid-template-columns: 9rem 1fr 2rem;"><span class="font-semibold text-navy-800">${esc(g.name)}</span>${meter(g.pct, false)}<span class="text-right text-stone-500">${g.score}</span></li>`).join('');
+
+    const bars = (disc.bars || []).map((b: any) => `
+      <li class="grid items-center gap-3 text-sm" style="grid-template-columns: 6rem 1fr 2rem;"><span class="font-semibold text-navy-800">${esc(b.name)}</span>${meter(b.pct, false)}<span class="text-right text-stone-500">${b.pct}</span></li>`).join('');
+
+    const roles = (res.roles || []).map((m: any) => `
+      <div class="py-3 border-t border-stone-200 first:border-0">
+        <div class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing:.01em">${esc(m.role)}</div>
+        <div class="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-1">${m.url ? `<a class="staff-link" href="${esc(m.url)}">${esc(m.team)}</a>` : esc(m.team)}</div>
+        ${m.description ? `<p class="text-sm text-stone-700 leading-relaxed">${esc(m.description)}</p>` : ''}
+        ${m.why ? `<p class="text-xs text-stone-500 mt-1">${esc(m.why)}</p>` : ''}
+      </div>`).join('');
+
+    const card = (title: string, body: string) => `<div class="card staff-static p-6"><h3 class="font-display text-xl font-black uppercase text-navy-800 mb-3" style="letter-spacing:.01em">${title}</h3>${body}</div>`;
+
+    $('detail').innerHTML = `
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="lg:col-span-1 space-y-6">
+          <div class="card staff-static p-6">
+            <h2 class="font-display text-3xl font-black uppercase text-navy-800 leading-none mb-4" style="letter-spacing:.01em">${esc(r.name)}</h2>
+            <dl class="space-y-2 text-sm">
+              <div><dt class="text-xs font-semibold uppercase tracking-widest text-stone-500">Email</dt><dd><a class="staff-link" href="mailto:${esc(r.email)}">${esc(r.email)}</a></dd></div>
+              <div><dt class="text-xs font-semibold uppercase tracking-widest text-stone-500">Phone</dt><dd><a class="staff-link" href="tel:${esc(r.phone)}">${esc(r.phone)}</a></dd></div>
+              <div><dt class="text-xs font-semibold uppercase tracking-widest text-stone-500">Taken</dt><dd class="text-navy-800">${fmtDateTime(r.created_at)}</dd></div>
+            </dl>
+          </div>
+          ${card('Suggested roles', roles || '<p class="text-sm text-stone-500">No roles suggested.</p>')}
+        </div>
+        <div class="lg:col-span-2 space-y-6">
+          ${card('Top spiritual gifts', gifts)}
+          ${card('Personality style', `
+            <p class="mb-4"><span class="font-display text-5xl font-black align-middle" style="color:#6FA32E;">${esc(disc.code)}</span><span class="ml-3 text-stone-500">${esc(disc.label)}</span></p>
+            <ul class="space-y-2.5 mb-4">${bars}</ul>
+            ${disc.primary ? `<p class="text-sm text-stone-700 leading-relaxed"><b class="text-navy-800">${esc(disc.primary.name)}:</b> ${esc(disc.primary.line)} ${esc(disc.primary.use)}</p>` : ''}
+          `)}
+          ${card('All gifts', `<ul class="space-y-2.5">${allGifts}</ul>`)}
+        </div>
+      </div>`;
+    window.scrollTo(0, 0);
+  }
+
+  function route() {
+    const id = new URLSearchParams(location.search).get('id');
+    if (id) showDetail(id);
+    else {
+      show('view-list');
+      renderList();
+    }
+  }
+
+  function openRow(id: string) {
+    history.pushState(null, '', `/staff/?id=${encodeURIComponent(id)}`);
+    showDetail(id);
+  }
+
+  $('rows').addEventListener('click', (e) => {
+    const tr = (e.target as HTMLElement).closest('tr[data-id]');
+    if (tr) openRow(tr.getAttribute('data-id')!);
+  });
+  $('rows').addEventListener('keydown', (e) => {
+    const tr = (e.target as HTMLElement).closest('tr[data-id]');
+    if (tr && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      openRow(tr.getAttribute('data-id')!);
+    }
+  });
+  $('back').addEventListener('click', () => {
+    history.pushState(null, '', '/staff/');
+    route();
+  });
+  window.addEventListener('popstate', route);
+  $('search').addEventListener('input', renderList);
+
+  $('signin-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = $('signin-email') as HTMLInputElement;
+    const msg = $('signin-msg');
+    const btn = $('signin-btn') as HTMLButtonElement;
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      msg.style.color = '#C41C35';
+      msg.textContent = 'Enter a valid email address.';
+      input.focus();
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/staff/${location.search}` },
+    });
+    btn.disabled = false;
+    btn.textContent = 'Email me a sign-in link';
+    if (error) {
+      msg.style.color = '#C41C35';
+      msg.textContent = /signups not allowed|not found|otp_disabled/i.test(error.message)
+        ? 'That email isn’t set up for dashboard access. Ask the portal admin to add you.'
+        : `Couldn’t send the link: ${error.message}`;
+      return;
+    }
+    msg.style.color = '#6FA32E';
+    msg.textContent = `Check ${email} for your sign-in link. You can close this tab.`;
+  });
+
+  $('sign-out').addEventListener('click', async () => {
+    rows = [];
+    loaded = false;
+    await supabase.auth.signOut();
+  });
+
+  // Token refreshes also fire SIGNED_IN, so only react when the user actually changes.
+  // setTimeout: Supabase calls awaited inside this callback can deadlock the auth client.
+  supabase.auth.onAuthStateChange((_event, session) => {
+    const user = session?.user.id ?? null;
+    if (user === currentUser) return;
+    currentUser = user;
+    setTimeout(() => start(session), 0);
+  });
+</script>
