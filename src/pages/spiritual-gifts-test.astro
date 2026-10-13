@@ -227,10 +227,10 @@ var TEAM_PAGES = {
  add("Worship","Music Director","Plans the sets, leads rehearsals, and keeps the band organized.",["music","administration","leadership"],["C","D"]);
  add("Worship","Vocalist","Sings on the worship team.",["music","helps"],["I","S"]);
  add("Worship","Instrumentalist","Plays an instrument on the worship team.",["music","helps","craftsmanship"],["S","C"]);
- add("Kid City","Kids Check-In","The friendly first face for families: checks kids in, greets them, and eases the stress of drop-off.",["hospitality","mercy","service"],["I","S"]);
- add("Kid City","Elementary Teacher","Teaches Bible lessons to elementary-age kids.",["teaching","shepherding","mercy","exhortation"],["I","S"]);
- add("Kid City","Room Leader","Leads a kids room and the volunteers in it.",["leadership","administration","shepherding"],["D","S"]);
- add("Kid City","Helper","Assists in kids rooms with activities, supervision, and care.",["helps","service","mercy"],["S","I"]);
+ add("Kid City","Mini City: Nursery, Toddlers & Preschool","Cares for our youngest kids, from babies through preschool, with patience, play, and the love of Jesus.",["mercy","helps","shepherding","service"],["S","I"]);
+ add("Kid City","Kid City Check-In","The friendly first face for families: checks kids in, greets them, and eases the stress of drop-off.",["hospitality","mercy","service"],["I","S"]);
+ add("Kid City","Kid City Teacher","Teaches Bible lessons to kids in a way that's fun, clear, and true.",["teaching","shepherding","mercy","exhortation"],["I","S"]);
+ add("Kid City","Kid City Room Helper","Assists in kids rooms with activities, supervision, and care.",["helps","service","mercy"],["S","I"]);
  add("Production","Sound Tech","Runs the audio mix so everyone can hear clearly.",["craftsmanship","helps","service"],["C","S"]);
  add("Production","Presentation Operator","Runs lyrics and slides during the service.",["helps","service","administration"],["C","S"]);
  add("Production","Live Stream Director","Directs the livestream so people at home can take part.",["administration","leadership","craftsmanship"],["D","C"]);
@@ -660,7 +660,7 @@ function viewResults(){
       h+='<div class="card"><h3>'+(TEAM_PAGES[team]?'<a class="team-head" href="'+TEAM_PAGES[team]+'">'+esc(team)+' <span aria-hidden="true">→</span></a>':esc(team))+'</h3>'+
         (TEAM_ABOUT[team]?'<p class="team-blurb">'+esc(TEAM_ABOUT[team])+'</p>':'')+'<ul class="roles">';
       groups[team].forEach(function(m){h+='<li><b>'+esc(m.t.role)+'</b>'+(m.t.description?' <span class="muted">'+esc(m.t.description)+'</span>':"")+'</li>';});
-      h+='</ul></div>';
+      h+='</ul><div class="team-actions"><div class="interest-wrap" data-key="'+esc(team+"|"+team)+'">'+interestBtn({t:{team:team,role:team}})+'</div></div></div>';
     });
     h+='</div>';
   }
@@ -690,11 +690,9 @@ function actionsHtml(){
 }
 
 function refreshInterestButtons(){
-  var P=pickRoles(compute());
-  var wraps=[].slice.call(document.querySelectorAll('.interest-wrap'));
-  P.M.forEach(function(m){
-    var key=m.t.team+"|"+m.t.role;
-    wraps.forEach(function(w){if(w.getAttribute("data-key")===key)w.innerHTML=interestBtn(m);});
+  [].slice.call(document.querySelectorAll('.interest-wrap')).forEach(function(w){
+    var key=w.getAttribute("data-key"), i=key.indexOf("|");
+    w.innerHTML=interestBtn({t:{team:key.slice(0,i),role:key.slice(i+1)}});
   });
 }
 

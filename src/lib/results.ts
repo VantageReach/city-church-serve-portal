@@ -149,9 +149,11 @@ export function staffAlertEmail(p: Person, r: QuizResults, siteUrl: string, id: 
 }
 
 export function interestAlertEmail(p: Person, roles: { role: string; team: string }[], r: QuizResults, siteUrl: string, id: string) {
-  const list = roles.map((x) => `<li style="margin:2px 0"><b>${esc(x.role)}</b> (${esc(x.team)})</li>`).join('');
+  const list = roles
+    .map((x) => `<li style="margin:2px 0"><b>${esc(x.role)}</b>${x.role === x.team ? '' : ` (${esc(x.team)})`}</li>`)
+    .join('');
   const intro = `<div style="margin:0 0 16px;padding:12px 14px;background:#F0F9E0;border-left:4px solid ${GREEN};border-radius:6px;font-size:15px;line-height:1.5">
-      <b>${esc(p.name)}</b> tapped “I’m interested” on ${roles.length === 1 ? 'this role' : `these ${roles.length} roles`}:
+      <b>${esc(p.name)}</b> tapped “I’m interested” on:
       <ul style="margin:6px 0 4px;padding-left:20px">${list}</ul>
       Reach out to help them take the next step.</div>`;
   return personAlert('Interested in serving', intro, p, r, siteUrl, id, `${p.name} is interested in ${roles.map((x) => x.role).join(', ')}`);

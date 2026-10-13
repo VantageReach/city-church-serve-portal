@@ -9,6 +9,12 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 type Interest = { role: string; team: string; at: string };
 
+// Team-level interest ("any role on this team") is stored with role === team.
+const TEAMS = [
+  'Worship', 'Kid City', 'Production', 'Impressions', 'Care Team', 'Prayer Team', 'Creative Team',
+  'Safety Team', 'Student Ministry', 'Outreach', 'Next Steps', 'Life Groups', 'Milestones', 'Facilities',
+];
+
 export const POST: APIRoute = async ({ request }) => {
   let body: any;
   try {
@@ -30,9 +36,11 @@ export const POST: APIRoute = async ({ request }) => {
     .single();
   if (error || !row) return json({ error: 'We couldn’t find your results. Please retake the test.' }, 404);
 
-  // Only roles the test actually suggested to this person can be marked.
+  // Only a suggested role, or a whole team, can be marked.
   const results = row.results as QuizResults;
-  if (!results.roles.some((r) => r.role === role && r.team === team)) return json({ error: 'Invalid request.' }, 400);
+  const suggested = results.roles.some((r) => r.role === role && r.team === team);
+  const wholeTeam = role === team && TEAMS.includes(team);
+  if (!suggested && !wholeTeam) return json({ error: 'Invalid request.' }, 400);
 
   const current: Interest[] = Array.isArray(row.interests) ? row.interests : [];
   const already = current.some((i) => i.role === role && i.team === team);
