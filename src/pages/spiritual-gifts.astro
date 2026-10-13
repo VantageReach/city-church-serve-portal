@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { GIFTS, GIFT_STYLE, DISC_INFO, DISC_BIBLE } from '../data/gifts.mjs';
+
+const gifts = [...GIFTS].sort((a, b) => a.name.localeCompare(b.name));
+const styles = ['D', 'I', 'S', 'C'] as const;
+---
+
+<BaseLayout title="Spiritual Gifts & Personality Guide" description="All 24 spiritual gifts and the 4 personality styles from the City Church Spiritual Gifts Test: what each one is, signs you may have it, and how they work together.">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-guide" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-guide)"/>
+    </svg>
+    <div class="absolute left-0 top-0 bottom-0 w-1" style="background: linear-gradient(180deg, transparent, #8CC640 30%, #8CC640 70%, transparent);"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="section-label">Gifts &amp; Personality Guide</div>
+      <h1 class="display-lg text-white mt-2">How God <span style="color: #8CC640;">Wired You</span></h1>
+      <p class="mt-4 text-lg text-white/60 max-w-2xl">Every one of the 24 spiritual gifts and 4 personality styles from our Spiritual Gifts Test: what each one is, signs you may have it, and how your gifts look with your personality.</p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="/spiritual-gifts-test/" class="btn-primary">Take the Test
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#styles" class="btn-ghost">Personality Styles</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14">
+
+    <!-- GIFTS -->
+    <section aria-labelledby="gifts-heading">
+      <div class="section-label">The 24 Spiritual Gifts</div>
+      <h2 id="gifts-heading" class="display-sm text-navy-800 mb-6">Spiritual Gifts</h2>
+      <nav class="flex flex-wrap gap-2 mb-10" aria-label="Jump to a gift">
+        {gifts.map((g) => <a href={`#${g.id}`} class="guide-chip">{g.name}</a>)}
+      </nav>
+
+      <div class="space-y-6">
+        {gifts.map((g) => (
+          <article id={g.id} class="guide-card">
+            <header class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 class="font-display text-3xl font-black uppercase text-navy-800 leading-none" style="letter-spacing: 0.01em;">{g.name}</h3>
+              <span class="guide-ref">{g.ref}</span>
+            </header>
+            <p class="guide-def">{g.def}</p>
+            <div class="grid gap-8 md:grid-cols-2">
+              <div class="min-w-0">
+                <p class="text-stone-700 leading-relaxed mb-5">{g.about}</p>
+                <h4 class="guide-h4">Signs you may have this gift</h4>
+                <ul class="guide-list">
+                  {g.signs.map((s: string) => <li>{s}</li>)}
+                </ul>
+              </div>
+              <div class="min-w-0">
+                <h4 class="guide-h4">With each personality style</h4>
+                <dl class="space-y-3">
+                  {styles.map((k) => (
+                    <div>
+                      <dt class="flex items-center gap-2 text-sm font-bold text-navy-800"><span class="style-key">{k}</span>{DISC_INFO[k].name}</dt>
+                      <dd class="text-stone-700 text-[0.95rem] leading-relaxed mt-1 ml-8">{GIFT_STYLE[g.id][k]}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- STYLES -->
+    <section id="styles" aria-labelledby="styles-heading" class="mt-20 scroll-mt-24">
+      <div class="section-label">The 4 Personality Styles</div>
+      <h2 id="styles-heading" class="display-sm text-navy-800 mb-3">Personality Styles</h2>
+      <p class="text-stone-600 leading-relaxed max-w-2xl mb-8">Your personality shapes how your gifts come out. The test shows your top two styles as a pair, like D/C, because most people lean strongly on two.</p>
+      <div class="grid gap-6 md:grid-cols-2">
+        {styles.map((k) => (
+          <article id={`style-${k.toLowerCase()}`} class="guide-card">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="style-key style-key-lg">{k}</span>
+              <h3 class="font-display text-3xl font-black uppercase text-navy-800 leading-none" style="letter-spacing: 0.01em;">{DISC_INFO[k].name}</h3>
+            </div>
+            <p class="font-semibold text-navy-800 mb-2">{DISC_INFO[k].line}</p>
+            <p class="text-stone-700 leading-relaxed mb-3">{DISC_INFO[k].use}</p>
+            <p class="text-sm text-stone-500 leading-relaxed mb-5"><b class="text-navy-800">To grow:</b> {DISC_INFO[k].grow}</p>
+            <h4 class="guide-h4">In Scripture</h4>
+            <ul class="space-y-2">
+              {DISC_BIBLE[k].map((b: { who: string; ref: string; why: string }) => (
+                <li class="text-[0.95rem] text-stone-700 leading-relaxed"><b class="text-navy-800">{b.who}</b> <span class="guide-ref">{b.ref}</span> {b.why}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mt-20 guide-cta">
+      <div>
+        <h2 class="display-sm text-white mb-2">Find Your Gifts</h2>
+        <p class="text-white/60 leading-relaxed max-w-xl">Take the Spiritual Gifts Test to see your top gifts, your personality style, and the City Church teams that fit you best.</p>
+      </div>
+      <a href="/spiritual-gifts-test/" class="btn-primary shrink-0">Take the Test
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </section>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .guide-chip {
+    font-size: .8rem; font-weight: 600; color: #101B2E; background: #fff;
+    border: 1px solid #E3E6EC; border-radius: 999px; padding: .35rem .85rem;
+    box-shadow: 0 1px 4px rgba(16,27,46,0.06);
+    transition: transform .2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .guide-chip:hover { border-color: #8CC640; color: #6FA32E; transform: translateY(-1px); }
+  .guide-chip:active { transform: translateY(0); }
+  .guide-card {
+    background: #fff; border: 1px solid #E3E6EC; border-radius: 12px; padding: 1.75rem;
+    box-shadow: 0 2px 8px -1px rgba(16,27,46,0.08), 0 1px 2px -1px rgba(16,27,46,0.04);
+    scroll-margin-top: 6rem;
+  }
+  .guide-ref { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5A6275; }
+  .guide-def { font-weight: 600; color: #101B2E; background: #F0F9E0; border-radius: 8px; padding: .75rem 1rem; margin: .9rem 0 1.25rem; line-height: 1.6; }
+  .guide-h4 { font-family: "Barlow Condensed", sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; font-size: 1.05rem; color: #101B2E; margin-bottom: .5rem; }
+  .guide-list { list-style: disc; padding-left: 1.2rem; display: grid; gap: .3rem; color: #484848; line-height: 1.6; }
+  .style-key {
+    display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 6px;
+    background: #E8EDF8; color: #3A5490; font-family: "Barlow Condensed", sans-serif; font-weight: 900; font-size: .95rem;
+  }
+  .style-key-lg { width: 2.5rem; height: 2.5rem; font-size: 1.6rem; border-radius: 8px; background: #101B2E; color: #8CC640; }
+  .guide-cta {
+    display: flex; flex-direction: column; gap: 1.5rem; border-radius: 12px; padding: 2.25rem;
+    background: linear-gradient(135deg, #101B2E 0%, #1A2E5C 100%);
+    box-shadow: 0 8px 24px -4px rgba(16,27,46,0.24), 0 2px 6px -2px rgba(16,27,46,0.10);
+  }
+  @media (min-width: 1024px) { .guide-cta { flex-direction: row; align-items: center; justify-content: space-between; } }
+</style>

@@ -129,6 +129,7 @@ export function resultsEmail(name: string, r: QuizResults, siteUrl: string, foll
         <p style="margin:6px 0 0;font-size:14px;line-height:1.55">${esc(t.text)}</p></div>`).join('') : ''}
     ${r.roles.length ? h2('Where you could serve') + `<p style="margin:0 0 12px;font-size:14px;color:${MUTED}">These roles fit your gifts and style best. They are suggestions, not assignments.</p>` + rolesBlock(r, siteUrl) : ''}
     <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid ${LINE};font-size:13px;color:${MUTED};line-height:1.6">This is a tool for reflection, not a diagnosis, and it is not a formal or validated assessment. ${esc(followUp)}</p>
+    <p style="margin:16px 0 0;font-size:14px;line-height:1.6">Want to go deeper? <a href="${esc(siteUrl)}/spiritual-gifts/" style="color:${GREEN_DARK};font-weight:700">Read about every gift and personality style</a>.</p>
     <p style="margin:20px 0 0"><a href="${esc(siteUrl)}/teams/" style="display:inline-block;background:${GREEN};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Explore all serve teams</a></p>`;
   return shell(inner, `Your top gifts: ${r.topGifts.slice(0, 3).map((g) => g.name).join(', ')}`);
 }
