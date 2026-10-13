@@ -132,6 +132,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .roles li{font-size:.95rem}
 #sg .team-about{font-size:.9rem;color:var(--muted);background:#F6F8FB;border-radius:8px;padding:10px 12px;margin:10px 0 4px}
 #sg .team-about b{color:var(--ink);font-weight:700}
+#sg .rest-role{padding:10px 0;border-top:1px solid var(--line);font-size:.95rem}
+#sg .rest-role:first-of-type{border-top:0}
+#sg .rest-role .interest-wrap{margin-top:8px}
 #sg .team-blurb{font-size:.9rem;color:var(--muted);margin:4px 0 10px;font-style:italic}
 #sg .team-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand-dark);text-decoration:none}
 #sg .team-link span,#sg .team-head span{display:inline-block;transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
@@ -223,43 +226,53 @@ var TEAM_PAGES = {
 };
 (function(){
  function add(team,role,description,gifts,disc){TEAMS.push({team:team,role:role,description:description,gifts:gifts,disc:disc});}
- add("Worship","Worship Leader","Leads the church in song and sets the tone for worship.",["music","leadership","prophecy"],["D","I"]);
- add("Worship","Music Director","Plans the sets, leads rehearsals, and keeps the band organized.",["music","administration","leadership"],["C","D"]);
- add("Worship","Vocalist","Sings on the worship team.",["music","helps"],["I","S"]);
- add("Worship","Instrumentalist","Plays an instrument on the worship team.",["music","helps","craftsmanship"],["S","C"]);
+ // One suggestion per team; each [gifts, disc] path is a different kind of person who fits it, and the best path wins.
+ function team(team,role,description,paths){paths.forEach(function(p){add(team,role,description,p[0],p[1]);});}
+ team("Worship","Worship","Sing or play on the worship team, or help lead and organize the band.",[
+  [["music","leadership","prophecy"],["D","I"]],
+  [["music","administration","leadership"],["C","D"]],
+  [["music","helps"],["I","S"]],
+  [["music","helps","craftsmanship"],["S","C"]]]);
  add("Kid City","Mini City: Nursery, Toddlers & Preschool","Cares for our youngest kids, from babies through preschool, with patience, play, and the love of Jesus.",["mercy","helps","shepherding","service"],["S","I"]);
  add("Kid City","Kid City Check-In","The friendly first face for families: checks kids in, greets them, and eases the stress of drop-off.",["hospitality","mercy","service"],["I","S"]);
  add("Kid City","Kid City Teacher","Teaches Bible lessons to kids in a way that's fun, clear, and true.",["teaching","shepherding","mercy","exhortation"],["I","S"]);
  add("Kid City","Kid City Room Helper","Assists in kids rooms with activities, supervision, and care.",["helps","service","mercy"],["S","I"]);
- add("Production","Sound Tech","Runs the audio mix so everyone can hear clearly.",["craftsmanship","helps","service"],["C","S"]);
- add("Production","Presentation Operator","Runs lyrics and slides during the service.",["helps","service","administration"],["C","S"]);
- add("Production","Live Stream Director","Directs the livestream so people at home can take part.",["administration","leadership","craftsmanship"],["D","C"]);
- add("Production","Camera Operator","Shoots live video for the stream and the screens.",["craftsmanship","helps","service"],["C","S"]);
- add("Impressions","Greeter","Excited to welcome people and make them feel at home from the moment they arrive.",["hospitality","mercy","service","evangelism"],["I","S"]);
- add("Impressions","Usher","Helps guests find seats and keeps the room running smoothly.",["service","helps","hospitality"],["S","C"]);
- add("Impressions","Connections Table","Meets guests and helps them take a next step, like joining a group or serving.",["hospitality","exhortation","shepherding","evangelism"],["I","S"]);
- add("Impressions","Coffee Bar","Makes coffee and sets up the refreshment area.",["service","hospitality","helps"],["S","I"]);
- add("Care Team","Care Team","Practical love during life's hardest moments.",["mercy","shepherding","helps","giving","exhortation"],["S","I"]);
- add("Prayer Team","Pre-Service Prayer","Prays over the service and the room before it begins.",["intercession","faith","prophecy"],["S","C"]);
- add("Prayer Team","Altar Team","Prays with people who come forward during the service.",["intercession","mercy","exhortation","healing","faith"],["S","I"]);
- add("Prayer Team","Prayer Request Team","Receives prayer requests and prays and follows up.",["intercession","mercy","administration"],["S","C"]);
- add("Creative Team","Capture (Photo & Video)","Photographs and films the life of the church.",["craftsmanship","service"],["C","I"]);
- add("Creative Team","Create (Graphics)","Designs graphics that tell the City Church story.",["craftsmanship"],["C","I"]);
- add("Creative Team","Convey (Social & Email)","Writes and shares the story through social media and email.",["craftsmanship","evangelism","administration"],["I","C"]);
- add("Safety Team","Safety Team","Keeps every guest safe, from watching over the building to helping when someone needs medical attention.",["helps","service","discernment","mercy","wisdom"],["C","S"]);
- 
- add("Student Ministry","Student Ministry Volunteer","Comes alongside our student leaders to love, support, and connect with students, and sometimes to teach.",["shepherding","mercy","exhortation","helps","teaching"],["I","S"]);
- add("Outreach","Global Outreach Lead","Leads the church's efforts to give and go beyond our own walls.",["missionary","apostleship","leadership","evangelism","giving"],["D","I"]);
- add("Outreach","Serve Weekend Volunteer","Helps with serve weekends that show God's love in practical ways.",["service","evangelism","giving","helps"],["I","S"]);
- add("Next Steps","Next Steps Event Team","Helps host the Next Steps partnership event: meeting new people, setting up and tearing down, and taking part in the event.",["hospitality","helps","service","exhortation","shepherding"],["I","S"]);
- add("Life Groups","Life Group Leader","Leads a Bible study or interest group: hosts, guides the discussion, and builds community and discipleship.",["shepherding","hospitality","teaching","leadership","exhortation"],["I","S"]);
- 
- 
- 
- add("Milestones","Water Baptism Team","Helps prepare for and serve at baptisms, one of the sacred moments of the church.",["helps","service","shepherding","mercy"],["S"]);
- add("Milestones","Communion Team","Prepares and serves communion.",["service","helps","intercession"],["S","C"]);
- add("Facilities","Facilities","Cares for our building so it's ready for ministry every week. This may include cleaning, repairs, and general upkeep.",["service","helps"],["S","C"]);
- add("Facilities","Facilities","Cares for our building so it's ready for ministry every week. This may include cleaning, repairs, and general upkeep.",["craftsmanship"],["S","C"]);
+ team("Production","Production","Run sound, slides, cameras, or the livestream so nothing gets in the way of the message.",[
+  [["craftsmanship","helps","service"],["C","S"]],
+  [["helps","service","administration"],["C","S"]],
+  [["administration","leadership","craftsmanship"],["D","C"]]]);
+ team("Impressions","Impressions","Welcome people from the parking lot to their seat: greeting, ushering, the coffee bar, or the connections table.",[
+  [["hospitality","mercy","service","evangelism"],["I","S"]],
+  [["service","helps","hospitality"],["S","C"]],
+  [["hospitality","exhortation","shepherding","evangelism"],["I","S"]],
+  [["service","hospitality","helps"],["S","I"]]]);
+ team("Care Team","Care Team","Practical love during life's hardest moments.",[
+  [["mercy","shepherding","helps","giving","exhortation"],["S","I"]]]);
+ team("Prayer Team","Prayer Team","Pray before services, with people at the altar, or over the prayer requests our church submits.",[
+  [["intercession","faith","prophecy"],["S","C"]],
+  [["intercession","mercy","exhortation","healing","faith"],["S","I"]],
+  [["intercession","mercy","administration"],["S","C"]]]);
+ team("Creative Team","Creative Team","Tell the City Church story through photos, video, graphics, writing, and social media.",[
+  [["craftsmanship","service"],["C","I"]],
+  [["craftsmanship"],["C","I"]],
+  [["craftsmanship","evangelism","administration"],["I","C"]]]);
+ team("Safety Team","Safety Team","Keeps every guest safe, from watching over the building to helping when someone needs medical attention.",[
+  [["helps","service","discernment","mercy","wisdom"],["C","S"]]]);
+ team("Student Ministry","Student Ministry Volunteer","Comes alongside our student leaders to love, support, and connect with students, and sometimes to teach.",[
+  [["shepherding","mercy","exhortation","helps","teaching"],["I","S"]]]);
+ team("Outreach","Outreach","Help City Church give and go, from local serve weekends to global outreach.",[
+  [["missionary","apostleship","leadership","evangelism","giving"],["D","I"]],
+  [["service","evangelism","giving","helps"],["I","S"]]]);
+ team("Next Steps","Next Steps Event Team","Helps host the Next Steps partnership event: meeting new people, setting up and tearing down, and taking part in the event.",[
+  [["hospitality","helps","service","exhortation","shepherding"],["I","S"]]]);
+ team("Life Groups","Life Group Leader","Leads a Bible study or interest group: hosts, guides the discussion, and builds community and discipleship.",[
+  [["shepherding","hospitality","teaching","leadership","exhortation"],["I","S"]]]);
+ team("Milestones","Milestones","Help prepare for and serve at baptisms and communion, two of the sacred moments of the church.",[
+  [["helps","service","shepherding","mercy"],["S"]],
+  [["service","helps","intercession"],["S","C"]]]);
+ team("Facilities","Facilities","Cares for our building so it's ready for ministry every week. This may include cleaning, repairs, and general upkeep.",[
+  [["service","helps"],["S","C"]],
+  [["craftsmanship"],["S","C"]]]);
 })();
 
 /* ===================== GIFTS ===================== */
@@ -644,7 +657,7 @@ function viewResults(){
 
   if(TEAMS.length){
     var P=pickRoles(R),all=P.all,M=P.M,used=P.used;
-    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three roles fit your gifts and style best. They are suggestions, not assignments.</p>';
+    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three fit your gifts and style best. They are suggestions, not assignments. Tap “I’m interested” on any of them, or on anything in the full list below.</p>';
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team&&m.t.team!==m.t.role?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
@@ -658,9 +671,13 @@ function viewResults(){
     h+='<h3 style="margin:30px 0 12px">The rest of our serving teams</h3>';
     order.forEach(function(team){
       h+='<div class="card"><h3>'+(TEAM_PAGES[team]?'<a class="team-head" href="'+TEAM_PAGES[team]+'">'+esc(team)+' <span aria-hidden="true">→</span></a>':esc(team))+'</h3>'+
-        (TEAM_ABOUT[team]?'<p class="team-blurb">'+esc(TEAM_ABOUT[team])+'</p>':'')+'<ul class="roles">';
-      groups[team].forEach(function(m){h+='<li><b>'+esc(m.t.role)+'</b>'+(m.t.description?' <span class="muted">'+esc(m.t.description)+'</span>':"")+'</li>';});
-      h+='</ul><div class="team-actions"><div class="interest-wrap" data-key="'+esc(team+"|"+team)+'">'+interestBtn({t:{team:team,role:team}})+'</div></div></div>';
+        (TEAM_ABOUT[team]&&!(groups[team].length===1&&groups[team][0].t.role===team)?'<p class="team-blurb">'+esc(TEAM_ABOUT[team])+'</p>':'');
+      groups[team].forEach(function(m){
+        h+='<div class="rest-role">'+(m.t.role!==team?'<b>'+esc(m.t.role)+'</b> ':'')+
+          (m.t.description?'<span class="muted">'+esc(m.t.description)+'</span>':'')+
+          '<div class="interest-wrap" data-key="'+esc(m.t.team+"|"+m.t.role)+'">'+interestBtn(m)+'</div></div>';
+      });
+      h+='</div>';
     });
     h+='</div>';
   }
