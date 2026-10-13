@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Vercel provides these at runtime; import.meta.env covers local `astro dev` with a .env file.
+export function optionalEnv(name: string): string | undefined {
+  return process.env[name] || (import.meta.env as Record<string, string | undefined>)[name] || undefined;
+}
+
 export function env(name: string): string {
-  const value = process.env[name] ?? (import.meta.env as Record<string, string | undefined>)[name];
+  const value = optionalEnv(name);
   if (!value) throw new Error(`Missing environment variable ${name}`);
   return value;
 }

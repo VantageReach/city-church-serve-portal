@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { adminClient, env, json, sendEmail } from '../../lib/server';
+import { adminClient, env, json, optionalEnv, sendEmail } from '../../lib/server';
 import { isValidResults, staffAlertEmail } from '../../lib/results';
 
 export const prerender = false;
@@ -53,7 +53,8 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const notify = process.env.STAFF_NOTIFY_EMAIL;
+    const notify = optionalEnv('STAFF_NOTIFY_EMAIL');
+    if (!notify) console.warn('STAFF_NOTIFY_EMAIL is not set; skipping staff alert');
     if (notify) {
       await sendEmail(
         notify,
