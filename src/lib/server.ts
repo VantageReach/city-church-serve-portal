@@ -20,7 +20,13 @@ export function adminClient() {
   });
 }
 
-export async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
+export async function sendEmail(
+  to: string,
+  subject: string,
+  html: string,
+  replyTo?: string,
+  scheduledAt?: Date,
+): Promise<string | undefined> {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -33,9 +39,19 @@ export async function sendEmail(to: string, subject: string, html: string, reply
       subject,
       html,
       ...(replyTo ? { reply_to: replyTo } : {}),
+      ...(scheduledAt ? { scheduled_at: scheduledAt.toISOString() } : {}),
     }),
   });
   if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
+  return (await res.json().catch(() => ({})))?.id;
+}
+
+// Fails harmlessly if the email already went out; the caller just schedules a fresh one.
+export async function cancelScheduledEmail(id: string) {
+  await fetch(`https://api.resend.com/emails/${encodeURIComponent(id)}/cancel`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env('RESEND_API_KEY')}` },
+  }).catch(() => undefined);
 }
 
 export function json(body: unknown, status = 200) {

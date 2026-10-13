@@ -227,8 +227,7 @@ var TEAM_PAGES = {
  add("Creative Team","Capture (Photo & Video)","Photographs and films the life of the church.",["craftsmanship","service"],["C","I"]);
  add("Creative Team","Create (Graphics)","Designs graphics that tell the City Church story.",["craftsmanship"],["C","I"]);
  add("Creative Team","Convey (Social & Email)","Writes and shares the story through social media and email.",["craftsmanship","evangelism","administration"],["I","C"]);
- add("Safety Team","Medical Team","Ready to help if someone needs medical attention.",["mercy","helps","service","wisdom"],["C","S"]);
- add("Safety Team","Security","Watches over the building and keeps every guest safe.",["discernment","helps","service","shepherding"],["D","C"]);
+ add("Safety Team","Safety Team","Keeps every guest safe, from watching over the building to helping when someone needs medical attention.",["helps","service","discernment","mercy","wisdom"],["C","S"]);
  
  add("Student Ministry","Student Ministry Volunteer","Comes alongside our student leaders to love, support, and connect with students, and sometimes to teach.",["shepherding","mercy","exhortation","helps","teaching"],["I","S"]);
  add("Outreach","Global Outreach Lead","Leads the church's efforts to give and go beyond our own walls.",["missionary","apostleship","leadership","evangelism","giving"],["D","I"]);
@@ -560,7 +559,7 @@ function giftMore(g){
     '<p class="signs-h">Where this gift serves at City Church</p>'+
     (roles.length?'<ul class="serves">'+roles.map(function(t){
       var url=TEAM_PAGES[t.team];
-      return '<li>'+(url?'<a href="'+url+'">'+esc(t.role)+'</a>':esc(t.role))+' <span class="muted">· '+esc(t.team)+'</span></li>';
+      return '<li>'+(url?'<a href="'+url+'">'+esc(t.role)+'</a>':esc(t.role))+(t.team!==t.role?' <span class="muted">· '+esc(t.team)+'</span>':'')+'</li>';
     }).join('')+'</ul>':'<p class="muted">This gift can strengthen any team. Talk with a staff member about where it fits best for you.</p>');
 }
 
@@ -625,7 +624,7 @@ function viewResults(){
     var P=pickRoles(R),all=P.all,M=P.M,used=P.used;
     h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three roles fit your gifts and style best. They are suggestions, not assignments.</p>';
     M.forEach(function(m){
-      h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
+      h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team&&m.t.team!==m.t.role?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
          (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+
          '<div class="team-actions"><div class="interest-wrap" data-key="'+esc(m.t.team+"|"+m.t.role)+'">'+interestBtn(m)+'</div>'+
@@ -675,13 +674,17 @@ function refreshInterestButtons(){
   });
 }
 
+// Taps go to the server one at a time so the combined staff email always reflects the latest list.
+var interestQueue=Promise.resolve();
 function toggleInterest(b){
   if(!S.sid||b.disabled)return;
   var role=b.getAttribute("data-role"), team=b.getAttribute("data-team"), on=b.getAttribute("aria-pressed")!=="true";
   b.disabled=true;
-  post("/api/interest/",{id:S.sid,role:role,team:team,interested:on})
-    .then(function(j){S.interests=j.interests||[];save();refreshInterestButtons();})
-    .catch(function(err){b.disabled=false;emailState="error";emailMsg=err.message;updateActions();});
+  interestQueue=interestQueue.then(function(){
+    return post("/api/interest/",{id:S.sid,role:role,team:team,interested:on})
+      .then(function(j){S.interests=j.interests||[];save();refreshInterestButtons();})
+      .catch(function(err){b.disabled=false;emailState="error";emailMsg=err.message;updateActions();});
+  });
 }
 
 function updateActions(){var a=document.getElementById("sg-actions");if(a)a.innerHTML=actionsHtml();}

@@ -103,7 +103,7 @@ function rolesBlock(r: QuizResults, siteUrl: string) {
   return r.roles
     .map((m) => `<div style="border:1px solid ${LINE};border-left:5px solid ${GREEN};border-radius:10px;padding:14px 16px;margin-bottom:10px">
         <div style="font-weight:800;font-size:16px;text-transform:uppercase">${esc(m.role)}</div>
-        <div style="font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${esc(m.team)}</div>
+        ${m.team !== m.role ? `<div style="font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${esc(m.team)}</div>` : ''}
         ${m.description ? `<p style="margin:0 0 6px;font-size:14px;line-height:1.55">${esc(m.description)}</p>` : ''}
         ${m.why ? `<p style="margin:0 0 6px;font-size:13px;color:${MUTED}">${esc(m.why)}</p>` : ''}
         ${m.url ? `<a href="${esc(siteUrl + m.url)}" style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${GREEN_DARK};text-decoration:none">View team page &rarr;</a>` : ''}
@@ -148,8 +148,11 @@ export function staffAlertEmail(p: Person, r: QuizResults, siteUrl: string, id: 
   return personAlert('New Spiritual Gifts Test result', '', p, r, siteUrl, id, `${p.name} finished the test`);
 }
 
-export function interestAlertEmail(p: Person, role: { role: string; team: string }, r: QuizResults, siteUrl: string, id: string) {
-  const intro = `<p style="margin:0 0 16px;padding:12px 14px;background:#F0F9E0;border-left:4px solid ${GREEN};border-radius:6px;font-size:15px;line-height:1.5">
-      <b>${esc(p.name)}</b> tapped “I’m interested” on <b>${esc(role.role)}</b> (${esc(role.team)}). Reach out to help them take the next step.</p>`;
-  return personAlert('Interested in serving', intro, p, r, siteUrl, id, `${p.name} is interested in ${role.role}`);
+export function interestAlertEmail(p: Person, roles: { role: string; team: string }[], r: QuizResults, siteUrl: string, id: string) {
+  const list = roles.map((x) => `<li style="margin:2px 0"><b>${esc(x.role)}</b> (${esc(x.team)})</li>`).join('');
+  const intro = `<div style="margin:0 0 16px;padding:12px 14px;background:#F0F9E0;border-left:4px solid ${GREEN};border-radius:6px;font-size:15px;line-height:1.5">
+      <b>${esc(p.name)}</b> tapped “I’m interested” on ${roles.length === 1 ? 'this role' : `these ${roles.length} roles`}:
+      <ul style="margin:6px 0 4px;padding-left:20px">${list}</ul>
+      Reach out to help them take the next step.</div>`;
+  return personAlert('Interested in serving', intro, p, r, siteUrl, id, `${p.name} is interested in ${roles.map((x) => x.role).join(', ')}`);
 }

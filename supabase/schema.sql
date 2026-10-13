@@ -59,3 +59,6 @@ create policy "staff can update follow-up" on public.quiz_responses
 -- Staff may only change follow-up fields; everything else stays as the person submitted it.
 revoke update on public.quiz_responses from authenticated;
 grant update (status, notes, updated_at) on public.quiz_responses to authenticated;
+
+-- Pending "interested" staff email, so later taps can replace it with one combined email.
+alter table public.quiz_responses add column if not exists interest_email_id text;
