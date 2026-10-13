@@ -106,6 +106,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .team .why{font-size:.95rem;color:var(--muted)}
 #sg .roles{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
 #sg .roles li{font-size:.95rem}
+#sg .team-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand-dark);text-decoration:none}
+#sg .team-link span,#sg .team-head span{display:inline-block;transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
+#sg .team-link:hover span,#sg .team-head:hover span{transform:translateX(3px)}
+#sg .team-link:hover{text-decoration:underline;text-underline-offset:3px}
+#sg .team-link:active span,#sg .team-head:active span{transform:translateX(1px)}
+#sg .team-head{color:inherit;text-decoration:none}
+#sg .team-head span{color:var(--brand-dark)}
+#sg .team-head:hover{color:var(--brand-dark)}
+@media print{#sg .team-link{display:none}}
 
 @media (max-width:420px){
   #sg .list li{grid-template-columns:7.4rem 1fr 2.4rem}
@@ -131,6 +140,22 @@ var CONFIG = {
    add("Impressions", "Greeter", "Welcomes people warmly.", ["hospitality","mercy","service"], ["I","S"])   (list the most important gift first)
 */
 var TEAMS = [];
+var TEAM_PAGES = {
+ "Worship":"/teams/worship/",
+ "Kid City":"/teams/kid-city/",
+ "Production":"/teams/production/",
+ "Impressions":"/teams/impressions/",
+ "Care Team":"/teams/care/",
+ "Prayer Team":"/teams/prayer/",
+ "Creative Team":"/teams/creative/",
+ "Safety Team":"/teams/safety/",
+ "Student Ministry":"/teams/student-ministry/",
+ "Outreach":"/teams/outreach/",
+ "Next Steps":"/teams/next-steps/",
+ "Life Groups":"/teams/life-groups/",
+ "Milestones":"/teams/milestones/",
+ "Facilities":"/teams/facilities/"
+};
 (function(){
  function add(team,role,description,gifts,disc){TEAMS.push({team:team,role:role,description:description,gifts:gifts,disc:disc});}
  add("Worship","Worship Leader","Leads the church in song and sets the tone for worship.",["music","leadership","prophecy"],["D","I"]);
@@ -462,13 +487,14 @@ function viewResults(){
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
-         (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+'</div>';
+         (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+
+         (TEAM_PAGES[m.t.team]?'<a class="team-link" href="'+TEAM_PAGES[m.t.team]+'">View team page <span aria-hidden="true">→</span></a>':"")+'</div>';
     });
     var order=[],groups={};
     all.forEach(function(m){if(used[m.t.team+"|"+m.t.role])return;if(!groups[m.t.team]){groups[m.t.team]=[];order.push(m.t.team);}groups[m.t.team].push(m);});
     h+='<h3 style="margin:30px 0 12px">The rest of our serving teams</h3>';
     order.forEach(function(team){
-      h+='<div class="card"><h3>'+esc(team)+'</h3><ul class="roles">';
+      h+='<div class="card"><h3>'+(TEAM_PAGES[team]?'<a class="team-head" href="'+TEAM_PAGES[team]+'">'+esc(team)+' <span aria-hidden="true">→</span></a>':esc(team))+'</h3><ul class="roles">';
       groups[team].forEach(function(m){h+='<li><b>'+esc(m.t.role)+'</b>'+(m.t.description?' <span class="muted">'+esc(m.t.description)+'</span>':"")+'</li>';});
       h+='</ul></div>';
     });
