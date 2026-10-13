@@ -274,7 +274,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   function openRow(id: string) {
-    history.pushState(null, '', `/staff/?id=${encodeURIComponent(id)}`);
+    history.pushState(null, '', `/dashboard/?id=${encodeURIComponent(id)}`);
     showDetail(id);
   }
 
@@ -290,7 +290,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
   });
   $('back').addEventListener('click', () => {
-    history.pushState(null, '', '/staff/');
+    history.pushState(null, '', '/dashboard/');
     route();
   });
   window.addEventListener('popstate', route);
@@ -312,7 +312,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     btn.textContent = 'Sending…';
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/staff/${location.search}` },
+      options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/dashboard/${location.search}` },
     });
     btn.disabled = false;
     btn.textContent = 'Email me a sign-in link';

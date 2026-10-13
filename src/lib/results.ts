@@ -136,6 +136,6 @@ export function staffAlertEmail(p: { name: string; email: string; phone: string 
       ${row('Style', esc(`${r.disc.code} · ${r.disc.label}`))}
       ${row('Suggested', esc(r.roles.map((m) => `${m.role} (${m.team})`).join(', ')))}
     </table>
-    <p style="margin:22px 0 0"><a href="${esc(siteUrl)}/staff/?id=${esc(id)}" style="display:inline-block;background:${NAVY};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Open in staff dashboard</a></p>`;
+    <p style="margin:22px 0 0"><a href="${esc(siteUrl)}/dashboard/?id=${esc(id)}" style="display:inline-block;background:${NAVY};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Open in staff dashboard</a></p>`;
   return shell(inner, `${p.name} finished the test`);
 }
