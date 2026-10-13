@@ -4,122 +4,122 @@ export const GIFTS = [
   "I enjoy turning a big, messy idea into a clear plan with steps and deadlines.",
   "I notice what people, supplies, and time an event will need before anyone asks.",
   "When a ministry feels disorganized, I feel driven to build a better system for it.",
-  "People have told me I'm the one who makes things run smoothly."]},
+  "I feel satisfied when something messy finally runs smoothly because of a plan I put together."]},
  {id:"apostleship",name:"Apostleship",ref:"Ephesians 4:11",def:"The Spirit-given ability to start new works, pioneering churches, ministries, and gospel outposts where nothing exists yet.",q:[
   "I get excited about starting something new where nothing exists yet.",
   "I feel pulled toward launching new churches, ministries, or outreach efforts.",
   "I'm comfortable taking risks to open new ground for the gospel.",
-  "Others have recognized me as someone who gets new works started and then trains others to carry them on."]},
+  "I feel restless when the church isn't reaching new places or new people."]},
  {id:"craftsmanship",name:"Craftsmanship",ref:"Exodus 31:1-5",def:"The Spirit-given ability to design and build with your hands for the glory of God: wood, metal, fabric, paint, pixels, and stages.",q:[
   "I love making things with my hands or with design tools for the church to use.",
   "I can picture how a stage, set, or space should look and then bring it to life.",
   "I take real pride in careful, well-made work that honors God.",
-  "People have said something I built or designed helped them worship or understand more."]},
+  "I feel close to God when I'm building, fixing, or designing something."]},
  {id:"discernment",name:"Discernment",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to distinguish truth from error and the genuine from the counterfeit, in teaching, in motives, and in spiritual influences.",q:[
   "I often sense when a teaching or a person isn't right, even before I can explain why.",
   "I notice when someone's words and motives don't match.",
   "I can tell when something sounds good but doesn't line up with Scripture.",
-  "People come to me to help them tell whether something is truly from God."]},
+  "I enjoy helping people sort out what is true from what only sounds true."]},
  {id:"evangelism",name:"Evangelism",ref:"Ephesians 4:11",def:"The Spirit-given ability to share the gospel with unbelievers in a way that moves them toward faith in Jesus.",q:[
   "I look for chances to bring up Jesus with people who don't know him.",
   "I feel joy, not dread, when I explain the gospel to someone who doesn't believe.",
   "I'm burdened for people far from God and want to do something about it.",
-  "I've seen people begin to trust Christ after talking with me."]},
+  "Telling someone how Jesus changed my life comes naturally to me."]},
  {id:"exhortation",name:"Exhortation",ref:"Romans 12:8",def:"The Spirit-given ability to come alongside people and move them forward: comforting the discouraged, challenging the stuck, and calling out what God is doing in someone before they can see it themselves.",q:[
   "I enjoy encouraging people who are discouraged or stuck.",
   "I can often see what God is doing in someone and I love telling them.",
   "I'm willing to say a hard thing, kindly, to help someone take their next step.",
-  "People often seek me out for a word of encouragement or direction."]},
+  "I find myself thinking about how to help someone take their next step with God."]},
  {id:"faith",name:"Faith",ref:"1 Corinthians 12:9",def:"The Spirit-given ability to trust God for what looks impossible, and to steady everyone else while He does it.",q:[
   "I stay calm and trust God when a situation looks impossible.",
   "I'm often sure God will provide when others see no way forward.",
   "I'm willing to step out on a big, God-sized goal before the resources are in sight.",
-  "Others have told me my trust in God steadied them in a hard time."]},
+  "Praying for big things that only God can do excites me."]},
  {id:"giving",name:"Giving",ref:"Romans 12:8",def:"The Spirit-given ability to contribute money and resources to God's work with unusual generosity, wisdom, and joy.",q:[
   "I enjoy giving money or resources well beyond what's expected.",
   "I look for needs I can meet with what I have, often without anyone knowing.",
   "I think of my income as something to use for God's work.",
-  "People have commented on how generous I am."]},
+  "I often think about how I can use what I have to bless someone else."]},
  {id:"healing",name:"Healing",ref:"1 Corinthians 12:9",def:"The Spirit-given ability to be God's instrument of restoration in another person's body, mind, or spirit, most often through prayer.",q:[
   "I feel drawn to pray for people who are sick or hurting in body or mind.",
   "When I pray for someone who is ill, I often sense God's presence or leading.",
   "I believe God still heals today and I'm willing to ask boldly.",
-  "People have told me they were helped or restored after I prayed with them."]},
+  "I feel compassion and faith rise up in me when I pray for someone who is sick."]},
  {id:"helps",name:"Helps",ref:"1 Corinthians 12:28",def:"The Spirit-given ability to free other people for their ministry by taking real work off their plate.",q:[
   "I'm glad to take tasks off someone's plate so they can focus on their ministry.",
   "I'd rather support someone's work behind the scenes than lead it.",
   "I notice what a person needs in order to do their job well and quietly handle it.",
-  "Leaders have told me I make their work easier."]},
+  "I feel good when my help lets someone else succeed."]},
  {id:"hospitality",name:"Hospitality",ref:"1 Peter 4:9",def:"The Spirit-given ability to make people feel genuinely welcomed, safe, and at home, strangers included, especially.",q:[
   "I love making guests feel at home, especially newcomers and strangers.",
   "I enjoy opening my home or my time to people.",
   "I notice who is standing alone and go introduce myself.",
-  "People have told me they felt welcomed because of me."]},
+  "I enjoy planning how to make a guest feel comfortable."]},
  {id:"intercession",name:"Intercession",ref:"Colossians 4:12-13",def:"The Spirit-given ability to pray for others persistently, specifically, and with unusual burden and effect.",q:[
   "I'm drawn to pray for others for long stretches of time.",
   "I keep praying about a specific need until I sense God has answered.",
   "I'm often moved to pray for someone before I even know what's going on.",
-  "People ask me to pray for them because they've seen God answer."]},
+  "I find myself praying for people throughout the day, even when I'm busy."]},
  {id:"knowledge",name:"Knowledge",ref:"1 Corinthians 12:8",def:"The Spirit-given ability to learn, retain, and organize the truths of God's Word, and to bring the right truth to bear at the right moment.",q:[
   "I love studying Scripture and I remember what I learn.",
   "I can connect passages and facts and organize them so they make sense together.",
   "The right verse or biblical truth often comes to mind at just the right moment.",
-  "People come to me to find out what the Bible says about something."]},
+  "When I have a question, I keep digging until I find what Scripture says about it."]},
  {id:"leadership",name:"Leadership",ref:"Romans 12:8",def:"The Spirit-given ability to set direction for God's people and move them toward it together, with zeal, Scripture says.",q:[
   "When a group has no direction, I naturally step up and set one.",
   "I can get people excited about a shared goal and moving together.",
   "I'm comfortable carrying responsibility and making decisions for a group.",
-  "People follow me even when I haven't been given official authority."]},
+  "I often picture where a group could go and how to get it there."]},
  {id:"mercy",name:"Mercy",ref:"Romans 12:8",def:"The Spirit-given ability to feel the pain of hurting people and move toward them with practical, cheerful compassion.",q:[
   "I feel other people's pain deeply and want to move toward it.",
   "I enjoy caring for people who are hurting, lonely, or overlooked.",
   "I can sit with someone in their grief without needing to fix it.",
-  "People tell me they feel comforted and safe around me."]},
+  "Hearing about someone's struggle stays with me, and I want to do something about it."]},
  {id:"miracles",name:"Miracles",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to be God's instrument for works of power that go beyond natural explanation, interventions that authenticate the gospel and awaken faith.",q:[
   "I've seen God do things through prayer that can't be explained naturally.",
   "I pray expecting God to do the extraordinary.",
   "When something supernatural happens, I'm drawn toward it rather than afraid of it.",
-  "Others have said God worked in powerful, unexplainable ways through me."]},
+  "Stories of God doing the impossible stir my faith to ask for more."]},
  {id:"missionary",name:"Missionary",ref:"Acts 13:2-3",def:"The Spirit-given ability to minister effectively across cultures: to leave what's familiar, love what's foreign, and make the gospel at home in a culture not your own.",q:[
   "I feel drawn to people of other cultures and nationalities.",
   "I'd be willing to move somewhere unfamiliar to share the gospel.",
   "I adapt quickly to new customs, languages, and ways of life.",
-  "Others have told me they could see me thriving in cross-cultural ministry."]},
+  "I enjoy imagining how I could serve God in another country or culture."]},
  {id:"music",name:"Music",ref:"1 Chronicles 25:1-7",def:"The Spirit-given ability to lead God's people toward Him through song and skillful playing, using melody to teach, unite, and lift the church's heart.",q:[
   "I feel most alive when I'm singing or playing to help others worship.",
   "I pick up music quickly and can help a group sing together.",
   "I'm drawn to songs that help people say true things about God.",
-  "People have told me the music I sing or play helped them draw closer to God."]},
+  "I feel closer to God when I sing or play music."]},
  {id:"prophecy",name:"Prophecy",ref:"1 Corinthians 14:3",def:"The Spirit-given ability to declare God's truth with timeliness and power, speaking to people, as Paul defines it, \u201Cfor their upbuilding and encouragement and consolation.\u201D",q:[
   "I feel a strong pull to speak God's truth even when it's uncomfortable.",
   "I often sense what God wants to say to a person or group at a particular moment.",
   "When I speak a message from God, my aim is to build up, encourage, and comfort.",
-  "People tell me something I shared was exactly what they needed to hear."]},
+  "I find myself thinking about how a truth from God applies to someone's situation right now."]},
  {id:"service",name:"Service",ref:"Romans 12:7",def:"The Spirit-given ability to see practical needs and joyfully meet them: the ministry of stacked chairs, filled coffee urns, and jobs done before anyone asked.",q:[
   "I notice practical needs like setup, cleanup, and supplies and jump in without being asked.",
   "I find real joy in tasks other people overlook.",
   "I'd rather roll up my sleeves than sit through a discussion about the problem.",
-  "People say I'm dependable and always show up to help."]},
+  "I feel fulfilled after a day of practical work that helped someone."]},
  {id:"shepherding",name:"Shepherding",ref:"Ephesians 4:11",def:"The Spirit-given ability to care for a group of believers over time: feeding, protecting, guiding, and going after the one who wanders.",q:[
   "I enjoy caring for the same group of people over a long period.",
   "When someone drifts away, I feel I should go after them.",
   "I feel responsible to guide, protect, and spiritually feed the people around me.",
-  "People think of me as their pastor or shepherd, even without the title."]},
+  "I find myself checking in on people to see how they're really doing."]},
  {id:"teaching",name:"Teaching",ref:"Romans 12:7",def:"The Spirit-given ability to explain God's Word so clearly that people understand it, believe it, and live it.",q:[
   "I love explaining Scripture so that other people truly get it.",
   "I spend time organizing what I learn so I can teach it clearly.",
   "I light up when someone finally understands something I've been explaining.",
-  "People say I make difficult ideas easy to follow."]},
+  "I enjoy explaining things so people can understand them, whether it's the Bible or everyday topics."]},
  {id:"tongues",name:"Tongues & Interpretation",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to pray or speak in a language the speaker hasn't learned; the gift of interpretation makes that speech intelligible so the church is built up.",q:[
   "I have prayed or spoken in a language I have not learned.",
   "I sometimes sense the meaning of a message that was spoken in tongues.",
   "I'm comfortable in settings where tongues are used in an orderly way to build up the church.",
-  "Others have confirmed that a message I gave in tongues, or interpreted, was from God."]},
+  "Praying in the Spirit builds my faith and draws me closer to God."]},
  {id:"wisdom",name:"Wisdom",ref:"1 Corinthians 12:8",def:"The Spirit-given ability to apply God's truth to real situations: knowing not just what's true, but what to do.",q:[
-  "People ask me what to do when a situation is complicated.",
+  "I enjoy helping someone think through a complicated decision.",
   "I often see a practical, godly way through a problem.",
   "I know not only what is true but what to do about it.",
-  "Others have said my advice turned out to be wise."]}
+  "I find myself thinking about how God's Word applies to everyday choices."]}
 ];
 
 const GIFT_INFO = {
