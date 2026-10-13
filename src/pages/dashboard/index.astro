@@ -63,6 +63,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
           </div>
         </div>
+        <div id="filters" class="flex flex-wrap gap-2 mb-5" role="group" aria-label="Filter by follow-up status"></div>
         <p id="list-error" class="hidden mb-4 text-sm font-semibold" style="color:#C41C35;"></p>
         <div class="card staff-static overflow-x-auto">
           <table class="w-full text-sm">
@@ -72,6 +73,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                 <th class="px-5 py-3 font-semibold hidden md:table-cell">Contact</th>
                 <th class="px-5 py-3 font-semibold hidden sm:table-cell">Top gifts</th>
                 <th class="px-5 py-3 font-semibold">Style</th>
+                <th class="px-5 py-3 font-semibold">Status</th>
                 <th class="px-5 py-3 font-semibold hidden lg:table-cell">Taken</th>
               </tr>
             </thead>
@@ -110,6 +112,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .staff-meter.top > span { background:#8CC640; }
   .staff-link { color:#6FA32E; font-weight:600; }
   .staff-link:hover { text-decoration:underline; text-underline-offset:3px; }
+  .pill { display:inline-flex; align-items:center; gap:.35rem; border-radius:999px; padding:.2rem .65rem; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; }
+  .pill-new { background:#FFF4E0; color:#9A5B00; }
+  .pill-contacted { background:#E8EDF8; color:#3A5490; }
+  .pill-placed { background:#F0F9E0; color:#4F7A1C; }
+  .pill-interest { background:#8CC640; color:#fff; }
+  .filter-btn { border:2px solid #E3E6EC; background:#fff; border-radius:999px; padding:.4rem .9rem; font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#101B2E; transition:transform .2s cubic-bezier(0.22,1,0.36,1); }
+  .filter-btn:hover { border-color:#B0BCDD; transform:translateY(-1px); }
+  .filter-btn:active { transform:translateY(0); }
+  .filter-btn:focus-visible { outline:2px solid #8CC640; outline-offset:2px; }
+  .filter-btn[aria-pressed="true"] { background:#101B2E; border-color:#101B2E; color:#fff; }
+  .filter-btn .n { opacity:.6; margin-left:.3rem; }
+  .status-btn { flex:1; border:2px solid #E3E6EC; background:#fff; border-radius:10px; padding:.55rem .5rem; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#101B2E; transition:transform .2s cubic-bezier(0.22,1,0.36,1); }
+  .status-btn:hover { border-color:#B0BCDD; transform:translateY(-1px); }
+  .status-btn:active { transform:translateY(0); }
+  .status-btn:focus-visible { outline:2px solid #8CC640; outline-offset:2px; }
+  .status-btn[aria-pressed="true"][data-status="new"] { background:#FFF4E0; border-color:#E8B860; color:#9A5B00; }
+  .status-btn[aria-pressed="true"][data-status="contacted"] { background:#E8EDF8; border-color:#7A8FBE; color:#3A5490; }
+  .status-btn[aria-pressed="true"][data-status="placed"] { background:#F0F9E0; border-color:#8CC640; color:#4F7A1C; }
+  .status-btn:disabled { opacity:.6; cursor:wait; }
 </style>
 
 <script>
@@ -123,10 +144,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  type Status = 'new' | 'contacted' | 'placed';
+  type Interest = { role: string; team: string; at?: string };
   type Row = {
     id: string; created_at: string; name: string; email: string; phone: string;
-    top_gifts: string[]; disc_style: string; results?: any;
+    top_gifts: string[]; disc_style: string; status: Status; interests: Interest[]; results?: any;
   };
+
+  const STATUSES: { key: Status; label: string }[] = [
+    { key: 'new', label: 'New' },
+    { key: 'contacted', label: 'Contacted' },
+    { key: 'placed', label: 'Placed' },
+  ];
+  const statusLabel = (s: Status) => STATUSES.find((x) => x.key === s)?.label ?? 'New';
+  const pill = (s: Status) => `<span class="pill pill-${esc(s)}">${statusLabel(s)}</span>`;
+  let filter: Status | 'all' | 'interested' = 'all';
 
   const $ = (id: string) => document.getElementById(id)!;
   const views = ['loading', 'view-signin', 'view-denied', 'view-list', 'view-detail'];
@@ -163,7 +195,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   async function loadRows() {
     const { data, error } = await supabase
       .from('quiz_responses')
-      .select('id, created_at, name, email, phone, top_gifts, disc_style')
+      .select('id, created_at, name, email, phone, top_gifts, disc_style, status, interests')
       .order('created_at', { ascending: false })
       .limit(2000);
     const err = $('list-error');
@@ -178,30 +210,45 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     renderList();
   }
 
+  function renderFilters() {
+    const count = (f: typeof filter) =>
+      f === 'all' ? rows.length : f === 'interested' ? rows.filter((r) => r.interests?.length).length : rows.filter((r) => r.status === f).length;
+    const opts: { key: typeof filter; label: string }[] = [{ key: 'all', label: 'All' }, ...STATUSES, { key: 'interested', label: 'Interested' }];
+    $('filters').innerHTML = opts
+      .map((o) => `<button class="filter-btn" data-filter="${o.key}" aria-pressed="${filter === o.key}">${o.label}<span class="n">${count(o.key)}</span></button>`)
+      .join('');
+  }
+
   function renderList() {
+    renderFilters();
     const q = (($('search') as HTMLInputElement).value || '').trim().toLowerCase();
+    const byStatus = filter === 'all' ? rows
+      : filter === 'interested' ? rows.filter((r) => r.interests?.length)
+      : rows.filter((r) => r.status === filter);
     const list = q
-      ? rows.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || [])].join(' ').toLowerCase().includes(q))
-      : rows;
+      ? byStatus.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || []), ...(r.interests || []).map((i) => i.role)].join(' ').toLowerCase().includes(q))
+      : byStatus;
 
     $('count').textContent = String(list.length);
-    $('count-label').textContent = q
-      ? `of ${rows.length} ${rows.length === 1 ? 'response' : 'responses'} match`
+    $('count-label').textContent = q || filter !== 'all'
+      ? `of ${rows.length} ${rows.length === 1 ? 'response' : 'responses'}`
       : list.length === 1 ? 'response' : 'responses';
 
     $('rows').innerHTML = list
       .map((r) => `<tr class="staff-row" tabindex="0" data-id="${esc(r.id)}">
-        <td class="px-5 py-4"><div class="font-semibold text-navy-800">${esc(r.name)}</div><div class="text-xs text-stone-500 md:hidden">${esc(r.email)}</div></td>
+        <td class="px-5 py-4"><div class="font-semibold text-navy-800">${esc(r.name)}</div><div class="text-xs text-stone-500 md:hidden">${esc(r.email)}</div>${
+          r.interests?.length ? `<div class="mt-1.5"><span class="pill pill-interest">Interested</span> <span class="text-xs text-stone-700">${esc(r.interests.map((i) => i.role).join(', '))}</span></div>` : ''}</td>
         <td class="px-5 py-4 hidden md:table-cell"><div class="text-navy-800">${esc(r.email)}</div><div class="text-xs text-stone-500">${esc(r.phone)}</div></td>
         <td class="px-5 py-4 hidden sm:table-cell text-stone-700">${esc((r.top_gifts || []).join(', '))}</td>
         <td class="px-5 py-4"><span class="font-display text-lg font-black" style="color:#6FA32E;">${esc(r.disc_style)}</span></td>
+        <td class="px-5 py-4">${pill(r.status || 'new')}</td>
         <td class="px-5 py-4 hidden lg:table-cell text-stone-500 whitespace-nowrap">${fmtDate(r.created_at)}</td>
       </tr>`)
       .join('');
 
     const empty = $('empty');
     empty.classList.toggle('hidden', list.length > 0);
-    empty.textContent = rows.length === 0 ? 'No one has taken the test yet. Responses will show up here as soon as someone finishes.' : 'No responses match that search.';
+    empty.textContent = rows.length === 0 ? 'No one has taken the test yet. Responses will show up here as soon as someone finishes.' : 'No responses match.';
   }
 
   async function showDetail(id: string) {
@@ -228,9 +275,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const bars = (disc.bars || []).map((b: any) => `
       <li class="grid items-center gap-3 text-sm" style="grid-template-columns: 6rem 1fr 2rem;"><span class="font-semibold text-navy-800">${esc(b.name)}</span>${meter(b.pct, false)}<span class="text-right text-stone-500">${b.pct}</span></li>`).join('');
 
+    const interests: Interest[] = Array.isArray(r.interests) ? r.interests : [];
+    const interestFor = (m: any) => interests.find((i) => i.role === m.role && i.team === m.team);
     const roles = (res.roles || []).map((m: any) => `
       <div class="py-3 border-t border-stone-200 first:border-0">
-        <div class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing:.01em">${esc(m.role)}</div>
+        <div class="flex items-center justify-between gap-2"><span class="font-display text-lg font-black uppercase text-navy-800" style="letter-spacing:.01em">${esc(m.role)}</span>${
+          interestFor(m) ? `<span class="pill pill-interest" title="${interestFor(m)!.at ? 'Marked ' + esc(fmtDateTime(interestFor(m)!.at!)) : ''}">Interested</span>` : ''}</div>
         <div class="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-1">${m.url ? `<a class="staff-link" href="${esc(m.url)}">${esc(m.team)}</a>` : esc(m.team)}</div>
         ${m.description ? `<p class="text-sm text-stone-700 leading-relaxed">${esc(m.description)}</p>` : ''}
         ${m.why ? `<p class="text-xs text-stone-500 mt-1">${esc(m.why)}</p>` : ''}
@@ -249,6 +299,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <div><dt class="text-xs font-semibold uppercase tracking-widest text-stone-500">Taken</dt><dd class="text-navy-800">${fmtDateTime(r.created_at)}</dd></div>
             </dl>
           </div>
+          <div class="card staff-static p-6">
+            <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-3" style="letter-spacing:.01em">Follow-up</h3>
+            <div class="flex gap-2 mb-4" role="group" aria-label="Follow-up status" id="status-group">
+              ${STATUSES.map((st) => `<button class="status-btn" data-status="${st.key}" aria-pressed="${(r.status || 'new') === st.key}">${st.label}</button>`).join('')}
+            </div>
+            <label for="notes" class="staff-label">Notes</label>
+            <textarea id="notes" rows="5" class="staff-input" style="min-height:120px;resize:vertical" placeholder="Called on Sunday, wants to shadow a Greeter…">${esc(r.notes || '')}</textarea>
+            <div class="flex items-center gap-3 mt-3">
+              <button id="save-notes" class="btn-primary !py-2.5 !px-5 !text-xs">Save notes</button>
+              <span id="followup-msg" class="text-sm font-semibold" role="status"></span>
+            </div>
+            ${r.updated_at ? `<p class="text-xs text-stone-500 mt-3">Last updated ${esc(fmtDateTime(r.updated_at))}</p>` : ''}
+          </div>
           ${card('Suggested roles', roles || '<p class="text-sm text-stone-500">No roles suggested.</p>')}
         </div>
         <div class="lg:col-span-2 space-y-6">
@@ -261,7 +324,52 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           ${card('All gifts', `<ul class="space-y-2.5">${allGifts}</ul>`)}
         </div>
       </div>`;
+    wireFollowUp(r.id);
     window.scrollTo(0, 0);
+  }
+
+  function followMsg(text: string, ok: boolean) {
+    const m = document.getElementById('followup-msg');
+    if (!m) return;
+    m.style.color = ok ? '#6FA32E' : '#C41C35';
+    m.textContent = text;
+  }
+
+  async function saveFollowUp(id: string, patch: { status?: Status; notes?: string }) {
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ ...patch, updated_at: new Date().toISOString() })
+      .eq('id', id);
+    if (error) {
+      followMsg(`Couldn’t save: ${error.message}`, false);
+      return false;
+    }
+    const row = rows.find((x) => x.id === id);
+    if (row && patch.status) row.status = patch.status;
+    return true;
+  }
+
+  function wireFollowUp(id: string) {
+    const group = document.getElementById('status-group');
+    group?.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest('button[data-status]') as HTMLButtonElement | null;
+      if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
+      const status = btn.getAttribute('data-status') as Status;
+      const buttons = Array.from(group.querySelectorAll('button')) as HTMLButtonElement[];
+      buttons.forEach((b) => (b.disabled = true));
+      if (await saveFollowUp(id, { status })) {
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        followMsg(`Marked ${statusLabel(status).toLowerCase()}.`, true);
+      }
+      buttons.forEach((b) => (b.disabled = false));
+    });
+    document.getElementById('save-notes')?.addEventListener('click', async (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      const notes = (document.getElementById('notes') as HTMLTextAreaElement).value.slice(0, 5000);
+      btn.disabled = true;
+      if (await saveFollowUp(id, { notes })) followMsg('Notes saved.', true);
+      btn.disabled = false;
+    });
   }
 
   function route() {
@@ -295,6 +403,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   });
   window.addEventListener('popstate', route);
   $('search').addEventListener('input', renderList);
+  $('filters').addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('button[data-filter]');
+    if (!btn) return;
+    filter = btn.getAttribute('data-filter') as typeof filter;
+    renderList();
+  });
 
   $('signin-form').addEventListener('submit', async (e) => {
     e.preventDefault();

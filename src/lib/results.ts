@@ -125,10 +125,13 @@ export function resultsEmail(name: string, r: QuizResults, siteUrl: string, foll
   return shell(inner, `Your top gifts: ${r.topGifts.slice(0, 3).map((g) => g.name).join(', ')}`);
 }
 
-export function staffAlertEmail(p: { name: string; email: string; phone: string }, r: QuizResults, siteUrl: string, id: string) {
+type Person = { name: string; email: string; phone: string };
+
+function personAlert(title: string, intro: string, p: Person, r: QuizResults, siteUrl: string, id: string, preheader: string) {
   const row = (k: string, v: string) => `<tr><td style="padding:4px 12px 4px 0;font-size:13px;color:${MUTED};white-space:nowrap">${k}</td><td style="padding:4px 0;font-size:14px">${v}</td></tr>`;
   const inner = `
-    <h1 style="margin:0 0 14px;font-size:22px;text-transform:uppercase;letter-spacing:.5px">New Spiritual Gifts Test result</h1>
+    <h1 style="margin:0 0 14px;font-size:22px;text-transform:uppercase;letter-spacing:.5px">${esc(title)}</h1>
+    ${intro}
     <table role="presentation" cellpadding="0" cellspacing="0">
       ${row('Name', esc(p.name))}
       ${row('Email', `<a href="mailto:${esc(p.email)}" style="color:${GREEN_DARK}">${esc(p.email)}</a>`)}
@@ -138,5 +141,15 @@ export function staffAlertEmail(p: { name: string; email: string; phone: string 
       ${row('Suggested', esc(r.roles.map((m) => `${m.role} (${m.team})`).join(', ')))}
     </table>
     <p style="margin:22px 0 0"><a href="${esc(siteUrl)}/dashboard/?id=${esc(id)}" style="display:inline-block;background:${NAVY};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Open in staff dashboard</a></p>`;
-  return shell(inner, `${p.name} finished the test`);
+  return shell(inner, preheader);
+}
+
+export function staffAlertEmail(p: Person, r: QuizResults, siteUrl: string, id: string) {
+  return personAlert('New Spiritual Gifts Test result', '', p, r, siteUrl, id, `${p.name} finished the test`);
+}
+
+export function interestAlertEmail(p: Person, role: { role: string; team: string }, r: QuizResults, siteUrl: string, id: string) {
+  const intro = `<p style="margin:0 0 16px;padding:12px 14px;background:#F0F9E0;border-left:4px solid ${GREEN};border-radius:6px;font-size:15px;line-height:1.5">
+      <b>${esc(p.name)}</b> tapped “I’m interested” on <b>${esc(role.role)}</b> (${esc(role.team)}). Reach out to help them take the next step.</p>`;
+  return personAlert('Interested in serving', intro, p, r, siteUrl, id, `${p.name} is interested in ${role.role}`);
 }

@@ -1,0 +1,68 @@
+import type { APIRoute } from 'astro';
+import { adminClient, env, json, optionalEnv, sendEmail } from '../../lib/server';
+import { interestAlertEmail, type QuizResults } from '../../lib/results';
+
+export const prerender = false;
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+type Interest = { role: string; team: string; at: string };
+
+export const POST: APIRoute = async ({ request }) => {
+  let body: any;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'Invalid request.' }, 400);
+  }
+  const id = String(body?.id ?? '');
+  const role = String(body?.role ?? '');
+  const team = String(body?.team ?? '');
+  const interested = body?.interested === true;
+  if (!UUID_RE.test(id) || !role || !team) return json({ error: 'Invalid request.' }, 400);
+
+  const db = adminClient();
+  const { data: row, error } = await db
+    .from('quiz_responses')
+    .select('id, name, email, phone, results, interests')
+    .eq('id', id)
+    .single();
+  if (error || !row) return json({ error: 'We couldn’t find your results. Please retake the test.' }, 404);
+
+  // Only roles the test actually suggested to this person can be marked.
+  const results = row.results as QuizResults;
+  if (!results.roles.some((r) => r.role === role && r.team === team)) return json({ error: 'Invalid request.' }, 400);
+
+  const current: Interest[] = Array.isArray(row.interests) ? row.interests : [];
+  const already = current.some((i) => i.role === role && i.team === team);
+  const next = interested
+    ? already ? current : [...current, { role, team, at: new Date().toISOString() }]
+    : current.filter((i) => !(i.role === role && i.team === team));
+
+  const { error: updateError } = await db
+    .from('quiz_responses')
+    .update({ interests: next, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (updateError) {
+    console.error('interest update failed', updateError);
+    return json({ error: 'We couldn’t save that. Please try again.' }, 500);
+  }
+
+  if (interested && !already) {
+    try {
+      const notify = optionalEnv('STAFF_NOTIFY_EMAIL');
+      if (notify) {
+        await sendEmail(
+          notify,
+          `${row.name} is interested in ${role} (${team})`,
+          interestAlertEmail({ name: row.name, email: row.email, phone: row.phone }, { role, team }, results, env('SITE_URL'), id),
+          row.email,
+        );
+      }
+    } catch (e) {
+      console.error('interest alert failed', e);
+    }
+  }
+
+  return json({ interests: next.map((i) => ({ role: i.role, team: i.team })) });
+};

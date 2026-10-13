@@ -40,3 +40,22 @@ create policy "staff can see own staff row" on public.staff
 -- Create new user with "Auto Confirm User" checked (any password; they sign in by email link).
 -- Don't use "Send invitation": unconfirmed invites can't sign in while signups are disabled.
 -- insert into public.staff (email, name) values ('someone@citychurchlufkin.com', 'Someone');
+
+-- Follow-up tracking and role interest (added after launch; safe to re-run).
+alter table public.quiz_responses add column if not exists status text not null default 'new';
+alter table public.quiz_responses add column if not exists notes text not null default '';
+alter table public.quiz_responses add column if not exists interests jsonb not null default '[]'::jsonb;
+alter table public.quiz_responses add column if not exists updated_at timestamptz;
+
+alter table public.quiz_responses drop constraint if exists quiz_responses_status_check;
+alter table public.quiz_responses add constraint quiz_responses_status_check check (status in ('new', 'contacted', 'placed'));
+
+drop policy if exists "staff can update follow-up" on public.quiz_responses;
+create policy "staff can update follow-up" on public.quiz_responses
+  for update to authenticated
+  using (exists (select 1 from public.staff s where lower(s.email) = lower(auth.jwt() ->> 'email')))
+  with check (exists (select 1 from public.staff s where lower(s.email) = lower(auth.jwt() ->> 'email')));
+
+-- Staff may only change follow-up fields; everything else stays as the person submitted it.
+revoke update on public.quiz_responses from authenticated;
+grant update (status, notes, updated_at) on public.quiz_responses to authenticated;

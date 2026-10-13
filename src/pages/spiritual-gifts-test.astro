@@ -105,6 +105,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .def{font-weight:600}
 #sg .signs-h{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:1rem;margin:12px 0 6px !important}
 #sg .signs{margin:0 0 10px;padding-left:1.2rem;list-style:disc;display:grid;gap:4px;font-size:.95rem}
+#sg .serves{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:4px;font-size:.95rem}
+#sg .serves a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:3px}
+#sg .serves a:hover{color:var(--brand-dark)}
+#sg .serves a:active{opacity:.7}
+#sg .team-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:10px}
+#sg .team-actions .team-link{margin-top:0}
+#sg .btn.interest{min-height:42px;padding:0 18px;font-size:.8rem}
+#sg .btn.interest[aria-pressed="true"]{box-shadow:none}
+#sg .interest-note{font-size:.85rem;color:var(--brand-dark);font-weight:600;margin:6px 0 0}
+@media print{#sg .team-actions{display:none}}
 #sg details.more{margin:6px 0 10px}
 #sg details.more summary{cursor:pointer;font-weight:600;color:var(--brand-dark);font-size:.9rem}
 #sg details.more summary:hover{text-decoration:underline;text-underline-offset:3px}
@@ -537,9 +547,32 @@ function discLabel(R){
   return {code:p1.k+"/"+p2.k,label:DISC_INFO[p1.k].name+" and "+DISC_INFO[p2.k].name};
 }
 
+function rolesForGift(id){
+  var out=[];
+  TEAMS.forEach(function(t){var i=(t.gifts||[]).indexOf(id);if(i>=0)out.push({t:t,rank:i});});
+  return out.sort(function(a,b){return a.rank-b.rank;}).map(function(x){return x.t;});
+}
+
 function giftMore(g){
+  var roles=rolesForGift(g.id);
   return '<p>'+esc(g.about)+'</p><p class="signs-h">Signs you may have this gift</p><ul class="signs">'+
-    g.signs.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>';
+    g.signs.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'+
+    '<p class="signs-h">Where this gift serves at City Church</p>'+
+    (roles.length?'<ul class="serves">'+roles.map(function(t){
+      var url=TEAM_PAGES[t.team];
+      return '<li>'+(url?'<a href="'+url+'">'+esc(t.role)+'</a>':esc(t.role))+' <span class="muted">· '+esc(t.team)+'</span></li>';
+    }).join('')+'</ul>':'<p class="muted">This gift can strengthen any team. Talk with a staff member about where it fits best for you.</p>');
+}
+
+function hasInterest(m){
+  return (S.interests||[]).some(function(x){return x.role===m.t.role&&x.team===m.t.team;});
+}
+
+function interestBtn(m){
+  var on=hasInterest(m);
+  return '<button class="btn '+(on?'':'ghost ')+'interest" data-act="interest" data-role="'+esc(m.t.role)+'" data-team="'+esc(m.t.team)+'" aria-pressed="'+on+'"'+(S.sid?'':' disabled')+'>'+
+    (on?'<span aria-hidden="true">✓</span> Interested':'I’m interested')+'</button>'+
+    (on?'<p class="interest-note">We’ll let the '+esc(m.t.team)+' team know. Tap again to undo.</p>':'');
 }
 
 function summary(){
@@ -595,7 +628,8 @@ function viewResults(){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
          (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+
-         (TEAM_PAGES[m.t.team]?'<a class="team-link" href="'+TEAM_PAGES[m.t.team]+'">View team page <span aria-hidden="true">→</span></a>':"")+'</div>';
+         '<div class="team-actions"><div class="interest-wrap" data-key="'+esc(m.t.team+"|"+m.t.role)+'">'+interestBtn(m)+'</div>'+
+         (TEAM_PAGES[m.t.team]?'<a class="team-link" href="'+TEAM_PAGES[m.t.team]+'">View team page <span aria-hidden="true">→</span></a>':"")+'</div></div>';
     });
     var order=[],groups={};
     all.forEach(function(m){if(used[m.t.team+"|"+m.t.role])return;if(!groups[m.t.team]){groups[m.t.team]=[];order.push(m.t.team);}groups[m.t.team].push(m);});
@@ -632,6 +666,24 @@ function actionsHtml(){
    (email?'<p class="muted small">Email goes to '+esc(email)+'.</p>':'');
 }
 
+function refreshInterestButtons(){
+  var P=pickRoles(compute());
+  var wraps=[].slice.call(document.querySelectorAll('.interest-wrap'));
+  P.M.forEach(function(m){
+    var key=m.t.team+"|"+m.t.role;
+    wraps.forEach(function(w){if(w.getAttribute("data-key")===key)w.innerHTML=interestBtn(m);});
+  });
+}
+
+function toggleInterest(b){
+  if(!S.sid||b.disabled)return;
+  var role=b.getAttribute("data-role"), team=b.getAttribute("data-team"), on=b.getAttribute("aria-pressed")!=="true";
+  b.disabled=true;
+  post("/api/interest/",{id:S.sid,role:role,team:team,interested:on})
+    .then(function(j){S.interests=j.interests||[];save();refreshInterestButtons();})
+    .catch(function(err){b.disabled=false;emailState="error";emailMsg=err.message;updateActions();});
+}
+
 function updateActions(){var a=document.getElementById("sg-actions");if(a)a.innerHTML=actionsHtml();}
 
 function post(url,body){
@@ -643,7 +695,7 @@ function submitResults(){
   if(S.sid||saveState==="saving"||!S.who)return;
   saveState="saving";updateActions();
   post("/api/submit/",{name:S.who.name,email:S.who.email,phone:S.who.phone,website:S.who.website||"",answers:S.g,results:summary()})
-    .then(function(j){S.sid=j.id;save();saveState="saved";updateActions();})
+    .then(function(j){S.sid=j.id;S.interests=[];save();saveState="saved";updateActions();refreshInterestButtons();})
     .catch(function(err){saveState="error";saveError=err.message||"We couldn’t save your results.";updateActions();});
 }
 
@@ -693,11 +745,12 @@ root.addEventListener("click",function(e){
   else if(act==="back"){go(-1);}
   else if(act==="print"){try{window.print();}catch(err){}}
   else if(act==="email"){emailResults();}
+  else if(act==="interest"){toggleInterest(b);}
   else if(act==="resubmit"){submitResults();}
   else if(act==="restart"){
     var needConfirm=S.i>=TOTAL;
     if(needConfirm&&!confirmReset){confirmReset=true;updateActions();return;}
-    S={started:false,i:0,g:{},d:{},who:S.who};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
+    S={started:false,i:0,g:{},d:{},who:S.who,interests:[]};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
   }
 });
 
