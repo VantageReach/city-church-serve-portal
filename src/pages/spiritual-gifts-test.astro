@@ -1,0 +1,515 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Spiritual Gifts Test" description="Discover your spiritual gifts and personality style, and find the City Church Lufkin serve roles that fit you best.">
+
+  <!-- HERO -->
+  <section class="sg-hero relative overflow-hidden py-20" style="background: linear-gradient(160deg, #0A1220 0%, #101B2E 60%, #1A2E5C 100%);">
+    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="dot-gifts" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <rect x="14" y="14" width="4" height="4" rx="1" fill="#8CC640" opacity="0.10" transform="rotate(45 16 16)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-gifts)"/>
+    </svg>
+    <div class="absolute left-0 top-0 bottom-0 w-1" style="background: linear-gradient(180deg, transparent, #8CC640 30%, #8CC640 70%, transparent);"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="section-label">Find Your Fit</div>
+      <h1 class="display-lg text-white mt-2">Spiritual Gifts <span style="color: #8CC640;">Test</span></h1>
+      <p class="mt-4 text-lg text-white/60 max-w-xl">Discover how God has wired you, your personality style, and the serve roles that fit you best.</p>
+    </div>
+  </section>
+
+  <section class="px-4 sm:px-6 lg:px-8">
+    <div id="sg">
+      <div class="wrap" id="sg-root"></div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+#sg{
+  --surface:#FFFFFF; --ink:#101B2E; --muted:#5A6275; --line:#E3E6EC;
+  --brand:#8CC640; --brand-dark:#6FA32E; --soft:#F0F9E0; --track:#E8ECF3; --navy-mid:#3A5490;
+  color:var(--ink);
+}
+#sg .wrap{max-width:680px;margin:0 auto;padding:40px 0 24px}
+#sg h2,#sg h3{margin:0;color:var(--ink)}
+#sg .sg-title{font-weight:900;text-transform:uppercase;font-size:clamp(2.1rem,6vw,3rem);line-height:.95;letter-spacing:.01em}
+#sg .q h2{font-weight:700;font-size:clamp(1.6rem,5vw,2.25rem);line-height:1.15}
+#sg h3{font-weight:800;text-transform:uppercase;font-size:1.35rem;line-height:1.1;letter-spacing:.01em}
+#sg p{margin:0 0 .9em;line-height:1.65}
+#sg .muted{color:var(--muted)}
+#sg h2:focus{outline:none}
+#sg button{font:inherit;color:inherit;cursor:pointer}
+
+#sg .intro .sg-title{margin-bottom:18px}
+#sg .lede{font-size:1.1rem;max-width:36rem}
+#sg .facts{list-style:none;padding:0;margin:26px 0;display:grid;gap:12px}
+#sg .facts li{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px -1px rgba(16,27,46,0.08),0 1px 2px -1px rgba(16,27,46,0.04)}
+#sg .facts b{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.1rem}
+
+#sg .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:50px;padding:0 26px;border-radius:.25rem;border:2px solid var(--brand);background:var(--brand);color:#fff;font-weight:600;font-size:.875rem;text-transform:uppercase;letter-spacing:.1em;box-shadow:0 4px 14px -2px rgba(140,198,64,0.40);transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
+#sg .btn:hover{background:var(--brand-dark);border-color:var(--brand-dark);transform:translateY(-1px)}
+#sg .btn:active{transform:translateY(0)}
+#sg .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);box-shadow:none}
+#sg .btn.ghost:hover{border-color:var(--ink);background:transparent}
+#sg .btn[disabled]{opacity:.45;cursor:not-allowed}
+#sg .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+#sg .prog{position:sticky;top:64px;background:#FAFAFA;padding:14px 0 12px;z-index:5}
+#sg .prog-meta{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+#sg .bar{height:8px;border-radius:999px;background:var(--track);overflow:hidden}
+#sg .bar>span{display:block;height:100%;background:var(--brand);border-radius:999px}
+#sg .part{color:var(--ink)}
+
+#sg .q{padding-top:22px}
+#sg .q h2{margin-bottom:26px}
+#sg .opts{display:grid;gap:10px}
+#sg .opt{display:flex;align-items:center;gap:14px;width:100%;min-height:58px;padding:12px 16px;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;font-weight:500;box-shadow:0 1px 4px rgba(16,27,46,0.06);transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
+#sg .opt:hover{border-color:#B0BCDD;transform:translateY(-1px)}
+#sg .opt:active{transform:scale(.99)}
+#sg .opt[aria-pressed="true"]{border-color:var(--brand);background:var(--soft)}
+#sg .dots{display:inline-flex;gap:4px;flex:none}
+#sg .dots i{width:9px;height:9px;border-radius:50%;background:var(--track);display:block}
+#sg .dots i.on{background:var(--brand)}
+#sg .nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+
+#sg .res .sg-title{margin-bottom:12px}
+#sg .sec{margin-top:44px}
+#sg .sec>h2{margin-bottom:14px;font-weight:900;text-transform:uppercase;font-size:1.9rem;line-height:1;letter-spacing:.01em}
+#sg .card{border-color:var(--line);border-radius:12px;padding:18px 18px 16px;margin-bottom:12px}
+#sg .card:hover{transform:none;border-color:var(--line);box-shadow:0 2px 8px -1px rgba(16,27,46,0.08),0 1px 2px -1px rgba(16,27,46,0.04)}
+#sg .card.top{border-left:6px solid var(--brand)}
+#sg .card .meta{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+#sg .card .score{font-size:.85rem;color:var(--muted);white-space:nowrap;font-weight:600}
+#sg .card .ref{font-size:.85rem;color:var(--muted);margin:0;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+#sg .card p{margin:8px 0 6px}
+#sg .meter{height:10px;border-radius:999px;background:var(--track);overflow:hidden}
+#sg .meter>span{display:block;height:100%;border-radius:999px;background:var(--navy-mid)}
+#sg .card.top .meter>span{background:var(--brand)}
+#sg .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+#sg .list li{display:grid;grid-template-columns:9.5rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.95rem}
+#sg .list li b{font-weight:600}
+#sg .list li em{font-style:normal;color:var(--muted);text-align:right}
+#sg details.all{margin-top:6px}
+#sg details.all summary{cursor:pointer;font-weight:600;padding:10px 0;color:var(--brand-dark)}
+#sg .disc-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+#sg .disc-head .big{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:3.6rem;line-height:1;color:var(--brand-dark)}
+#sg .disc-bars{display:grid;gap:12px;margin:18px 0}
+#sg .disc-bars .r{display:grid;grid-template-columns:5.5rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.95rem}
+#sg .disc-bars .r em{font-style:normal;color:var(--muted);text-align:right}
+#sg .note{font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;margin-top:36px}
+#sg .team .why{font-size:.95rem;color:var(--muted)}
+#sg .roles{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+#sg .roles li{font-size:.95rem}
+
+@media (max-width:420px){
+  #sg .list li{grid-template-columns:7.4rem 1fr 2.4rem}
+}
+@media print{
+  body>header,body>footer,.sg-hero,#sg .prog,#sg .nav,#sg .noprint{display:none !important}
+  body{background:#fff}
+  #sg .card,#sg .facts li{break-inside:avoid;box-shadow:none;border-color:#999}
+}
+@media (prefers-reduced-motion:reduce){#sg *{transition:none !important}}
+</style>
+
+<script is:inline>
+/* ===================== SETTINGS (edit these) ===================== */
+var CONFIG = {
+  churchName: "City Church",   // e.g. "City Church". Shown on the intro and results pages when filled in.
+  followUp: "Take your results to a staff member or team leader. Ask the people who know you whether they see these gifts in you too."
+};
+
+/* Serve teams. Add teams here and a "Where you could serve" section appears in the results.
+   gifts: gift ids from the GIFTS list below. disc: any of "D","I","S","C" (optional).
+   Example:
+   add("Impressions", "Greeter", "Welcomes people warmly.", ["hospitality","mercy","service"], ["I","S"])   (list the most important gift first)
+*/
+var TEAMS = [];
+(function(){
+ function add(team,role,description,gifts,disc){TEAMS.push({team:team,role:role,description:description,gifts:gifts,disc:disc});}
+ add("Worship","Worship Leader","Leads the church in song and sets the tone for worship.",["music","leadership","prophecy"],["D","I"]);
+ add("Worship","Music Director","Plans the sets, leads rehearsals, and keeps the band organized.",["music","administration","leadership"],["C","D"]);
+ add("Worship","Vocalist","Sings on the worship team.",["music","helps"],["I","S"]);
+ add("Worship","Instrumentalist","Plays an instrument on the worship team.",["music","helps","craftsmanship"],["S","C"]);
+ add("Kid City","Kids Check-In","The friendly first face for families: checks kids in, greets them, and eases the stress of drop-off.",["hospitality","mercy","service"],["I","S"]);
+ add("Kid City","Elementary Teacher","Teaches Bible lessons to elementary-age kids.",["teaching","shepherding","mercy","exhortation"],["I","S"]);
+ add("Kid City","Room Leader","Leads a kids room and the volunteers in it.",["leadership","administration","shepherding"],["D","S"]);
+ add("Kid City","Helper","Assists in kids rooms with activities, supervision, and care.",["helps","service","mercy"],["S","I"]);
+ add("Production","Sound Tech","Runs the audio mix so everyone can hear clearly.",["craftsmanship","helps","service"],["C","S"]);
+ add("Production","Presentation Operator","Runs lyrics and slides during the service.",["helps","service","administration"],["C","S"]);
+ add("Production","Live Stream Director","Directs the livestream so people at home can take part.",["administration","leadership","craftsmanship"],["D","C"]);
+ add("Production","Camera Operator","Shoots live video for the stream and the screens.",["craftsmanship","helps","service"],["C","S"]);
+ add("Impressions","Greeter","Excited to welcome people and make them feel at home from the moment they arrive.",["hospitality","mercy","service","evangelism"],["I","S"]);
+ add("Impressions","Usher","Helps guests find seats and keeps the room running smoothly.",["service","helps","hospitality"],["S","C"]);
+ add("Impressions","Connections Table","Meets guests and helps them take a next step, like joining a group or serving.",["hospitality","exhortation","shepherding","evangelism"],["I","S"]);
+ add("Impressions","Coffee Bar","Makes coffee and sets up the refreshment area.",["service","hospitality","helps"],["S","I"]);
+ add("Care Team","Care Team","Practical love during life's hardest moments.",["mercy","shepherding","helps","giving","exhortation"],["S","I"]);
+ add("Prayer Team","Pre-Service Prayer","Prays over the service and the room before it begins.",["intercession","faith","prophecy"],["S","C"]);
+ add("Prayer Team","Altar Team","Prays with people who come forward during the service.",["intercession","mercy","exhortation","healing","faith"],["S","I"]);
+ add("Prayer Team","Prayer Request Team","Receives prayer requests and prays and follows up.",["intercession","mercy","administration"],["S","C"]);
+ add("Creative Team","Capture (Photo & Video)","Photographs and films the life of the church.",["craftsmanship","service"],["C","I"]);
+ add("Creative Team","Create (Graphics)","Designs graphics that tell the City Church story.",["craftsmanship"],["C","I"]);
+ add("Creative Team","Convey (Social & Email)","Writes and shares the story through social media and email.",["craftsmanship","evangelism","administration"],["I","C"]);
+ add("Safety Team","Medical Team","Ready to help if someone needs medical attention.",["mercy","helps","service","wisdom"],["C","S"]);
+ add("Safety Team","Security","Watches over the building and keeps every guest safe.",["discernment","helps","service","shepherding"],["D","C"]);
+ 
+ add("Student Ministry","Student Ministry Volunteer","Comes alongside our student leaders to love, support, and connect with students, and sometimes to teach.",["shepherding","mercy","exhortation","helps","teaching"],["I","S"]);
+ add("Outreach","Global Outreach Lead","Leads the church's efforts to give and go beyond our own walls.",["missionary","apostleship","leadership","evangelism","giving"],["D","I"]);
+ add("Outreach","Serve Weekend Volunteer","Helps with serve weekends that show God's love in practical ways.",["service","evangelism","giving","helps"],["I","S"]);
+ add("Next Steps","Event Coordinator","Plans and runs events that connect new people to the church family.",["administration","leadership","hospitality"],["C","D"]);
+ add("Next Steps","Greeter / Helper","Welcomes newcomers and helps at Next Steps events.",["hospitality","helps","service"],["I","S"]);
+ add("Life Groups","Life Group Leader","Leads a Bible study or interest group: hosts, guides the discussion, and builds community and discipleship.",["shepherding","hospitality","teaching","leadership","exhortation"],["I","S"]);
+ 
+ 
+ 
+ add("Milestones","Water Baptism Team","Helps prepare for and serve at baptisms, one of the sacred moments of the church.",["helps","service","shepherding","mercy"],["S"]);
+ add("Milestones","Communion Team","Prepares and serves communion.",["service","helps","intercession"],["S","C"]);
+ add("Facilities","Cleaning Team","Keeps the building clean and ready for ministry.",["service","helps"],["S","C"]);
+ add("Facilities","Lawn Care","Keeps the grounds mowed and tidy.",["service","helps","craftsmanship"],["S"]);
+ add("Facilities","Building Repair & Upkeep","Fixes and maintains the building.",["craftsmanship","helps","service"],["C","S"]);
+})();
+
+/* ===================== GIFTS ===================== */
+var GIFTS = [
+ {id:"administration",name:"Administration",ref:"1 Corinthians 12:28",def:"The Spirit-given ability to organize people, resources, and plans so that ministry actually happens.",q:[
+  "I enjoy turning a big, messy idea into a clear plan with steps and deadlines.",
+  "I notice what people, supplies, and time an event will need before anyone asks.",
+  "When a ministry feels disorganized, I feel driven to build a better system for it.",
+  "People have told me I'm the one who makes things run smoothly."]},
+ {id:"apostleship",name:"Apostleship",ref:"Ephesians 4:11",def:"The Spirit-given ability to start new works, pioneering churches, ministries, and gospel outposts where nothing exists yet.",q:[
+  "I get excited about starting something new where nothing exists yet.",
+  "I feel pulled toward launching new churches, ministries, or outreach efforts.",
+  "I'm comfortable taking risks to open new ground for the gospel.",
+  "Others have recognized me as someone who gets new works started and then trains others to carry them on."]},
+ {id:"craftsmanship",name:"Craftsmanship",ref:"Exodus 31:1-5",def:"The Spirit-given ability to design and build with your hands for the glory of God: wood, metal, fabric, paint, pixels, and stages.",q:[
+  "I love making things with my hands or with design tools for the church to use.",
+  "I can picture how a stage, set, or space should look and then bring it to life.",
+  "I take real pride in careful, well-made work that honors God.",
+  "People have said something I built or designed helped them worship or understand more."]},
+ {id:"discernment",name:"Discernment",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to distinguish truth from error and the genuine from the counterfeit, in teaching, in motives, and in spiritual influences.",q:[
+  "I often sense when a teaching or a person isn't right, even before I can explain why.",
+  "I notice when someone's words and motives don't match.",
+  "I can tell when something sounds good but doesn't line up with Scripture.",
+  "People come to me to help them tell whether something is truly from God."]},
+ {id:"evangelism",name:"Evangelism",ref:"Ephesians 4:11",def:"The Spirit-given ability to share the gospel with unbelievers in a way that moves them toward faith in Jesus.",q:[
+  "I look for chances to bring up Jesus with people who don't know him.",
+  "I feel joy, not dread, when I explain the gospel to someone who doesn't believe.",
+  "I'm burdened for people far from God and want to do something about it.",
+  "I've seen people begin to trust Christ after talking with me."]},
+ {id:"exhortation",name:"Exhortation",ref:"Romans 12:8",def:"The Spirit-given ability to come alongside people and move them forward: comforting the discouraged, challenging the stuck, and calling out what God is doing in someone before they can see it themselves.",q:[
+  "I enjoy encouraging people who are discouraged or stuck.",
+  "I can often see what God is doing in someone and I love telling them.",
+  "I'm willing to say a hard thing, kindly, to help someone take their next step.",
+  "People often seek me out for a word of encouragement or direction."]},
+ {id:"faith",name:"Faith",ref:"1 Corinthians 12:9",def:"The Spirit-given ability to trust God for what looks impossible, and to steady everyone else while He does it.",q:[
+  "I stay calm and trust God when a situation looks impossible.",
+  "I'm often sure God will provide when others see no way forward.",
+  "I'm willing to step out on a big, God-sized goal before the resources are in sight.",
+  "Others have told me my trust in God steadied them in a hard time."]},
+ {id:"giving",name:"Giving",ref:"Romans 12:8",def:"The Spirit-given ability to contribute money and resources to God's work with unusual generosity, wisdom, and joy.",q:[
+  "I enjoy giving money or resources well beyond what's expected.",
+  "I look for needs I can meet with what I have, often without anyone knowing.",
+  "I think of my income as something to use for God's work.",
+  "People have commented on how generous I am."]},
+ {id:"healing",name:"Healing",ref:"1 Corinthians 12:9",def:"The Spirit-given ability to be God's instrument of restoration in another person's body, mind, or spirit, most often through prayer.",q:[
+  "I feel drawn to pray for people who are sick or hurting in body or mind.",
+  "When I pray for someone who is ill, I often sense God's presence or leading.",
+  "I believe God still heals today and I'm willing to ask boldly.",
+  "People have told me they were helped or restored after I prayed with them."]},
+ {id:"helps",name:"Helps",ref:"1 Corinthians 12:28",def:"The Spirit-given ability to free other people for their ministry by taking real work off their plate.",q:[
+  "I'm glad to take tasks off someone's plate so they can focus on their ministry.",
+  "I'd rather support someone's work behind the scenes than lead it.",
+  "I notice what a person needs in order to do their job well and quietly handle it.",
+  "Leaders have told me I make their work easier."]},
+ {id:"hospitality",name:"Hospitality",ref:"1 Peter 4:9",def:"The Spirit-given ability to make people feel genuinely welcomed, safe, and at home, strangers included, especially.",q:[
+  "I love making guests feel at home, especially newcomers and strangers.",
+  "I enjoy opening my home or my time to people.",
+  "I notice who is standing alone and go introduce myself.",
+  "People have told me they felt welcomed because of me."]},
+ {id:"intercession",name:"Intercession",ref:"Colossians 4:12-13",def:"The Spirit-given ability to pray for others persistently, specifically, and with unusual burden and effect.",q:[
+  "I'm drawn to pray for others for long stretches of time.",
+  "I keep praying about a specific need until I sense God has answered.",
+  "I'm often moved to pray for someone before I even know what's going on.",
+  "People ask me to pray for them because they've seen God answer."]},
+ {id:"knowledge",name:"Knowledge",ref:"1 Corinthians 12:8",def:"The Spirit-given ability to learn, retain, and organize the truths of God's Word, and to bring the right truth to bear at the right moment.",q:[
+  "I love studying Scripture and I remember what I learn.",
+  "I can connect passages and facts and organize them so they make sense together.",
+  "The right verse or biblical truth often comes to mind at just the right moment.",
+  "People come to me to find out what the Bible says about something."]},
+ {id:"leadership",name:"Leadership",ref:"Romans 12:8",def:"The Spirit-given ability to set direction for God's people and move them toward it together, with zeal, Scripture says.",q:[
+  "When a group has no direction, I naturally step up and set one.",
+  "I can get people excited about a shared goal and moving together.",
+  "I'm comfortable carrying responsibility and making decisions for a group.",
+  "People follow me even when I haven't been given official authority."]},
+ {id:"mercy",name:"Mercy",ref:"Romans 12:8",def:"The Spirit-given ability to feel the pain of hurting people and move toward them with practical, cheerful compassion.",q:[
+  "I feel other people's pain deeply and want to move toward it.",
+  "I enjoy caring for people who are hurting, lonely, or overlooked.",
+  "I can sit with someone in their grief without needing to fix it.",
+  "People tell me they feel comforted and safe around me."]},
+ {id:"miracles",name:"Miracles",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to be God's instrument for works of power that go beyond natural explanation, interventions that authenticate the gospel and awaken faith.",q:[
+  "I've seen God do things through prayer that can't be explained naturally.",
+  "I pray expecting God to do the extraordinary.",
+  "When something supernatural happens, I'm drawn toward it rather than afraid of it.",
+  "Others have said God worked in powerful, unexplainable ways through me."]},
+ {id:"missionary",name:"Missionary",ref:"Acts 13:2-3",def:"The Spirit-given ability to minister effectively across cultures: to leave what's familiar, love what's foreign, and make the gospel at home in a culture not your own.",q:[
+  "I feel drawn to people of other cultures and nationalities.",
+  "I'd be willing to move somewhere unfamiliar to share the gospel.",
+  "I adapt quickly to new customs, languages, and ways of life.",
+  "Others have told me they could see me thriving in cross-cultural ministry."]},
+ {id:"music",name:"Music",ref:"1 Chronicles 25:1-7",def:"The Spirit-given ability to lead God's people toward Him through song and skillful playing, using melody to teach, unite, and lift the church's heart.",q:[
+  "I feel most alive when I'm singing or playing to help others worship.",
+  "I pick up music quickly and can help a group sing together.",
+  "I'm drawn to songs that help people say true things about God.",
+  "People have told me the music I sing or play helped them draw closer to God."]},
+ {id:"prophecy",name:"Prophecy",ref:"1 Corinthians 14:3",def:"The Spirit-given ability to declare God's truth with timeliness and power, speaking to people, as Paul defines it, \u201Cfor their upbuilding and encouragement and consolation.\u201D",q:[
+  "I feel a strong pull to speak God's truth even when it's uncomfortable.",
+  "I often sense what God wants to say to a person or group at a particular moment.",
+  "When I speak a message from God, my aim is to build up, encourage, and comfort.",
+  "People tell me something I shared was exactly what they needed to hear."]},
+ {id:"service",name:"Service",ref:"Romans 12:7",def:"The Spirit-given ability to see practical needs and joyfully meet them: the ministry of stacked chairs, filled coffee urns, and jobs done before anyone asked.",q:[
+  "I notice practical needs like setup, cleanup, and supplies and jump in without being asked.",
+  "I find real joy in tasks other people overlook.",
+  "I'd rather roll up my sleeves than sit through a discussion about the problem.",
+  "People say I'm dependable and always show up to help."]},
+ {id:"shepherding",name:"Shepherding",ref:"Ephesians 4:11",def:"The Spirit-given ability to care for a group of believers over time: feeding, protecting, guiding, and going after the one who wanders.",q:[
+  "I enjoy caring for the same group of people over a long period.",
+  "When someone drifts away, I feel I should go after them.",
+  "I feel responsible to guide, protect, and spiritually feed the people around me.",
+  "People think of me as their pastor or shepherd, even without the title."]},
+ {id:"teaching",name:"Teaching",ref:"Romans 12:7",def:"The Spirit-given ability to explain God's Word so clearly that people understand it, believe it, and live it.",q:[
+  "I love explaining Scripture so that other people truly get it.",
+  "I spend time organizing what I learn so I can teach it clearly.",
+  "I light up when someone finally understands something I've been explaining.",
+  "People say I make difficult ideas easy to follow."]},
+ {id:"tongues",name:"Tongues & Interpretation",ref:"1 Corinthians 12:10",def:"The Spirit-given ability to pray or speak in a language the speaker hasn't learned; the gift of interpretation makes that speech intelligible so the church is built up.",q:[
+  "I have prayed or spoken in a language I have not learned.",
+  "I sometimes sense the meaning of a message that was spoken in tongues.",
+  "I'm comfortable in settings where tongues are used in an orderly way to build up the church.",
+  "Others have confirmed that a message I gave in tongues, or interpreted, was from God."]},
+ {id:"wisdom",name:"Wisdom",ref:"1 Corinthians 12:8",def:"The Spirit-given ability to apply God's truth to real situations: knowing not just what's true, but what to do.",q:[
+  "People ask me what to do when a situation is complicated.",
+  "I often see a practical, godly way through a problem.",
+  "I know not only what is true but what to do about it.",
+  "Others have said my advice turned out to be wise."]}
+];
+
+/* ===================== DISC ===================== */
+var DISC = {
+ D:["I make decisions quickly and don't need much time to deliberate.",
+    "I'm direct, and I say what I think even when people may not want to hear it.",
+    "I get impatient when things move slower than they need to.",
+    "I enjoy a good competition, and I like to win.",
+    "When things get stressful, I take control.",
+    "I'd rather push ahead and fix problems along the way than wait for a perfect plan."],
+ I:["I'm energized by being around lots of people.",
+    "I easily start conversations with people I've just met.",
+    "I tend to see the bright side and lift the mood of a room.",
+    "I enjoy telling stories and making people laugh.",
+    "I'd rather talk a problem through with others than work it out alone.",
+    "I get excited about new ideas and want to share them right away."],
+ S:["I stay patient and calm when the people around me are stressed.",
+    "I'm loyal and stick with people and commitments for the long haul.",
+    "I prefer steady routines to constant change.",
+    "I'd rather keep the peace than win an argument.",
+    "I'm a good listener, and people often come to me to talk.",
+    "I'm more comfortable working as part of a team than out front."],
+ C:["I double-check my work to make sure it's accurate.",
+    "I like clear instructions and a well-thought-out plan before I start.",
+    "I notice details and mistakes that other people miss.",
+    "I want to research and think things through before I decide.",
+    "I hold myself to high standards and can be hard on myself when I miss them.",
+    "I'm more comfortable with facts and logic than with gut feelings and impulses."]
+};
+
+var DISC_INFO = {
+ D:{name:"Driver",line:"Direct, decisive, and focused on results.",use:"You move things forward. When a team is stuck, you tend to make the call and get people going.",grow:"Slow down to hear people out, and watch that your pace doesn't leave others behind."},
+ I:{name:"Influencer",line:"Outgoing, enthusiastic, and people-centered.",use:"You bring energy and connection. You help people feel welcome and get others excited about what God is doing.",grow:"Follow through on details and make room for quieter voices."},
+ S:{name:"Steady",line:"Patient, loyal, and dependable.",use:"You create stability and trust. People feel safe around you, and you stay faithful over the long haul.",grow:"Speak up about your own needs and ideas, and lean into change when it's needed."},
+ C:{name:"Careful",line:"Thoughtful, accurate, and quality-minded.",use:"You bring order and excellence. You ask the questions that make plans better and catch what others miss.",grow:"Don't let the pursuit of right hold you back from starting, and extend grace when things aren't perfect."}
+};
+
+/* ===================== LOGIC ===================== */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function shuffle(arr,r){for(var i=arr.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}return arr;}
+
+var ITEMS=[];
+GIFTS.forEach(function(g,gi){g.q.forEach(function(t,si){ITEMS.push({kind:"g",g:gi,s:si,text:t});});});
+["D","I","S","C"].forEach(function(k){DISC[k].forEach(function(t,si){ITEMS.push({kind:"d",k:k,s:si,text:t});});});
+shuffle(ITEMS,rng(20261));
+function grp(it){return it.kind==="g"?"g"+it.g:"d"+it.k;}
+function ikey(it){return it.kind==="g"?it.g+"-"+it.s:"d"+it.k+"-"+it.s;}
+for(var a=1;a<ITEMS.length;a++){
+  if(grp(ITEMS[a])===grp(ITEMS[a-1])){
+    var b=a+1; while(b<ITEMS.length&&grp(ITEMS[b])===grp(ITEMS[a-1]))b++;
+    if(b<ITEMS.length){var tmp=ITEMS[a];ITEMS[a]=ITEMS[b];ITEMS[b]=tmp;}
+  }
+}
+var TOTAL=ITEMS.length;
+
+var KEY="gifts-disc-v2";
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&typeof o.i==="number"&&o.g&&o.d)return o;}}catch(e){}return null;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var S=load()||{started:false,i:0,g:{},d:{}};
+var confirmReset=false;
+
+var root=document.getElementById("sg-root");
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+var LIKERT=["Not at all like me","A little like me","Somewhat like me","Mostly like me","Very much like me"];
+
+function dots(n){var h='<span class="dots" aria-hidden="true">';for(var i=1;i<=5;i++)h+='<i class="'+(i<=n?"on":"")+'"></i>';return h+"</span>";}
+
+function header(){return CONFIG.churchName?'<p class="muted" style="margin-bottom:10px">'+esc(CONFIG.churchName)+'</p>':"";}
+
+function viewIntro(){
+  var cont=S.started&&S.i>0&&S.i<TOTAL;
+  return '<div class="intro">'+header()+
+  '<h2 class="sg-title" tabindex="-1" id="focus">Find your spiritual gifts and your personality style</h2>'+
+  '<p class="lede">Answer '+TOTAL+' short statements and see which of the '+GIFTS.length+' spiritual gifts fit you best, along with your personality style and the places you could serve.</p>'+
+  '<ul class="facts">'+
+   '<li><b>One simple scale.</b> Read each statement and tap how much it sounds like you.</li>'+
+   '<li><b>About 20 minutes.</b> Answers stay on this device, and you can close the page and come back where you left off.</li>'+
+  '</ul>'+
+  '<p>Answer for who you are most of the time, not who you wish you were. There are no right or wrong answers.</p>'+
+  '<div class="row" style="margin-top:20px">'+
+   (cont?'<button class="btn" data-act="start">Continue where I left off</button><button class="btn ghost" data-act="restart">Start over</button>':
+         '<button class="btn" data-act="start">Begin</button>')+
+  '</div></div>';
+}
+
+function progress(){
+  var pct=Math.round(S.i/TOTAL*100), part="Tap how much it sounds like you";
+  return '<div class="prog"><div class="prog-meta"><span class="part">'+part+'</span><span>'+(S.i+1)+' of '+TOTAL+'</span></div>'+
+   '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="'+TOTAL+'" aria-valuenow="'+S.i+'"><span style="width:'+pct+'%"></span></div></div>';
+}
+
+function viewGift(){
+  var it=ITEMS[S.i], key=ikey(it), cur=S.g[key]||0;
+  var h=progress()+'<div class="q"><h2 tabindex="-1" id="focus">'+esc(it.text)+'</h2><div class="opts" role="group" aria-label="How much is this like you?">';
+  for(var v=1;v<=5;v++)h+='<button class="opt" data-act="rate" data-v="'+v+'" aria-pressed="'+(cur===v)+'">'+dots(v)+'<span>'+LIKERT[v-1]+'</span></button>';
+  h+='</div><div class="nav">'+(S.i>0?'<button class="btn ghost" data-act="back">Back</button>':'<span></span>')+
+     (cur?'<button class="btn ghost" data-act="next">Next</button>':'<span></span>')+'</div></div>';
+  return h;
+}
+
+function compute(){
+  var gifts=GIFTS.map(function(g,gi){var sum=0;for(var s=0;s<4;s++)sum+=(S.g[gi+"-"+s]||0);return {g:g,sum:sum,pct:Math.round((sum-4)/16*100)};});
+  gifts.sort(function(a,b){return b.sum-a.sum||a.g.name.localeCompare(b.g.name);});
+  var sums={D:0,I:0,S:0,C:0};
+  ["D","I","S","C"].forEach(function(k){for(var q=0;q<DISC[k].length;q++)sums[k]+=(S.g["d"+k+"-"+q]||0);});
+  var mean=(sums.D+sums.I+sums.S+sums.C)/4;
+  var disc=["D","I","S","C"].map(function(k){var rel=sums[k]-mean;return {k:k,raw:rel,pct:Math.round(Math.max(0,Math.min(100,50+rel/10*50)))};});
+  var ranked=disc.slice().sort(function(a,b){return b.raw-a.raw;});
+  return {gifts:gifts,disc:disc,ranked:ranked};
+}
+
+function teamMatches(R){
+  var gp={};R.gifts.forEach(function(x){gp[x.g.id]=x;});
+  var dp={};R.disc.forEach(function(x){dp[x.k]=x.pct;});
+  return TEAMS.map(function(t){
+    var gl=(t.gifts||[]).map(function(id){return gp[id];}).filter(Boolean);
+    var wts=[1,0.8,0.6,0.5,0.4],wsum=0,gAvg=0;gl.forEach(function(x,i){var w=wts[Math.min(i,4)];gAvg+=x.pct*w;wsum+=w;});gAvg=wsum?gAvg/wsum:0;
+    var gMax=gl.length?Math.max.apply(null,gl.map(function(x){return x.pct;})):0;
+    var gScore=gl.length?(0.6*gAvg+0.4*gMax):0;
+    var ds=(t.disc||[]).map(function(k){return dp[k];}).filter(function(v){return v!=null;});
+    var dScore=ds.length?ds.reduce(function(s,v){return s+v;},0)/ds.length:50;
+    var best=gl.slice().sort(function(a,b){return b.sum-a.sum;}).slice(0,2).map(function(x){return x.g.name;});
+    return {t:t,score:0.75*gScore+0.25*dScore,best:best};
+  }).sort(function(a,b){return b.score-a.score;});
+}
+
+function viewResults(){
+  var R=compute(), top=R.gifts.slice(0,3), next=R.gifts.slice(3,5);
+  var p1=R.ranked[0], p2=R.ranked[1];
+  var h='<div class="res">'+header()+
+   '<h2 class="sg-title" tabindex="-1" id="focus">Your results</h2>'+
+   '<p class="lede muted">Your strongest gifts are '+esc(top[0].g.name)+', '+esc(top[1].g.name)+', and '+esc(top[2].g.name)+'. Your personality style is mostly '+esc(DISC_INFO[p1.k].name)+', with some '+esc(DISC_INFO[p2.k].name)+'.</p>';
+
+  h+='<div class="sec"><h2>Your top spiritual gifts</h2>';
+  top.forEach(function(x){
+    h+='<div class="card top"><div class="meta"><h3>'+esc(x.g.name)+'</h3><span class="score">'+x.sum+' of 20</span></div>'+
+       '<div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div>'+
+       '<p>'+esc(x.g.def)+'</p><p class="ref">'+esc(x.g.ref)+'</p></div>';
+  });
+  next.forEach(function(x){
+    h+='<div class="card"><div class="meta"><h3>'+esc(x.g.name)+'</h3><span class="score">'+x.sum+' of 20</span></div>'+
+       '<div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div>'+
+       '<p>'+esc(x.g.def)+'</p><p class="ref">'+esc(x.g.ref)+'</p></div>';
+  });
+  h+='<details class="all"><summary>See all '+GIFTS.length+' gifts</summary><ul class="list">';
+  R.gifts.forEach(function(x){h+='<li><b>'+esc(x.g.name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.sum+'</em></li>';});
+  h+='</ul></details></div>';
+
+  h+='<div class="sec"><h2>Your personality style</h2>'+
+     '<div class="disc-head"><span class="big">'+p1.k+(p2.raw>0||p2.raw===p1.raw?p2.k:"")+'</span><span class="muted">'+esc(DISC_INFO[p1.k].name)+(p2.raw>0||p2.raw===p1.raw?" with "+esc(DISC_INFO[p2.k].name):"")+'</span></div>'+
+     '<div class="disc-bars">';
+  R.disc.forEach(function(x){h+='<div class="r"><b>'+esc(DISC_INFO[x.k].name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.pct+'</em></div>';});
+  h+='</div>'+
+     '<div class="card"><h3>'+esc(DISC_INFO[p1.k].name)+'</h3><p>'+esc(DISC_INFO[p1.k].line)+'</p><p>'+esc(DISC_INFO[p1.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p1.k].grow)+'</p></div>'+
+     '<div class="card"><h3>'+esc(DISC_INFO[p2.k].name)+' (your second style)</h3><p>'+esc(DISC_INFO[p2.k].line)+'</p><p>'+esc(DISC_INFO[p2.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p2.k].grow)+'</p></div>'+
+     '</div>';
+
+  if(TEAMS.length){
+    var all=teamMatches(R),cnt={},M=[],used={};
+    all.forEach(function(m){if(M.length<3&&(cnt[m.t.team]||0)<2){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[m.t.team+"|"+m.t.role]=1;}});
+    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three roles fit your gifts and style best. They are suggestions, not assignments.</p>';
+    M.forEach(function(m){
+      h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
+         (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
+         (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+'</div>';
+    });
+    var order=[],groups={};
+    all.forEach(function(m){if(used[m.t.team+"|"+m.t.role])return;if(!groups[m.t.team]){groups[m.t.team]=[];order.push(m.t.team);}groups[m.t.team].push(m);});
+    h+='<h3 style="margin:30px 0 12px">The rest of our serving teams</h3>';
+    order.forEach(function(team){
+      h+='<div class="card"><h3>'+esc(team)+'</h3><ul class="roles">';
+      groups[team].forEach(function(m){h+='<li><b>'+esc(m.t.role)+'</b>'+(m.t.description?' <span class="muted">'+esc(m.t.description)+'</span>':"")+'</li>';});
+      h+='</ul></div>';
+    });
+    h+='</div>';
+  }
+
+  h+='<p class="note">This is a tool for reflection, not a diagnosis, and it is not a formal or validated assessment. '+esc(CONFIG.followUp)+'</p>'+
+     '<div class="row noprint" style="margin-top:20px"><button class="btn" data-act="print">Save or print my results</button>'+
+     '<button class="btn ghost" data-act="restart">'+(confirmReset?"Tap again to erase and retake":"Retake the test")+'</button></div></div>';
+  return h;
+}
+
+function render(){
+  var h;
+  if(!S.started)h=viewIntro();
+  else if(S.i>=TOTAL)h=viewResults();
+  else h=viewGift();
+  root.innerHTML=h;
+  var f=document.getElementById("focus");
+  if(f){try{f.focus({preventScroll:true});}catch(e){}}
+}
+function go(delta){S.i=Math.max(0,Math.min(TOTAL,S.i+delta));confirmReset=false;save();render();window.scrollTo(0,0);}
+
+var lock=false;
+root.addEventListener("click",function(e){
+  var b=e.target.closest("[data-act]"); if(!b)return;
+  var act=b.getAttribute("data-act");
+  if(act==="start"){S.started=true;save();render();window.scrollTo(0,0);}
+  else if(act==="rate"){
+    if(lock)return; var it=ITEMS[S.i]; S.g[ikey(it)]=parseInt(b.getAttribute("data-v"),10); save(); render();
+    lock=true; setTimeout(function(){lock=false;go(1);},220);
+  }
+  else if(act==="next"){go(1);}
+  else if(act==="back"){go(-1);}
+  else if(act==="print"){try{window.print();}catch(err){}}
+  else if(act==="restart"){
+    var needConfirm=S.i>=TOTAL;
+    if(needConfirm&&!confirmReset){confirmReset=true;render();return;}
+    S={started:false,i:0,g:{},d:{}};confirmReset=false;save();render();window.scrollTo(0,0);
+  }
+});
+
+render();
+</script>
