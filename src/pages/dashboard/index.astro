@@ -159,6 +159,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .barrow { display:grid; grid-template-columns:8.5rem 1fr 2.5rem; align-items:center; gap:.75rem; font-size:.875rem; padding:2px 0; border-radius:6px; }
   .barrow:hover { background:#F6F8FB; }
   .barrow .name { color:#101B2E; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .barlist-wide .barrow { grid-template-columns:minmax(0,17rem) 1fr 2.5rem; }
+  .barlist-wide .barrow .name { white-space:normal; }
   .barrow .val { text-align:right; color:#101B2E; font-variant-numeric:tabular-nums; font-weight:600; }
   .bar-track { height:10px; }
   .bar-fill { display:block; height:10px; background:#3A5490; border-radius:0 4px 4px 0; }
@@ -184,7 +186,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   type Row = {
     id: string; created_at: string; name: string; email: string; phone: string;
     top_gifts: string[]; disc_style: string; status: Status; interests: Interest[]; results?: any;
-    notes?: string; roles?: { role: string; team: string }[];
+    notes?: string; roles?: { role: string; team: string }[]; passions?: string[]; passionNote?: string;
   };
 
   const STATUSES: { key: Status; label: string }[] = [
@@ -231,7 +233,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   async function loadRows() {
     const { data, error } = await supabase
       .from('quiz_responses')
-      .select('id, created_at, name, email, phone, top_gifts, disc_style, status, interests, notes, roles:results->roles')
+      .select('id, created_at, name, email, phone, top_gifts, disc_style, status, interests, notes, roles:results->roles, passions:results->passions, passionNote:results->>passionNote')
       .order('created_at', { ascending: false })
       .limit(2000);
     const err = $('list-error');
@@ -261,7 +263,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       : filter === 'interested' ? rows.filter((r) => r.interests?.length)
       : rows.filter((r) => r.status === filter);
     return q
-      ? byStatus.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || []), ...(r.interests || []).map((i) => i.role)].join(' ').toLowerCase().includes(q))
+      ? byStatus.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || []), ...(r.interests || []).map((i) => i.role), ...(r.passions || []), r.passionNote || ''].join(' ').toLowerCase().includes(q))
       : byStatus;
   }
 
@@ -354,6 +356,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             ${r.updated_at ? `<p class="text-xs text-stone-500 mt-3">Last updated ${esc(fmtDateTime(r.updated_at))}</p>` : ''}
           </div>
           ${card('Suggested roles', roles || '<p class="text-sm text-stone-500">No roles suggested.</p>')}
+          ${(res.passions || []).length || res.passionNote ? card('Passions', `
+            <div class="flex flex-wrap gap-2">${(res.passions || []).map((x: string) => `<span class="pill pill-placed" style="text-transform:none;letter-spacing:0;font-size:.8rem">${esc(x)}</span>`).join('')}</div>
+            ${res.passionNote ? `<p class="text-sm text-stone-700 mt-3"><b class="text-navy-800">Also enjoys:</b> ${esc(res.passionNote)}</p>` : ''}`) : ''}
         </div>
         <div class="lg:col-span-2 space-y-6">
           ${card('Top spiritual gifts', gifts)}
@@ -448,6 +453,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
 
     const gifts = countBy(rows.flatMap((r) => r.top_gifts || [])).slice(0, 10);
+    const passions = countBy(rows.flatMap((r) => r.passions || []));
     const styles = (['D', 'I', 'S', 'C'] as const).map((k) => [STYLE_NAMES[k], rows.filter((r) => (r.disc_style || '')[0] === k).length] as [string, number]);
 
     const teams = new Map<string, { suggested: number; interested: number }>();
@@ -481,6 +487,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           ${barList(styles, 'person')}
         </div>
       </div>
+      ${passions.length ? `<div class="card staff-static p-6 mb-6">
+        <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1" style="letter-spacing:.01em">Passions</h3>
+        <p class="text-sm text-stone-500 mb-4">What people said they enjoy</p>
+        <div class="barlist-wide">${barList(passions, 'person')}</div>
+      </div>` : ''}
       <div class="card staff-static p-6 overflow-x-auto">
         <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1" style="letter-spacing:.01em">Teams</h3>
         <p class="text-sm text-stone-500 mb-4">How many people each team was suggested to, and how many tapped “I’m interested”</p>
@@ -506,10 +517,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       if (/^[=+\-@]/.test(t)) t = "'" + t;
       return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
     };
-    const header = ['Name', 'Email', 'Phone', 'Taken', 'Status', 'Top gifts', 'Style', 'Suggested', 'Interested in', 'Notes'];
+    const header = ['Name', 'Email', 'Phone', 'Taken', 'Status', 'Top gifts', 'Style', 'Passions', 'Also enjoys', 'Suggested', 'Interested in', 'Notes'];
     const lines = list.map((r) => [
       r.name, r.email, r.phone, new Date(r.created_at).toLocaleDateString('en-US'), statusLabel(r.status || 'new'),
-      (r.top_gifts || []).join(', '), r.disc_style,
+      (r.top_gifts || []).join(', '), r.disc_style, (r.passions || []).join(', '), r.passionNote || '',
       (r.roles || []).map((x) => (x.role === x.team ? x.team : `${x.role} (${x.team})`)).join(', '),
       (r.interests || []).map(interestLabel).join(', '), r.notes || '',
     ].map(cell).join(','));

@@ -142,6 +142,17 @@ import { GIFTS, GIFT_STYLE, DISC_INFO, DISC_BIBLE } from '../data/gifts.mjs';
 #sg .card.combo{border-left:6px solid var(--navy-mid)}
 #sg .card.combo h3 .plus{color:var(--brand-dark);margin:0 .15em}
 #sg .card.combo p{margin:6px 0 0}
+#sg .chips{display:flex;flex-wrap:wrap;gap:10px}
+#sg .chip{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--surface);font-weight:600;font-size:.95rem;text-align:left;box-shadow:0 1px 4px rgba(16,27,46,0.06);transition:transform .2s cubic-bezier(0.22,1,0.36,1)}
+#sg button.chip:hover{border-color:#B0BCDD;transform:translateY(-1px)}
+#sg button.chip:active{transform:scale(.98)}
+#sg .chip [aria-hidden="true"]{margin-right:6px}
+#sg .chip[aria-pressed="true"],#sg .chip.on{border-color:var(--brand);background:var(--soft)}
+#sg .chips.static .chip{min-height:0;padding:6px 14px;font-size:.9rem;box-shadow:none}
+#sg .note-label{display:block;font-weight:600;margin:24px 0 8px}
+#sg #passion-note{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:10px;font:inherit;font-size:1rem;color:var(--ink);background:#fff;resize:vertical}
+#sg #passion-note:hover{border-color:#B0BCDD}
+#sg #passion-note:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-color:var(--brand)}
 #sg .rest-role{padding:10px 0;border-top:1px solid var(--line);font-size:.95rem}
 #sg .rest-role:first-of-type{border-top:0}
 #sg .rest-role .interest-wrap{margin-top:8px}
@@ -423,6 +434,39 @@ function compute(){
   return {gifts:gifts,disc:disc,ranked:ranked};
 }
 
+// Interests people tap on the last screen. Each one boosts the teams (or specific Kid City roles) it points to.
+var PASSIONS=[
+ {id:"music",label:"Music, singing, or playing an instrument",short:"music",to:[["Worship"]]},
+ {id:"tech",label:"Sound, lights, cameras, or tech",short:"tech",to:[["Production"]]},
+ {id:"creative",label:"Photography, video, design, or writing",short:"creative work",to:[["Creative Team"]]},
+ {id:"babies",label:"Babies and toddlers",short:"babies and toddlers",to:[["Kid City","Mini City: Nursery, Toddlers & Preschool"]]},
+ {id:"kids",label:"Elementary-age kids",short:"kids",to:[["Kid City","Kid City Teacher"],["Kid City","Kid City Room Helper"],["Kid City","Kid City Check-In"]]},
+ {id:"teens",label:"Teenagers",short:"teenagers",to:[["Student Ministry"]]},
+ {id:"welcoming",label:"Meeting and welcoming new people",short:"welcoming people",to:[["Impressions"],["Next Steps"]]},
+ {id:"hosting",label:"Coffee, food, and hosting",short:"hosting",to:[["Impressions"],["Next Steps"]]},
+ {id:"prayer",label:"Praying for people",short:"prayer",to:[["Prayer Team"]]},
+ {id:"care",label:"Helping people through hard times",short:"caring for people",to:[["Care Team"]]},
+ {id:"building",label:"Building, fixing, or keeping things in order",short:"building and fixing",to:[["Facilities"]]},
+ {id:"safety",label:"Safety, security, or medical",short:"safety",to:[["Safety Team"]]},
+ {id:"groups",label:"Leading a small group or Bible discussion",short:"leading groups",to:[["Life Groups"]]},
+ {id:"outreach",label:"Serving our city or missions",short:"outreach",to:[["Outreach"]]},
+ {id:"milestones",label:"Celebrations like baptism and communion",short:"baptism and communion",to:[["Milestones"]]}
+];
+var PASSION_BONUS=15;
+
+function passionsFor(t){
+  return PASSIONS.filter(function(p){
+    return (S.passions||[]).indexOf(p.id)>=0&&p.to.some(function(x){return x[0]===t.team&&(!x[1]||x[1]===t.role);});
+  });
+}
+
+function whyText(m){
+  var parts=[];
+  if(m.best.length)parts.push("your gifts in "+m.best.join(" and "));
+  if(m.passions.length)parts.push("your interest in "+m.passions.map(function(p){return p.short;}).join(" and "));
+  return parts.length?"Fits "+parts.join(" and ")+".":"";
+}
+
 function teamMatches(R){
   var gp={};R.gifts.forEach(function(x){gp[x.g.id]=x;});
   var dp={};R.disc.forEach(function(x){dp[x.k]=x.pct;});
@@ -433,8 +477,10 @@ function teamMatches(R){
     var gScore=gl.length?(0.6*gAvg+0.4*gMax):0;
     var ds=(t.disc||[]).map(function(k){return dp[k];}).filter(function(v){return v!=null;});
     var dScore=ds.length?ds.reduce(function(s,v){return s+v;},0)/ds.length:50;
-    var best=gl.slice().sort(function(a,b){return b.sum-a.sum;}).slice(0,2).map(function(x){return x.g.name;});
-    return {t:t,score:0.75*gScore+0.25*dScore,best:best};
+    // Only name gifts the person actually scored well in.
+    var best=gl.filter(function(x){return x.pct>=60;}).sort(function(a,b){return b.sum-a.sum;}).slice(0,2).map(function(x){return x.g.name;});
+    var ps=passionsFor(t);
+    return {t:t,score:0.75*gScore+0.25*dScore+(ps.length?PASSION_BONUS:0),best:best,passions:ps};
   }).sort(function(a,b){return b.score-a.score;}).filter(function(m,i,all){
     // A role listed more than once (different gift paths) keeps only its best-scoring entry.
     for(var j=0;j<i;j++)if(all[j].t.team===m.t.team&&all[j].t.role===m.t.role)return false;
@@ -445,6 +491,12 @@ function teamMatches(R){
 function pickRoles(R){
   var all=teamMatches(R),cnt={},M=[],used={};
   all.forEach(function(m){if(M.length<3&&(cnt[m.t.team]||0)<2){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[m.t.team+"|"+m.t.role]=1;}});
+  // Anyone who tapped an interest always sees at least one suggestion from it.
+  if(M.length===3&&!M.some(function(m){return m.passions.length;})){
+    var last=M[2], pick=null;
+    all.forEach(function(m){if(!pick&&m.passions.length&&!used[m.t.team+"|"+m.t.role]&&(cnt[m.t.team]||0)-(last.t.team===m.t.team?1:0)<2)pick=m;});
+    if(pick){delete used[last.t.team+"|"+last.t.role];M[2]=pick;used[pick.t.team+"|"+pick.t.role]=1;}
+  }
   return {all:all,M:M,used:used};
 }
 
@@ -493,7 +545,9 @@ function summary(){
     disc:{code:d.code,label:d.label,primary:style(R.ranked[0].k),secondary:style(R.ranked[1].k),
       bars:R.disc.map(function(x){return {k:x.k,name:DISC_INFO[x.k].name,pct:x.pct};})},
     roles:P.M.map(function(m){return {role:m.t.role,team:m.t.team,description:m.t.description,
-      why:m.best.length?"Fits your gifts in "+m.best.join(" and ")+".":"",url:TEAM_PAGES[m.t.team]||""};})
+      why:whyText(m),url:TEAM_PAGES[m.t.team]||""};}),
+    passions:PASSIONS.filter(function(p){return (S.passions||[]).indexOf(p.id)>=0;}).map(function(p){return p.label;}),
+    passionNote:(S.passionNote||"").slice(0,500)
   };
 }
 
@@ -540,10 +594,15 @@ function viewResults(){
 
   if(TEAMS.length){
     var P=pickRoles(R),all=P.all,M=P.M,used=P.used;
-    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three fit your gifts and style best. They are suggestions, not assignments. Tap “I’m interested” on any of them, or on anything in the full list below.</p>';
+    var myP=PASSIONS.filter(function(p){return (S.passions||[]).indexOf(p.id)>=0;});
+    if(myP.length||S.passionNote){
+      h+='<div class="sec"><h2>Your passions</h2><div class="chips static">'+myP.map(function(p){return '<span class="chip on">'+esc(p.label)+'</span>';}).join('')+'</div>'+
+        (S.passionNote?'<p class="muted" style="margin-top:12px">Also: '+esc(S.passionNote)+'</p>':'')+'</div>';
+    }
+    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three fit your gifts, style, and interests best. They are suggestions, not assignments. Tap “I’m interested” on any of them, or on anything in the full list below.</p>';
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team&&m.t.team!==m.t.role?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
-         (m.best.length?'<p class="why">Fits your gifts in '+m.best.map(esc).join(" and ")+'.</p>':"")+
+         (whyText(m)?'<p class="why">'+esc(whyText(m))+'</p>':"")+
          (TEAM_ABOUT[m.t.team]?'<p class="team-about"><b>About the '+esc(m.t.team)+(/team$/i.test(m.t.team)?'':' team')+':</b> '+esc(TEAM_ABOUT[m.t.team])+'</p>':"")+
          (m.t.contact?'<p class="ref">'+esc(m.t.contact)+'</p>':"")+
          '<div class="team-actions"><div class="interest-wrap" data-key="'+esc(m.t.team+"|"+m.t.role)+'">'+interestBtn(m)+'</div>'+
@@ -609,6 +668,8 @@ function toggleInterest(b){
   });
 }
 
+function savePassionNote(){var t=document.getElementById("passion-note");if(t){S.passionNote=t.value.slice(0,500);save();}}
+
 function updateActions(){var a=document.getElementById("sg-actions");if(a)a.innerHTML=actionsHtml();}
 
 function post(url,body){
@@ -645,15 +706,31 @@ function readWho(form){
   return who;
 }
 
+function viewPassions(){
+  var sel=S.passions||[];
+  return '<div class="prog"><div class="prog-meta"><span class="part">Last step</span><span>Almost done</span></div>'+
+   '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span style="width:100%"></span></div></div>'+
+   '<div class="q passions"><h2 tabindex="-1" id="focus">What do you enjoy?</h2>'+
+   '<p class="hint" style="margin:-12px 0 18px">Tap anything that sounds like you. Pick as many as you like, or none.</p>'+
+   '<div class="chips" role="group" aria-label="Things you enjoy">'+
+   PASSIONS.map(function(p){var on=sel.indexOf(p.id)>=0;
+     return '<button class="chip" data-act="passion" data-id="'+p.id+'" aria-pressed="'+on+'">'+(on?'<span aria-hidden="true">✓</span>':'')+esc(p.label)+'</button>';}).join('')+
+   '</div>'+
+   '<label class="note-label" for="passion-note">Anything else you’re passionate about? <span class="muted">(optional)</span></label>'+
+   '<textarea id="passion-note" maxlength="500" rows="3" placeholder="For example: gardening, spreadsheets, cooking for a crowd, sign language…">'+esc(S.passionNote||"")+'</textarea>'+
+   '<div class="nav"><button class="btn ghost" data-act="back">Back</button><button class="btn" data-act="finish">See my results</button></div></div>';
+}
+
 function render(){
   var h;
   if(!S.started||!S.who)h=viewIntro();
+  else if(S.i>=TOTAL&&!S.pdone&&!S.sid)h=viewPassions();
   else if(S.i>=TOTAL)h=viewResults();
   else h=viewGift();
   root.innerHTML=h;
   var f=document.getElementById("focus");
   if(f){try{f.focus({preventScroll:true});}catch(e){}}
-  if(S.started&&S.i>=TOTAL&&!S.sid)submitResults();
+  if(S.started&&S.i>=TOTAL&&(S.pdone||S.sid)&&!S.sid)submitResults();
 }
 function go(delta){S.i=Math.max(0,Math.min(TOTAL,S.i+delta));confirmReset=false;save();render();window.scrollTo(0,0);}
 
@@ -667,7 +744,15 @@ root.addEventListener("click",function(e){
     lock=true; setTimeout(function(){lock=false;go(1);},220);
   }
   else if(act==="next"){go(1);}
-  else if(act==="back"){go(-1);}
+  else if(act==="back"){if(S.i>=TOTAL){savePassionNote();}go(-1);}
+  else if(act==="passion"){
+    var id=b.getAttribute("data-id");S.passions=S.passions||[];
+    var k=S.passions.indexOf(id);if(k>=0)S.passions.splice(k,1);else S.passions.push(id);
+    var on=k<0;b.setAttribute("aria-pressed",String(on));
+    b.innerHTML=(on?'<span aria-hidden="true">✓</span>':'')+esc(PASSIONS.filter(function(p){return p.id===id;})[0].label);
+    save();
+  }
+  else if(act==="finish"){savePassionNote();S.pdone=true;save();render();window.scrollTo(0,0);}
   else if(act==="print"){try{window.print();}catch(err){}}
   else if(act==="email"){emailResults();}
   else if(act==="interest"){toggleInterest(b);}
@@ -675,7 +760,7 @@ root.addEventListener("click",function(e){
   else if(act==="restart"){
     var needConfirm=S.i>=TOTAL;
     if(needConfirm&&!confirmReset){confirmReset=true;updateActions();return;}
-    S={started:false,i:0,g:{},d:{},who:S.who,interests:[]};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
+    S={started:false,i:0,g:{},d:{},who:S.who,interests:[],passions:[],passionNote:""};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
   }
 });
 

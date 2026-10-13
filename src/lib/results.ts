@@ -14,6 +14,8 @@ export interface QuizResults {
   };
   roles: RoleResult[];
   together?: { gift: string; style: string; text: string }[];
+  passions?: string[];
+  passionNote?: string;
 }
 
 const str = (v: unknown, max: number) => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
@@ -30,7 +32,9 @@ export function isValidResults(r: any): r is QuizResults {
     Array.isArray(r.disc.bars) && r.disc.bars.length === 4 &&
     Array.isArray(r.roles) && r.roles.length <= 5 && r.roles.every((x: any) => x && str(x.role, 80) && str(x.team, 80)) &&
     (r.together === undefined || (Array.isArray(r.together) && r.together.length <= 5 &&
-      r.together.every((t: any) => t && str(t.gift, 80) && str(t.style, 40) && str(t.text, 400))))
+      r.together.every((t: any) => t && str(t.gift, 80) && str(t.style, 40) && str(t.text, 400)))) &&
+    (r.passions === undefined || (Array.isArray(r.passions) && r.passions.length <= 20 && r.passions.every((x: any) => str(x, 80)))) &&
+    (r.passionNote === undefined || (typeof r.passionNote === 'string' && r.passionNote.length <= 500))
   );
 }
 
@@ -127,6 +131,8 @@ export function resultsEmail(name: string, r: QuizResults, siteUrl: string, foll
     ${r.together?.length ? h2('How your gifts and style work together') + r.together.map((t) => `<div style="border:1px solid ${LINE};border-left:5px solid #3A5490;border-radius:10px;padding:14px 16px;margin-bottom:10px">
         <div style="font-weight:800;font-size:16px;text-transform:uppercase">${esc(t.gift)} <span style="color:${GREEN_DARK}">+</span> ${esc(t.style)}</div>
         <p style="margin:6px 0 0;font-size:14px;line-height:1.55">${esc(t.text)}</p></div>`).join('') : ''}
+    ${r.passions?.length || r.passionNote ? h2('Your passions') + `<p style="margin:0 0 6px;font-size:14px;line-height:1.6">${esc((r.passions || []).join(' · '))}</p>` +
+      (r.passionNote ? `<p style="margin:0;font-size:14px;color:${MUTED};line-height:1.6">Also: ${esc(r.passionNote)}</p>` : '') : ''}
     ${r.roles.length ? h2('Where you could serve') + `<p style="margin:0 0 12px;font-size:14px;color:${MUTED}">These roles fit your gifts and style best. They are suggestions, not assignments.</p>` + rolesBlock(r, siteUrl) : ''}
     <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid ${LINE};font-size:13px;color:${MUTED};line-height:1.6">This is a tool for reflection, not a diagnosis, and it is not a formal or validated assessment. ${esc(followUp)}</p>
     <p style="margin:16px 0 0;font-size:14px;line-height:1.6">Want to go deeper? <a href="${esc(siteUrl)}/spiritual-gifts/" style="color:${GREEN_DARK};font-weight:700">Read about every gift and personality style</a>.</p>
@@ -147,6 +153,8 @@ function personAlert(title: string, intro: string, p: Person, r: QuizResults, si
       ${row('Phone', `<a href="tel:${esc(p.phone)}" style="color:${GREEN_DARK}">${esc(p.phone)}</a>`)}
       ${row('Top gifts', esc(r.topGifts.slice(0, 3).map((g) => g.name).join(', ')))}
       ${row('Style', esc(`${r.disc.code} · ${r.disc.label}`))}
+      ${r.passions?.length ? row('Passions', esc(r.passions.join(', '))) : ''}
+      ${r.passionNote ? row('Also enjoys', esc(r.passionNote)) : ''}
       ${row('Suggested', esc(r.roles.map((m) => `${m.role} (${m.team})`).join(', ')))}
     </table>
     <p style="margin:22px 0 0"><a href="${esc(siteUrl)}/dashboard/?id=${esc(id)}" style="display:inline-block;background:${NAVY};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Open in staff dashboard</a></p>`;
