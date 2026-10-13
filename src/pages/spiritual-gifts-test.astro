@@ -132,6 +132,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .roles li{font-size:.95rem}
 #sg .team-about{font-size:.9rem;color:var(--muted);background:#F6F8FB;border-radius:8px;padding:10px 12px;margin:10px 0 4px}
 #sg .team-about b{color:var(--ink);font-weight:700}
+#sg .bible{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+#sg .bible ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.92rem}
+#sg .bible .ref-inline{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 #sg .card.combo{border-left:6px solid var(--navy-mid)}
 #sg .card.combo h3 .plus{color:var(--brand-dark);margin:0 .15em}
 #sg .card.combo p{margin:6px 0 0}
@@ -497,6 +500,26 @@ function together(R){
   return R.gifts.slice(0,3).map(function(x){return {gift:x.g.name,style:DISC_INFO[p1].name,text:GIFT_STYLE[x.g.id][p1]};});
 }
 
+var DISC_BIBLE={
+ D:[{who:"Nehemiah",ref:"Nehemiah 2–6",why:"Rallied a discouraged city and rebuilt Jerusalem's walls in 52 days."},
+    {who:"Deborah",ref:"Judges 4–5",why:"Led Israel with decisive courage when others hesitated."},
+    {who:"Paul",ref:"Philippians 3:12–14",why:"Pressed toward the goal and planted churches across the Roman world."}],
+ I:[{who:"Peter",ref:"Acts 2:14–41",why:"Stood up at Pentecost and spoke boldly, and thousands responded."},
+    {who:"Barnabas",ref:"Acts 4:36; 11:22–26",why:"The \u201cson of encouragement\u201d who drew people in and believed in them."},
+    {who:"Miriam",ref:"Exodus 15:20–21",why:"Led the people in joyful, celebrating worship."}],
+ S:[{who:"Ruth",ref:"Ruth 1:16–17",why:"Stayed loyal to Naomi when it would have been easier to leave."},
+    {who:"Timothy",ref:"Philippians 2:19–22",why:"Faithfully served alongside Paul with genuine care for people."},
+    {who:"Andrew",ref:"John 1:40–42",why:"Quietly brought people to Jesus, starting with his brother."}],
+ C:[{who:"Ezra",ref:"Ezra 7:10",why:"Devoted himself to carefully studying and teaching God's law."},
+    {who:"Luke",ref:"Luke 1:1–4",why:"Investigated everything carefully to write an orderly account."},
+    {who:"Daniel",ref:"Daniel 1; 6",why:"Lived with disciplined faithfulness and excellence in a foreign court."}]
+};
+
+function bibleHtml(k){
+  return '<div class="bible"><p class="signs-h">In Scripture</p><ul>'+DISC_BIBLE[k].map(function(b){
+    return '<li><b>'+esc(b.who)+'</b> <span class="ref-inline">'+esc(b.ref)+'</span> '+esc(b.why)+'</li>';}).join('')+'</ul></div>';
+}
+
 var DISC_INFO = {
  D:{name:"Driver",line:"Direct, decisive, and focused on results.",use:"You move things forward. When a team is stuck, you tend to make the call and get people going.",grow:"Slow down to hear people out, and watch that your pace doesn't leave others behind."},
  I:{name:"Influencer",line:"Outgoing, enthusiastic, and people-centered.",use:"You bring energy and connection. You help people feel welcome and get others excited about what God is doing.",grow:"Follow through on details and make room for quieter voices."},
@@ -654,7 +677,7 @@ function interestBtn(m){
 function summary(){
   var R=compute(), d=discLabel(R), P=pickRoles(R);
   function gift(x,full){var o={name:x.g.name,score:x.sum,pct:x.pct};if(full){o.def=x.g.def;o.ref=x.g.ref;o.about=x.g.about;o.signs=x.g.signs;}return o;}
-  function style(k){var i=DISC_INFO[k];return {k:k,name:i.name,line:i.line,use:i.use,grow:i.grow};}
+  function style(k){var i=DISC_INFO[k];return {k:k,name:i.name,line:i.line,use:i.use,grow:i.grow,bible:DISC_BIBLE[k]};}
   return {
     topGifts:R.gifts.slice(0,5).map(function(x){return gift(x,true);}),
     allGifts:R.gifts.map(function(x){return gift(x,false);}),
@@ -694,8 +717,8 @@ function viewResults(){
      '<div class="disc-bars">';
   R.disc.forEach(function(x){h+='<div class="r"><b>'+esc(DISC_INFO[x.k].name)+'</b><div class="meter" aria-hidden="true"><span style="width:'+x.pct+'%"></span></div><em>'+x.pct+'</em></div>';});
   h+='</div>'+
-     '<div class="card"><h3>'+esc(DISC_INFO[p1.k].name)+'</h3><p>'+esc(DISC_INFO[p1.k].line)+'</p><p>'+esc(DISC_INFO[p1.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p1.k].grow)+'</p></div>'+
-     '<div class="card"><h3>'+esc(DISC_INFO[p2.k].name)+' (your second style)</h3><p>'+esc(DISC_INFO[p2.k].line)+'</p><p>'+esc(DISC_INFO[p2.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p2.k].grow)+'</p></div>'+
+     '<div class="card"><h3>'+esc(DISC_INFO[p1.k].name)+'</h3><p>'+esc(DISC_INFO[p1.k].line)+'</p><p>'+esc(DISC_INFO[p1.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p1.k].grow)+'</p>'+bibleHtml(p1.k)+'</div>'+
+     '<div class="card"><h3>'+esc(DISC_INFO[p2.k].name)+' (your second style)</h3><p>'+esc(DISC_INFO[p2.k].line)+'</p><p>'+esc(DISC_INFO[p2.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p2.k].grow)+'</p>'+bibleHtml(p2.k)+'</div>'+
      '</div>';
 
   h+='<div class="sec"><h2>How your gifts and style work together</h2>'+

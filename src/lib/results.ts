@@ -1,5 +1,5 @@
 export interface GiftResult { name: string; score: number; pct: number; def?: string; ref?: string; about?: string; signs?: string[] }
-export interface DiscStyle { k: string; name: string; line: string; use: string; grow: string }
+export interface DiscStyle { k: string; name: string; line: string; use: string; grow: string; bible?: { who: string; ref: string; why: string }[] }
 export interface RoleResult { role: string; team: string; description?: string; why?: string; url?: string }
 
 export interface QuizResults {
@@ -92,6 +92,8 @@ function discBlock(r: QuizResults) {
       <div style="font-weight:800;font-size:16px;text-transform:uppercase">${esc(s.name)}${second ? ' (your second style)' : ''}</div>
       <p style="margin:6px 0;font-size:14px;line-height:1.55">${esc(s.line)} ${esc(s.use)}</p>
       <p style="margin:0;font-size:13px;color:${MUTED};line-height:1.55">To grow: ${esc(s.grow)}</p>
+      ${Array.isArray(s.bible) && s.bible.length ? `<p style="margin:10px 0 4px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px">In Scripture</p>` +
+        s.bible.slice(0, 3).map((b) => `<p style="margin:0 0 4px;font-size:13px;line-height:1.5"><b>${esc(b.who)}</b> <span style="color:${MUTED}">(${esc(b.ref)})</span> ${esc(b.why)}</p>`).join('') : ''}
     </div>`;
   const bars = r.disc.bars
     .map((b) => `<tr><td style="font-size:13px;font-weight:600;width:90px;padding:2px 0">${esc(b.name)}</td><td>${bar(b.pct, '#3A5490')}</td><td align="right" style="font-size:13px;color:${MUTED};width:32px">${b.pct}</td></tr>`)
