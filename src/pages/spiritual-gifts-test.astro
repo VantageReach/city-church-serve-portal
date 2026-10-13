@@ -132,6 +132,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 #sg .roles li{font-size:.95rem}
 #sg .team-about{font-size:.9rem;color:var(--muted);background:#F6F8FB;border-radius:8px;padding:10px 12px;margin:10px 0 4px}
 #sg .team-about b{color:var(--ink);font-weight:700}
+#sg .card.combo{border-left:6px solid var(--navy-mid)}
+#sg .card.combo h3 .plus{color:var(--brand-dark);margin:0 .15em}
+#sg .card.combo p{margin:6px 0 0}
 #sg .rest-role{padding:10px 0;border-top:1px solid var(--line);font-size:.95rem}
 #sg .rest-role:first-of-type{border-top:0}
 #sg .rest-role .interest-wrap{margin-top:8px}
@@ -455,6 +458,45 @@ var DISC = {
     "I'm more comfortable with facts and logic than with gut feelings and impulses."]
 };
 
+/* How each gift tends to look with each personality style. */
+var GIFT_STYLE={
+ administration:{D:"You turn a goal into a plan fast and keep everyone moving toward the deadline.",I:"You organize in a way that rallies people, so the plan feels exciting instead of tedious.",S:"You build reliable routines and systems that keep ministry running week after week.",C:"You create detailed, well-thought-out plans that catch problems before they happen."},
+ apostleship:{D:"You pioneer boldly, launching new works and pushing through obstacles others stop at.",I:"You cast vision for something new and get people excited to build it with you.",S:"You start new works patiently, laying strong foundations and staying with people as it grows.",C:"You plan new works carefully, thinking through what it will take before you launch."},
+ craftsmanship:{D:"You take charge of a project and get it built, solving problems as they come.",I:"You make things that delight people, and you love bringing others into the creative process.",S:"You faithfully keep things built, fixed, and ready, often behind the scenes.",C:"You bring precision and quality to everything you make, down to the smallest detail."},
+ discernment:{D:"You name what's off quickly and aren't afraid to address it head-on.",I:"You sense what's really going on with people and help others see it graciously.",S:"You notice when something isn't right and patiently help steer people back toward truth.",C:"You test ideas carefully against Scripture and help the church think clearly."},
+ evangelism:{D:"You boldly start gospel conversations and invite people to respond.",I:"You build friendships easily and share Jesus naturally in everyday conversation.",S:"You earn trust over time and share your faith through steady, genuine relationships.",C:"You give thoughtful answers to honest questions and help skeptics think it through."},
+ exhortation:{D:"You challenge people directly and push them toward growth they didn't think was possible.",I:"You lift people up with encouragement that leaves them ready to move.",S:"You walk alongside people patiently, encouraging them one step at a time.",C:"You give clear, practical next steps so people know exactly how to grow."},
+ faith:{D:"You step out first on God-sized goals and call others to follow.",I:"Your confidence in God is contagious and stirs faith in the people around you.",S:"Your quiet, unshakable trust in God steadies others through hard seasons.",C:"Your faith is grounded in God's promises, and you can explain why you trust Him."},
+ giving:{D:"You give decisively and boldly when you see a need that matters.",I:"Your generosity inspires others to give and join in.",S:"You give faithfully and consistently, often quietly and over the long haul.",C:"You manage resources wisely so you can give where it helps most."},
+ healing:{D:"You pray boldly and expectantly for healing without hesitation.",I:"You bring hope and warmth as you pray for the sick and hurting.",S:"You stay with hurting people in prayer over time, trusting God through the process.",C:"You pray carefully and wisely, seeking God's will for each person."},
+ helps:{D:"You jump in and take ownership so leaders can stay focused.",I:"You support others with cheer and make the work feel lighter for everyone.",S:"You're the dependable support every leader wishes they had.",C:"You handle the details leaders miss, accurately and without being asked."},
+ hospitality:{D:"You take charge of making people welcome, from the first hello to the follow-up.",I:"You make strangers feel like friends within minutes.",S:"You create calm, comfortable spaces where people feel safe to belong.",C:"You think through every detail of a guest's experience so nothing feels overlooked."},
+ intercession:{D:"You pray with boldness, contending for breakthrough.",I:"You rally others to pray and keep prayer at the center of community.",S:"You pray faithfully for the same people and needs, day after day.",C:"You pray specifically and keep track of how God answers."},
+ knowledge:{D:"You use what you know to bring clarity and make decisions with confidence.",I:"You share what you learn in ways that make people curious about Scripture.",S:"You patiently help others understand God's Word one question at a time.",C:"You research deeply and organize truth so it's accurate and clear."},
+ leadership:{D:"You set bold direction and drive the team toward results.",I:"You lead by inspiring people and building a team that wants to follow.",S:"You lead by example, building trust and keeping the team united.",C:"You lead with a clear plan, high standards, and well-made decisions."},
+ mercy:{D:"You act quickly to meet the needs of people who are hurting.",I:"You bring warmth and hope to people who feel alone.",S:"You stay present with people in their pain for as long as it takes.",C:"You notice the quiet needs others miss and care for them thoughtfully."},
+ miracles:{D:"You step out boldly in faith and expect God to show up powerfully.",I:"You stir faith in others as you share what God has done.",S:"You keep praying and trusting God even when answers take time.",C:"You pray with discernment and point every outcome back to Jesus."},
+ missionary:{D:"You go boldly into new places and get the work started.",I:"You connect quickly across cultures and build friendships wherever you go.",S:"You commit to people in another culture for the long haul.",C:"You study a culture carefully so the gospel is communicated clearly."},
+ music:{D:"You lead worship with conviction and take the room where it needs to go.",I:"You bring energy to worship and draw the congregation in.",S:"You serve the team faithfully and help create a steady, worshipful atmosphere.",C:"You prepare thoroughly and play with excellence so nothing distracts from worship."},
+ prophecy:{D:"You speak truth boldly, even when it's hard to hear.",I:"You share what God is saying in a way that encourages and lifts people.",S:"You speak gently and at the right moment, so truth lands with grace.",C:"You weigh what you sense carefully against Scripture before you speak."},
+ service:{D:"You see what needs to be done and get it done fast.",I:"You make serving fun and get others to jump in with you.",S:"You show up week after week and take care of what needs doing.",C:"You do practical tasks thoroughly and with excellence."},
+ shepherding:{D:"You guide people decisively and protect them from what could pull them away.",I:"You build close-knit groups where people feel known and loved.",S:"You care for people patiently through every season of life.",C:"You pay close attention to each person's spiritual growth and needs."},
+ teaching:{D:"You teach with conviction and challenge people to act on what they learn.",I:"You make Scripture come alive with stories and energy.",S:"You teach patiently and make sure everyone keeps up.",C:"You teach with careful preparation, clear structure, and accuracy."},
+ tongues:{D:"You step out in faith when the Spirit leads, in a way that builds up the church.",I:"You encourage others in the life of the Spirit with joy.",S:"You pray in the Spirit faithfully and steadily, often in private.",C:"You value order and use this gift in a way that builds others up, as Scripture teaches."},
+ wisdom:{D:"You cut through confusion and help people make clear decisions.",I:"You share wise counsel in a warm, approachable way.",S:"You listen well and give calm, thoughtful advice.",C:"You weigh every angle and give counsel that holds up over time."}
+};
+var STYLE_ALSO={
+ D:"you're not afraid to step up and lead when it's needed",
+ I:"you bring other people along with you",
+ S:"people can count on you to keep showing up",
+ C:"you care about doing it well, not just getting it done"
+};
+
+function together(R){
+  var p1=R.ranked[0].k;
+  return R.gifts.slice(0,3).map(function(x){return {gift:x.g.name,style:DISC_INFO[p1].name,text:GIFT_STYLE[x.g.id][p1]};});
+}
+
 var DISC_INFO = {
  D:{name:"Driver",line:"Direct, decisive, and focused on results.",use:"You move things forward. When a team is stuck, you tend to make the call and get people going.",grow:"Slow down to hear people out, and watch that your pace doesn't leave others behind."},
  I:{name:"Influencer",line:"Outgoing, enthusiastic, and people-centered.",use:"You bring energy and connection. You help people feel welcome and get others excited about what God is doing.",grow:"Follow through on details and make room for quieter voices."},
@@ -616,6 +658,7 @@ function summary(){
   return {
     topGifts:R.gifts.slice(0,5).map(function(x){return gift(x,true);}),
     allGifts:R.gifts.map(function(x){return gift(x,false);}),
+    together:together(R),
     disc:{code:d.code,label:d.label,primary:style(R.ranked[0].k),secondary:style(R.ranked[1].k),
       bars:R.disc.map(function(x){return {k:x.k,name:DISC_INFO[x.k].name,pct:x.pct};})},
     roles:P.M.map(function(m){return {role:m.t.role,team:m.t.team,description:m.t.description,
@@ -654,6 +697,13 @@ function viewResults(){
      '<div class="card"><h3>'+esc(DISC_INFO[p1.k].name)+'</h3><p>'+esc(DISC_INFO[p1.k].line)+'</p><p>'+esc(DISC_INFO[p1.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p1.k].grow)+'</p></div>'+
      '<div class="card"><h3>'+esc(DISC_INFO[p2.k].name)+' (your second style)</h3><p>'+esc(DISC_INFO[p2.k].line)+'</p><p>'+esc(DISC_INFO[p2.k].use)+'</p><p class="muted" style="margin:0">To grow: '+esc(DISC_INFO[p2.k].grow)+'</p></div>'+
      '</div>';
+
+  h+='<div class="sec"><h2>How your gifts and style work together</h2>'+
+     '<p class="muted">Your personality shapes how your gifts come out. Here’s how your top gifts tend to look as '+(/^[AEIOU]/.test(DISC_INFO[p1.k].name)?'an ':'a ')+esc(DISC_INFO[p1.k].name)+'. And because your second style is '+esc(DISC_INFO[p2.k].name)+', '+STYLE_ALSO[p2.k]+'.</p>';
+  together(R).forEach(function(t){
+    h+='<div class="card combo"><h3>'+esc(t.gift)+' <span class="plus">+</span> '+esc(t.style)+'</h3><p>'+esc(t.text)+'</p></div>';
+  });
+  h+='</div>';
 
   if(TEAMS.length){
     var P=pickRoles(R),all=P.all,M=P.M,used=P.used;

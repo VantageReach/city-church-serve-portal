@@ -55,6 +55,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       <!-- LIST -->
       <div id="view-list" class="hidden">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <div class="tabs" role="tablist" aria-label="Dashboard view">
+            <button class="tab" role="tab" id="tab-responses" aria-selected="true" aria-controls="panel-responses">Responses</button>
+            <button class="tab" role="tab" id="tab-overview" aria-selected="false" aria-controls="panel-overview">Overview</button>
+          </div>
+          <button id="download" class="btn-outline !py-2 !px-4 !text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+            Download spreadsheet
+          </button>
+        </div>
+
+        <div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" class="hidden"></div>
+
+        <div id="panel-responses" role="tabpanel" aria-labelledby="tab-responses">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <p class="text-sm text-stone-500"><b id="count" class="text-navy-800 font-display text-2xl font-black align-middle mr-1"></b> <span id="count-label"></span></p>
           <div class="relative w-full sm:w-80">
@@ -80,6 +94,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <tbody id="rows"></tbody>
           </table>
           <p id="empty" class="hidden px-5 py-10 text-center text-stone-500"></p>
+        </div>
         </div>
       </div>
 
@@ -131,6 +146,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .status-btn[aria-pressed="true"][data-status="contacted"] { background:#E8EDF8; border-color:#7A8FBE; color:#3A5490; }
   .status-btn[aria-pressed="true"][data-status="placed"] { background:#F0F9E0; border-color:#8CC640; color:#4F7A1C; }
   .status-btn:disabled { opacity:.6; cursor:wait; }
+  .tabs { display:inline-flex; background:#fff; border:2px solid #E3E6EC; border-radius:999px; padding:3px; }
+  .tab { border-radius:999px; padding:.45rem 1.1rem; font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#5A6275; transition:transform .2s cubic-bezier(0.22,1,0.36,1); }
+  .tab:hover { color:#101B2E; }
+  .tab:active { transform:scale(.97); }
+  .tab:focus-visible { outline:2px solid #8CC640; outline-offset:2px; }
+  .tab[aria-selected="true"] { background:#101B2E; color:#fff; }
+  .kpi-label { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#5A6275; }
+  .kpi-value { font-family:"Barlow Condensed",sans-serif; font-weight:900; font-size:3rem; line-height:1; color:#101B2E; font-variant-numeric:tabular-nums; }
+  .kpi-sub { font-size:.8rem; color:#5A6275; }
+  .barlist { display:grid; gap:.55rem; }
+  .barrow { display:grid; grid-template-columns:8.5rem 1fr 2.5rem; align-items:center; gap:.75rem; font-size:.875rem; padding:2px 0; border-radius:6px; }
+  .barrow:hover { background:#F6F8FB; }
+  .barrow .name { color:#101B2E; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .barrow .val { text-align:right; color:#101B2E; font-variant-numeric:tabular-nums; font-weight:600; }
+  .bar-track { height:10px; }
+  .bar-fill { display:block; height:10px; background:#3A5490; border-radius:0 4px 4px 0; }
+  .ov-table th { font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:#5A6275; font-weight:700; text-align:left; padding:.6rem .75rem; border-bottom:1px solid #E8E8E8; }
+  .ov-table td { padding:.6rem .75rem; border-bottom:1px solid #F0F0F0; font-variant-numeric:tabular-nums; }
+  .ov-table tr:last-child td { border-bottom:0; }
+  .ov-table .num { text-align:right; }
 </style>
 
 <script>
@@ -149,6 +184,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   type Row = {
     id: string; created_at: string; name: string; email: string; phone: string;
     top_gifts: string[]; disc_style: string; status: Status; interests: Interest[]; results?: any;
+    notes?: string; roles?: { role: string; team: string }[];
   };
 
   const STATUSES: { key: Status; label: string }[] = [
@@ -195,7 +231,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   async function loadRows() {
     const { data, error } = await supabase
       .from('quiz_responses')
-      .select('id, created_at, name, email, phone, top_gifts, disc_style, status, interests')
+      .select('id, created_at, name, email, phone, top_gifts, disc_style, status, interests, notes, roles:results->roles')
       .order('created_at', { ascending: false })
       .limit(2000);
     const err = $('list-error');
@@ -219,15 +255,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       .join('');
   }
 
-  function renderList() {
-    renderFilters();
+  function visibleRows() {
     const q = (($('search') as HTMLInputElement).value || '').trim().toLowerCase();
     const byStatus = filter === 'all' ? rows
       : filter === 'interested' ? rows.filter((r) => r.interests?.length)
       : rows.filter((r) => r.status === filter);
-    const list = q
+    return q
       ? byStatus.filter((r) => [r.name, r.email, r.phone, r.disc_style, ...(r.top_gifts || []), ...(r.interests || []).map((i) => i.role)].join(' ').toLowerCase().includes(q))
       : byStatus;
+  }
+
+  function renderList() {
+    renderFilters();
+    const q = (($('search') as HTMLInputElement).value || '').trim().toLowerCase();
+    const list = visibleRows();
 
     $('count').textContent = String(list.length);
     $('count-label').textContent = q || filter !== 'all'
@@ -346,6 +387,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     }
     const row = rows.find((x) => x.id === id);
     if (row && patch.status) row.status = patch.status;
+    if (row && patch.notes !== undefined) row.notes = patch.notes;
     return true;
   }
 
@@ -370,6 +412,115 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       if (await saveFollowUp(id, { notes })) followMsg('Notes saved.', true);
       btn.disabled = false;
     });
+  }
+
+  const STYLE_NAMES: Record<string, string> = { D: 'Driver', I: 'Influencer', S: 'Steady', C: 'Careful' };
+  const interestLabel = (i: Interest) => (i.role === i.team ? i.team : `${i.role} (${i.team})`);
+
+  function countBy(items: string[]) {
+    const m = new Map<string, number>();
+    items.forEach((k) => m.set(k, (m.get(k) || 0) + 1));
+    return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }
+
+  function barList(entries: [string, number][], unit: string) {
+    const max = Math.max(1, ...entries.map((e) => e[1]));
+    return `<div class="barlist">${entries.map(([name, n]) => `
+      <div class="barrow" title="${esc(name)}: ${n} ${unit}${n === 1 ? '' : 's'}">
+        <span class="name">${esc(name)}</span>
+        <span class="bar-track" aria-hidden="true"><span class="bar-fill" style="width:${(n / max) * 100}%"></span></span>
+        <span class="val">${n}</span>
+      </div>`).join('')}</div>`;
+  }
+
+  function renderOverview() {
+    const total = rows.length;
+    const kpi = (label: string, value: number, sub: string) => `
+      <div class="card staff-static p-5"><div class="kpi-label">${label}</div><div class="kpi-value mt-2">${value}</div><div class="kpi-sub mt-1">${sub}</div></div>`;
+    const pct = (n: number) => (total ? `${Math.round((n / total) * 100)}% of everyone` : '—');
+    const interested = rows.filter((r) => r.interests?.length).length;
+    const placed = rows.filter((r) => r.status === 'placed').length;
+    const fresh = rows.filter((r) => (r.status || 'new') === 'new').length;
+
+    if (!total) {
+      $('panel-overview').innerHTML = '<div class="card staff-static p-10 text-center text-stone-500">The overview fills in as people take the test.</div>';
+      return;
+    }
+
+    const gifts = countBy(rows.flatMap((r) => r.top_gifts || [])).slice(0, 10);
+    const styles = (['D', 'I', 'S', 'C'] as const).map((k) => [STYLE_NAMES[k], rows.filter((r) => (r.disc_style || '')[0] === k).length] as [string, number]);
+
+    const teams = new Map<string, { suggested: number; interested: number }>();
+    const bump = (team: string, key: 'suggested' | 'interested') => {
+      const t = teams.get(team) || { suggested: 0, interested: 0 };
+      t[key]++;
+      teams.set(team, t);
+    };
+    rows.forEach((r) => {
+      new Set((r.roles || []).map((x) => x.team)).forEach((t) => bump(t, 'suggested'));
+      new Set((r.interests || []).map((x) => x.team)).forEach((t) => bump(t, 'interested'));
+    });
+    const teamRows = [...teams.entries()].sort((a, b) => b[1].interested - a[1].interested || b[1].suggested - a[1].suggested || a[0].localeCompare(b[0]));
+
+    $('panel-overview').innerHTML = `
+      <div class="grid gap-4 grid-cols-2 lg:grid-cols-4 mb-6">
+        ${kpi('Responses', total, 'people have taken the test')}
+        ${kpi('Interested', interested, pct(interested))}
+        ${kpi('Placed', placed, pct(placed))}
+        ${kpi('Not yet contacted', fresh, pct(fresh))}
+      </div>
+      <div class="grid gap-6 lg:grid-cols-2 mb-6">
+        <div class="card staff-static p-6">
+          <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1" style="letter-spacing:.01em">Most common gifts</h3>
+          <p class="text-sm text-stone-500 mb-4">People with this gift in their top 3</p>
+          ${barList(gifts, 'person')}
+        </div>
+        <div class="card staff-static p-6">
+          <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1" style="letter-spacing:.01em">Personality mix</h3>
+          <p class="text-sm text-stone-500 mb-4">People by their main style</p>
+          ${barList(styles, 'person')}
+        </div>
+      </div>
+      <div class="card staff-static p-6 overflow-x-auto">
+        <h3 class="font-display text-xl font-black uppercase text-navy-800 mb-1" style="letter-spacing:.01em">Teams</h3>
+        <p class="text-sm text-stone-500 mb-4">How many people each team was suggested to, and how many tapped “I’m interested”</p>
+        <table class="ov-table w-full text-sm">
+          <thead><tr><th>Team</th><th class="num">Suggested to</th><th class="num">Interested</th></tr></thead>
+          <tbody>${teamRows.map(([team, t]) => `<tr><td class="font-semibold text-navy-800">${esc(team)}</td><td class="num">${t.suggested}</td><td class="num">${t.interested ? `<b class="text-navy-800">${t.interested}</b>` : '<span class="text-stone-500">0</span>'}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+  }
+
+  function setTab(tab: 'responses' | 'overview') {
+    $('tab-responses').setAttribute('aria-selected', String(tab === 'responses'));
+    $('tab-overview').setAttribute('aria-selected', String(tab === 'overview'));
+    $('panel-responses').classList.toggle('hidden', tab !== 'responses');
+    $('panel-overview').classList.toggle('hidden', tab !== 'overview');
+    if (tab === 'overview') renderOverview();
+  }
+
+  function downloadCsv() {
+    const list = visibleRows();
+    const cell = (v: unknown) => {
+      let t = String(v ?? '');
+      if (/^[=+\-@]/.test(t)) t = "'" + t;
+      return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+    };
+    const header = ['Name', 'Email', 'Phone', 'Taken', 'Status', 'Top gifts', 'Style', 'Suggested', 'Interested in', 'Notes'];
+    const lines = list.map((r) => [
+      r.name, r.email, r.phone, new Date(r.created_at).toLocaleDateString('en-US'), statusLabel(r.status || 'new'),
+      (r.top_gifts || []).join(', '), r.disc_style,
+      (r.roles || []).map((x) => (x.role === x.team ? x.team : `${x.role} (${x.team})`)).join(', '),
+      (r.interests || []).map(interestLabel).join(', '), r.notes || '',
+    ].map(cell).join(','));
+    const blob = new Blob(['\uFEFF' + [header.join(','), ...lines].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `spiritual-gifts-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
 
   function route() {
@@ -403,6 +554,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   });
   window.addEventListener('popstate', route);
   $('search').addEventListener('input', renderList);
+  $('tab-responses').addEventListener('click', () => setTab('responses'));
+  $('tab-overview').addEventListener('click', () => setTab('overview'));
+  $('download').addEventListener('click', downloadCsv);
   $('filters').addEventListener('click', (e) => {
     const btn = (e.target as HTMLElement).closest('button[data-filter]');
     if (!btn) return;

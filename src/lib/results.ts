@@ -13,6 +13,7 @@ export interface QuizResults {
     bars: { k: string; name: string; pct: number }[];
   };
   roles: RoleResult[];
+  together?: { gift: string; style: string; text: string }[];
 }
 
 const str = (v: unknown, max: number) => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
@@ -27,7 +28,9 @@ export function isValidResults(r: any): r is QuizResults {
     Array.isArray(r.allGifts) && r.allGifts.length <= 40 && r.allGifts.every(gift) &&
     r.disc && str(r.disc.code, 3) && str(r.disc.label, 80) && style(r.disc.primary) && style(r.disc.secondary) &&
     Array.isArray(r.disc.bars) && r.disc.bars.length === 4 &&
-    Array.isArray(r.roles) && r.roles.length <= 5 && r.roles.every((x: any) => x && str(x.role, 80) && str(x.team, 80))
+    Array.isArray(r.roles) && r.roles.length <= 5 && r.roles.every((x: any) => x && str(x.role, 80) && str(x.team, 80)) &&
+    (r.together === undefined || (Array.isArray(r.together) && r.together.length <= 5 &&
+      r.together.every((t: any) => t && str(t.gift, 80) && str(t.style, 40) && str(t.text, 400))))
   );
 }
 
@@ -119,6 +122,9 @@ export function resultsEmail(name: string, r: QuizResults, siteUrl: string, foll
     <p style="margin:0;font-size:15px;line-height:1.6;color:${MUTED}">Your strongest gifts are ${esc(r.topGifts[0].name)}, ${esc(r.topGifts[1].name)}, and ${esc(r.topGifts[2].name)}. Your personality style is ${esc(r.disc.label)}.</p>
     ${h2('Your top spiritual gifts')}${giftsBlock(r)}
     ${h2('Your personality style')}${discBlock(r)}
+    ${r.together?.length ? h2('How your gifts and style work together') + r.together.map((t) => `<div style="border:1px solid ${LINE};border-left:5px solid #3A5490;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+        <div style="font-weight:800;font-size:16px;text-transform:uppercase">${esc(t.gift)} <span style="color:${GREEN_DARK}">+</span> ${esc(t.style)}</div>
+        <p style="margin:6px 0 0;font-size:14px;line-height:1.55">${esc(t.text)}</p></div>`).join('') : ''}
     ${r.roles.length ? h2('Where you could serve') + `<p style="margin:0 0 12px;font-size:14px;color:${MUTED}">These roles fit your gifts and style best. They are suggestions, not assignments.</p>` + rolesBlock(r, siteUrl) : ''}
     <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid ${LINE};font-size:13px;color:${MUTED};line-height:1.6">This is a tool for reflection, not a diagnosis, and it is not a formal or validated assessment. ${esc(followUp)}</p>
     <p style="margin:20px 0 0"><a href="${esc(siteUrl)}/teams/" style="display:inline-block;background:${GREEN};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 22px;border-radius:4px">Explore all serve teams</a></p>`;
