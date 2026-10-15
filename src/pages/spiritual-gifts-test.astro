@@ -732,13 +732,20 @@ function render(){
   if(f){try{f.focus({preventScroll:true});}catch(e){}}
   if(S.started&&S.i>=TOTAL&&(S.pdone||S.sid)&&!S.sid)submitResults();
 }
-function go(delta){S.i=Math.max(0,Math.min(TOTAL,S.i+delta));confirmReset=false;save();render();window.scrollTo(0,0);}
+// Keep the test in one spot: line its top up just under the sticky site header instead of jumping to the page top.
+function toQuizTop(){
+  var el=document.getElementById("sg"), header=document.querySelector("body>header");
+  if(!el)return;
+  var y=el.getBoundingClientRect().top+window.scrollY-(header?header.offsetHeight:0);
+  window.scrollTo(0,Math.max(0,y));
+}
+function go(delta){S.i=Math.max(0,Math.min(TOTAL,S.i+delta));confirmReset=false;save();render();toQuizTop();}
 
 var lock=false;
 root.addEventListener("click",function(e){
   var b=e.target.closest("[data-act]"); if(!b)return;
   var act=b.getAttribute("data-act");
-  if(act==="start"){S.started=true;save();render();window.scrollTo(0,0);}
+  if(act==="start"){S.started=true;save();render();toQuizTop();}
   else if(act==="rate"){
     if(lock)return; var it=ITEMS[S.i]; S.g[ikey(it)]=parseInt(b.getAttribute("data-v"),10); save(); render();
     lock=true; setTimeout(function(){lock=false;go(1);},220);
@@ -752,7 +759,7 @@ root.addEventListener("click",function(e){
     b.innerHTML=(on?'<span aria-hidden="true">✓</span>':'')+esc(PASSIONS.filter(function(p){return p.id===id;})[0].label);
     save();
   }
-  else if(act==="finish"){savePassionNote();S.pdone=true;save();render();window.scrollTo(0,0);}
+  else if(act==="finish"){savePassionNote();S.pdone=true;save();render();toQuizTop();}
   else if(act==="print"){try{window.print();}catch(err){}}
   else if(act==="email"){emailResults();}
   else if(act==="interest"){toggleInterest(b);}
@@ -760,7 +767,7 @@ root.addEventListener("click",function(e){
   else if(act==="restart"){
     var needConfirm=S.i>=TOTAL;
     if(needConfirm&&!confirmReset){confirmReset=true;updateActions();return;}
-    S={started:false,i:0,g:{},d:{},who:S.who,interests:[],passions:[],passionNote:""};confirmReset=false;saveState="idle";emailState="idle";save();render();window.scrollTo(0,0);
+    S={started:false,i:0,g:{},d:{},who:S.who,interests:[],passions:[],passionNote:""};confirmReset=false;saveState="idle";emailState="idle";save();render();toQuizTop();
   }
 });
 
@@ -768,7 +775,7 @@ root.addEventListener("submit",function(e){
   if(e.target.id!=="who-form")return;
   e.preventDefault();
   var who=readWho(e.target); if(!who)return;
-  S.who=who;S.started=true;save();render();window.scrollTo(0,0);
+  S.who=who;S.started=true;save();render();toQuizTop();
 });
 
 render();
