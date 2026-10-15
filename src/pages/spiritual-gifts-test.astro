@@ -464,6 +464,7 @@ function whyText(m){
   var parts=[];
   if(m.best.length)parts.push("your gifts in "+m.best.join(" and "));
   if(m.passions.length)parts.push("your interest in "+m.passions.map(function(p){return p.short;}).join(" and "));
+  if(!parts.length&&m.styleFit)parts.push("your "+m.styleFit+" personality style");
   return parts.length?"Fits "+parts.join(" and ")+".":"";
 }
 
@@ -479,8 +480,9 @@ function teamMatches(R){
     var dScore=ds.length?ds.reduce(function(s,v){return s+v;},0)/ds.length:50;
     // Only name gifts the person actually scored well in.
     var best=gl.filter(function(x){return x.pct>=60;}).sort(function(a,b){return b.sum-a.sum;}).slice(0,2).map(function(x){return x.g.name;});
-    var ps=passionsFor(t);
-    return {t:t,score:0.75*gScore+0.25*dScore+(ps.length?PASSION_BONUS:0),best:best,passions:ps};
+    var ps=passionsFor(t), lead=R.ranked[0].k, styleFit=(t.disc||[]).indexOf(lead)>=0?DISC_INFO[lead].name:"";
+    var base=0.75*gScore+0.25*dScore;
+    return {t:t,base:base,score:base+(ps.length?PASSION_BONUS:0),best:best,passions:ps,styleFit:styleFit};
   }).sort(function(a,b){return b.score-a.score;}).filter(function(m,i,all){
     // A role listed more than once (different gift paths) keeps only its best-scoring entry.
     for(var j=0;j<i;j++)if(all[j].t.team===m.t.team&&all[j].t.role===m.t.role)return false;
@@ -490,13 +492,16 @@ function teamMatches(R){
 
 function pickRoles(R){
   var all=teamMatches(R),cnt={},M=[],used={};
-  all.forEach(function(m){if(M.length<3&&(cnt[m.t.team]||0)<2){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[m.t.team+"|"+m.t.role]=1;}});
-  // Anyone who tapped an interest always sees at least one suggestion from it.
-  if(M.length===3&&!M.some(function(m){return m.passions.length;})){
-    var last=M[2], pick=null;
-    all.forEach(function(m){if(!pick&&m.passions.length&&!used[m.t.team+"|"+m.t.role]&&(cnt[m.t.team]||0)-(last.t.team===m.t.team?1:0)<2)pick=m;});
-    if(pick){delete used[last.t.team+"|"+last.t.role];M[2]=pick;used[pick.t.team+"|"+pick.t.role]=1;}
+  function key(m){return m.t.team+"|"+m.t.role;}
+  function ok(m){return !used[key(m)]&&(cnt[m.t.team]||0)<2;}
+  function take(m){if(m&&ok(m)){cnt[m.t.team]=(cnt[m.t.team]||0)+1;M.push(m);used[key(m)]=1;}}
+  // With interests: one pick for what they enjoy, one from gifts and style alone on a team they didn't tap
+  // (something they may not have realized they're wired for), then the best overall.
+  if((S.passions||[]).length){
+    take(all.filter(function(m){return m.passions.length&&ok(m);})[0]);
+    take(all.filter(function(m){return !m.passions.length&&ok(m);}).sort(function(a,b){return b.base-a.base;})[0]);
   }
+  all.forEach(function(m){if(M.length<3)take(m);});
   return {all:all,M:M,used:used};
 }
 
@@ -599,7 +604,7 @@ function viewResults(){
       h+='<div class="sec"><h2>Your passions</h2><div class="chips static">'+myP.map(function(p){return '<span class="chip on">'+esc(p.label)+'</span>';}).join('')+'</div>'+
         (S.passionNote?'<p class="muted" style="margin-top:12px">Also: '+esc(S.passionNote)+'</p>':'')+'</div>';
     }
-    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three fit your gifts, style, and interests best. They are suggestions, not assignments. Tap “I’m interested” on any of them, or on anything in the full list below.</p>';
+    h+='<div class="sec"><h2>Where you could serve</h2><p class="muted">These three bring together your gifts, your personality, and what you enjoy, and one may be a fit you hadn’t thought of. They are suggestions, not assignments. Tap “I’m interested” on any of them, or on anything in the full list below.</p>';
     M.forEach(function(m){
       h+='<div class="card top team"><h3>'+esc(m.t.role||m.t.name)+'</h3>'+(m.t.team&&m.t.team!==m.t.role?'<p class="ref" style="margin:0 0 4px">'+esc(m.t.team)+'</p>':"")+(m.t.description?'<p>'+esc(m.t.description)+'</p>':"")+
          (whyText(m)?'<p class="why">'+esc(whyText(m))+'</p>':"")+
