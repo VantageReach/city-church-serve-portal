@@ -10,4 +10,6 @@ export default defineConfig({
   adapter: vercel(),
   output: 'static',
   trailingSlash: 'always',
+  // Form posts to /kcbucks are relayed to the KC Bucks app, which checks their origin itself.
+  security: { checkOrigin: false },
 });
