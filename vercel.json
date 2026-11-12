@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/kcbucks", "destination": "https://kid-city-bucks.vercel.app/kcbucks/" },
+    { "source": "/kcbucks/:path*", "destination": "https://kid-city-bucks.vercel.app/kcbucks/:path*" }
+  ]
+}
